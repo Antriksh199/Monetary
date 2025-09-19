@@ -6,7 +6,7 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
   # Allows you to run this workflow manually from the Actions tab
 jobs:
@@ -27,7 +27,9 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          cd Frontend
+          npm ci
 
       - name: Inject Secrets
         run: |
@@ -43,10 +45,10 @@ jobs:
       - name: Build FrontEnd
         run: npm run build -- --configuration production
 
-  deploy: 
+  deploy:
     runs-on: ubuntu-latest
-    
-    steps: 
+
+    steps:
       - name: Sync files to S3
         uses: jakejarvis/s3-sync-action@master
         with:
@@ -66,4 +68,3 @@ jobs:
           AWS_REGION: "us-east-1"
           AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_KEY }}
-      
