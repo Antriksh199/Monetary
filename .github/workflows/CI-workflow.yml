@@ -44,7 +44,9 @@ jobs:
           sed -i "s|COGNITO_RESPONSE_TYPE|${{secrets.COGNITO_RESPONSE_TYPE}}|g" src/environments/environment.ts
 
       - name: Build FrontEnd
-        run: npm run build -- --configuration production
+        run: |
+          cd Frontend
+          npm run build -- --configuration production
 
   deploy:
     runs-on: ubuntu-latest
@@ -59,7 +61,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
           AWS_REGION: "us-east-1"
-          SOURCE_DIR: src/app/dist/Monetary/browser
+          SOURCE_DIR: Frontend/src/app/dist/Monetary/browser
 
       - name: Invalidate CloudFront Cache
         uses: chetan/invalidate-cloudfront-action@v2
