@@ -48,8 +48,11 @@ jobs:
           cd Frontend
           npm run build -- --configuration production
 
-      - name: Check Build output path
-        run: ls -la Frontend/dist/Monetary
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-build
+          path: Frontend/dist/Monetary/browser
 
   deploy:
     needs: build
@@ -57,6 +60,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: frontend-build
+          path: Frontend/dist/Monetary/browser
+
       - name: Sync files to S3
         uses: jakejarvis/s3-sync-action@master
         with:
@@ -66,7 +75,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: "us-east-1"
-          SOURCE_DIR: Frontend/dist/Monetary
+          SOURCE_DIR: Frontend/dist/Monetary/browser
 
       - name: Invalidate CloudFront Cache
         uses: chetan/invalidate-cloudfront-action@v2
