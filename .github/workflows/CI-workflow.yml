@@ -49,6 +49,7 @@ jobs:
           npm run build -- --configuration production
 
   deploy:
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
@@ -59,7 +60,7 @@ jobs:
         env:
           AWS_S3_BUCKET: ${{ secrets.S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_KEY }}
           AWS_REGION: "us-east-1"
           SOURCE_DIR: Frontend/src/app/dist/Monetary/browser
 
