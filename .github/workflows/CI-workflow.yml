@@ -49,7 +49,7 @@ jobs:
           npm run build -- --configuration production
 
       - name: Check Build output path
-        run: ls -la dist/Monetary
+        run: ls -la Frontend/dist/Monetary
 
   deploy:
     needs: build
@@ -66,7 +66,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: "us-east-1"
-          SOURCE_DIR: Frontend/src/dist/Monetary/browser
+          SOURCE_DIR: Frontend/dist/Monetary/browser
 
       - name: Invalidate CloudFront Cache
         uses: chetan/invalidate-cloudfront-action@v2
