@@ -1,0 +1,154 @@
+.example-spacer {
+    flex: 1 1 auto;
+  }
+  
+  .flex-it
+  {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .home-icon{
+    height: 48px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .icon{
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    height: 48px;
+    width: 80px;
+    line-height: 36px;
+  }
+
+  .items-group {
+    display: flex;
+    flex-flow: end;
+    color: white;
+    background-color: inherit;
+    gap: 10px;
+  }
+  .example-icon
+  {
+    color: white;
+    padding: 0px;
+    margin: 0px;
+  }
+
+  .example-icon-menu
+  {
+    color: white !important;
+    border-radius: 0px;
+    border-style: groove;
+  }
+
+
+  .example-icon-menu-item
+  {
+    color: black;
+    border-style: groove;
+    padding: 0px;
+    margin: 0px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .sidenav{
+    width: 150px;
+    height: calc(100vh-70px);
+    position: fixed;
+    margin-top: 55px;
+    left: 0;
+    background-color: #0067C5;
+    color: white ;
+    border-radius: 0px;
+    border-right: 2px #9c9191;
+    margin-bottom: 25px;
+    box-sizing: border-box;
+    
+}
+
+
+.sidnav-item{
+    width: 150px;
+    height: 35px;
+    font-style: bold;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc;
+    text-align: center;
+    padding-top: 5px;
+}
+
+.toolbar
+{
+  border-bottom: 10px black;
+    background-color: #0067C5;
+    color: white ;
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 55px;
+}
+
+.sidenav-container{
+    position: fixed;
+    margin-top: 55px;
+    left: 0;
+    height: calc(100vh-70px);
+    margin-bottom: 25px;
+}
+
+.sidenav-menu
+{
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  height: auto;
+  gap: 0;
+}
+
+.item
+{
+  background-color: inherit;
+  width: 150px;
+  height: 40px;
+  border-top: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.3s ease;
+}
+
+.router-link{
+  text-decoration: none;
+  color: white;
+}
+
+.item:hover {
+  /* Replace with any z-level you prefer */
+  box-shadow: var(--mat-elevation-transition-shadow, 0px 4px 6px rgba(0,0,0,0.2));
+}
+
+.sidenav-content
+{
+    overflow: auto;
+    margin-bottom: 45px;
+    height: 100vh;
+    width: 100vw;
+    padding-left: 15px;
+
+}
+
+

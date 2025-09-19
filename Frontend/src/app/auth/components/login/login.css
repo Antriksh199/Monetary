@@ -1,0 +1,93 @@
+/* src/app/login/login.component.css */
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: gray;
+  z-index: 1;
+}
+
+.login-card {
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* src/app/login/login.component.css */
+
+.fullscreen-spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+mat-card-header {
+  padding-bottom: 20px;
+}
+
+.login-actions
+{
+  display: flex;
+  flex-direction: column;
+}
+
+.forgot-password {
+  text-align: right;
+  margin-bottom: 5px;
+}
+
+.forgot-password a {
+  color: #3f51b5;
+  text-decoration: none;
+  font-size: 0.9em;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+button {
+  margin-top: 20px;
+}
+
+.create-account {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.9em;
+}
+
+.create-account a {
+  color: #3f51b5;
+  text-decoration: none;
+}
+
+.create-account a:hover {
+  text-decoration: underline;
+}

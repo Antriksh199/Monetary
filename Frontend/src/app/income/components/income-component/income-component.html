@@ -1,0 +1,82 @@
+<div class="tab-container">
+    <h3>Your all Incomes at one place...</h3>
+    <br>
+    <mat-tab-group class="tab-group" (selectedIndexChange)="toggleIncome($event)" >
+        <mat-tab class="tab" *ngFor="let x of incomeTypes" label="{{x.name}}">
+        </mat-tab>
+        </mat-tab-group>
+            
+            <div *ngIf="filteredIncome.length > 0" class="outer-container">
+                <br>
+                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" multiTemplateDataRows>
+    
+                      <ng-container matColumnDef="receivedOn" >
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Received On </th>
+                        <td mat-cell *matCellDef="let income"> {{ income.receivedOn | date:'dd-MMM-yy': 'Asia/Kolkata'  }} </td>
+                    </ng-container>
+    
+                      <!-- Frequency-->
+                    <ng-container matColumnDef="frequency" >
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Frequency </th>
+                        <td mat-cell *matCellDef="let income"> {{ income.frequency?.name }} </td>
+                    </ng-container>
+    
+                     <!-- Payee-->
+                     <ng-container matColumnDef="receivedFrom" >
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Received From </th>
+                        <td mat-cell *matCellDef="let income"> {{ income.receivedFrom }} </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="receivedIn" >
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Received Via </th>
+                        <td mat-cell *matCellDef="let income"> {{ income.receivedIn.paymentMethod.name }} </td>
+                    </ng-container>
+    
+                    <!-- Income Value-->
+                    <ng-container matColumnDef="value" >
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header="value"> Amount </th>
+                        <td mat-cell *matCellDef="let income"> {{ income.value | currency:'INR':'symbol':'1.2-2':'en-IN' }} </td>
+                    </ng-container>
+                    
+                     <!-- Status Column -->
+                     <ng-container matColumnDef="received">
+                        <th mat-header-cell *matHeaderCellDef  mat-sort-header> Status </th>
+                        <td mat-cell *matCellDef="let income">{{ income.received ? 'Received' : 'Pending' }} </td>
+                      </ng-container>
+    
+                    <!-- Created Date-->
+                    <ng-container matColumnDef="createdDate">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Added On</th>
+                        <td mat-cell *matCellDef="let income"> {{ income.createdDate | date:"dd-MMM-yy hh:mm a": 'Asia/Kolkata' }} </td>
+                    </ng-container>
+    
+                     <!-- Modified Date-->
+                     <ng-container matColumnDef="modifiedDate">
+                        <th mat-header-cell *matHeaderCellDef  mat-sort-header="modifiedDate"> Modified On</th>
+                        <td mat-cell *matCellDef="let income"> {{ income.modifiedDate| date:"dd-MMM-yy hh:mm a":'Asia/Kolkata' }} </td>
+                    </ng-container>
+    
+                     <!-- Table Headers & Rows -->
+                    <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
+                    <tr mat-row *matRowDef="let income; let i=index; columns: tableColumns" 
+                    (contextmenu)="onRightClick($event, income)"></tr>
+                </table>
+            </div>
+            <br>
+            <div class="outer-container" *ngIf="filteredIncome.length == 0"><h2>You don't have any income in this category !</h2></div>
+    <div style="visibility: hidden; position: fixed"
+        [style.left]="contextMenuPosition.x"
+        [style.top]="contextMenuPosition.y"
+        [matMenuTriggerFor]="contextMenu">
+    </div>
+    
+            <mat-menu #contextMenu="matMenu">
+                <ng-template matMenuContent let-income="income">
+                <button mat-menu-item (click)="OnView(editRow)">View Income</button>
+                <button mat-menu-item (click)="OnEdit(editRow)">Edit Income</button>
+                <button mat-menu-item (click)="OnDelete(editRow)">Delete Income</button>
+            </ng-template>
+            </mat-menu>
+    </div>
+    
+    

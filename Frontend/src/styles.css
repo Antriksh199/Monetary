@@ -1,0 +1,82 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import 'ngx-toastr/toastr';
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
+
+.toast-top-right {
+  top: 60px !important; 
+  width: 280px;
+}
+::ng-deep .cdk-overlay-backdrop {
+  background-color: black !important;
+  opacity: 1 !important;
+}
+
+.spinner-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3); 
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.button-style
+{
+  background-color: #3F51B5;
+}
+
+.mat-tab-label {
+  color: #888;
+}
+.mat-tab-label.mat-tab-label-active {
+  color: #0055aa;
+}
+.mat-ink-bar {
+  background-color: #0055aa;
+}
+
+
+
+/* styles.css (or styles.scss) */
+
+/* Custom dialog container sizing */
+.custom-dialog-container .mat-mdc-dialog-container { /* or .mat-dialog-container for older versions */
+    height: auto; /* Allow height to adjust to content if needed */
+    border-radius: 8px;
+    padding: 24px;
+    gap: 8px;
+    padding-top: 10px !important;
+  }
+  .custom-dialog-container .mat-mdc-dialog-content { /* or .mat-dialog-container for older versions */
+    height: auto;
+  }
+  .custom-dialog-container .mat-mdc-dialog-actions { /* or .mat-dialog-container for older versions */
+    padding-bottom: 5px;
+    padding-top: 5px;
+  }
+
+
+  
+  
+  /* Spacing between form fields within the custom dialog */
+  .custom-dialog-form .mat-mdc-form-field { 
+    margin-bottom: 16px; /* Add space below form fields */
+    width: 100%; /* Make form fields take full width */
+  }
+  
+  /* Spacing for buttons */
+  .custom-dialog-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px; /* Space between buttons */
+    margin-top: 24px; /* Space above the action buttons */
+  }
+  

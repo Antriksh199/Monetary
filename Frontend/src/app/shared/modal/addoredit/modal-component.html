@@ -1,0 +1,489 @@
+@if (data.component == "Income" && ((data.action == "add")||(data.action == "edit")))
+{
+<h2 mat-dialog-title>{{data.title}}</h2>
+<mat-dialog-content>
+  @if (itemForm) {
+  <form [formGroup]="itemForm" class="form-container">
+    <div class="expense-flex-container">
+    <mat-form-field appearance="fill" class="expense-flex-child">
+      <mat-label>Source of Income</mat-label>
+      <mat-select formControlName="source" [compareWith]="compareById">
+        @for( x of incomeTypes; track x.id)
+        {
+          <mat-option [value]= x>{{x.name}}</mat-option>
+        }
+      </mat-select>
+      @if (itemForm.get('source')?.hasError('required') && itemForm.get('source')?.touched) {
+        <mat-error >
+          Source of Income is required.
+        </mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="expense-flex-child">
+      <mat-label>Frequency</mat-label>
+      <mat-select formControlName="frequency" [compareWith]="compareById">
+        @for(x of frequencies; track x.id) {
+          <mat-option [value]=x>{{x.name}}</mat-option>
+        }
+      </mat-select>
+      @if(itemForm.get('frequency')?.hasError('required') && itemForm.get('frequency')?.touched) {
+        <mat-error >
+          Frequency is required.
+        </mat-error>
+      }
+    </mat-form-field>
+    </div>
+    
+    <div class="expense-flex-container">
+    <mat-form-field class="expense-flex-child">
+      <mat-label>Received On</mat-label>
+      <input matInput [matDatepicker]="receivedOn" formControlName="receivedOn" [max]="disablefutureDates">
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="receivedOn"></mat-datepicker-toggle>
+      <mat-datepicker #receivedOn></mat-datepicker>
+      @if(itemForm.get('receivedOn')?.hasError('required') && itemForm.get('receivedOn')?.touched) {
+        <mat-error >
+          Income Receiving Date is required.
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="expense-flex-child">
+      <mat-label>Amount(in INR)</mat-label>
+      <input matInput formControlName="value">
+      @if (itemForm.get('value')?.hasError('required') && itemForm.get('value')?.touched) {
+        <mat-error >
+          {{itemForm.get('value')?.errors.required }}
+        </mat-error>
+      }
+      @if (itemForm.get('value')?.hasError('number') && itemForm.get('value')?.touched) {
+        <mat-error >
+          {{itemForm.get('value')?.errors.number}}
+        </mat-error>
+      }
+    </mat-form-field>
+    </div>
+    
+    <mat-form-field appearance="fill">
+      <mat-label>Received In</mat-label>
+      <mat-select formControlName="receivedIn">
+        @if(userPaymentMethodWrapper)
+        {
+        @for(x of userPaymentMethodWrapper.cards; track x.id)
+        {
+          <mat-option [value]="x">{{x.cardType}} - {{x.provider|titlecase}} - {{x.customerName}} - {{x.cardNumber}} </mat-option>
+        }
+        @for(x of userPaymentMethodWrapper.banks; track x.id)
+        {
+          <mat-option [value]="x">Bank Transfer - {{x.bankName|titlecase}} - {{x.accountNumber}} </mat-option>
+        }
+        @for(x of userPaymentMethodWrapper.upis; track x.id){
+          <mat-option [value]="x">{{x.upiId}} </mat-option>
+        }
+        @for(x of userPaymentMethodWrapper.cash; track x.id){
+          <mat-option [value]="x">Cash</mat-option>
+        }
+        }
+        <mat-option [matMenuTriggerFor]="addPaymentsMenu">
+        <mat-icon>add_circle_outline</mat-icon> Add New Income Destination
+        <mat-menu #addPaymentsMenu = "matMenu" [yPosition]="'below'">
+          @for(x of defaultPaymentMethods; track x.id) {
+            <button mat-menu-item (click)="AddPayment(x.name)">{{x.name}}</button>
+          }
+      </mat-menu>
+        </mat-option>
+      </mat-select>
+      @if(itemForm.get('receivedIn')?.hasError('required') && itemForm.get('receivedIn')?.touched) {
+        <mat-error >
+          Received In is required.
+        </mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Received From</mat-label>
+      <input matInput formControlName="receivedFrom">
+      @if(itemForm.get('receivedFrom')?.hasError('required') && itemForm.get('receivedFrom')?.touched) {
+        <mat-error >
+          Received From is required.
+        </mat-error>
+      }
+    </mat-form-field>
+    
+    <mat-form-field appearance="fill">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+    <mat-slide-toggle formControlName="received" id="featureToggle" aria-describedby="featureHelp" (change)="onToggleChange($event)">Received ?</mat-slide-toggle>
+    <span id="featureHelp" class="help-text">Toggle this only if the Income is received not expected in future.</span>
+  </form>
+}
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSave()">Save</button>
+</mat-dialog-actions>
+}
+
+@else if (data.action == "delete" ) {
+
+  <h2 mat-dialog-title>{{data.title}}</h2>
+  <mat-dialog-content class="delete-content">
+    @if(data.component == "Expense")
+    {
+    <h4> Are you sure you want to delete this Expense entry ?</h4>
+    }
+    @else if(data.component == "Income")
+    {
+      <h4> Are you sure you want to delete this Income entry ?</h4>
+    }
+    @else {
+      <h4> Are you sure you want to delete this investment entry ?</h4>
+    }
+  </mat-dialog-content>
+  <mat-dialog-actions class="end">
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" (click)="OnDelete()">Delete</button>
+  </mat-dialog-actions>
+
+}
+
+@else if(data.component == "Investment" && ((data.action == "add")||(data.action == "edit"))) 
+{
+
+<h2 mat-dialog-title>{{data.title}}</h2>
+<mat-dialog-content>
+  @if (itemForm) {
+  <form [formGroup]="itemForm" class="form-container">
+    <div class="expense-flex-container">
+    <mat-form-field appearance="fill" class="expense-flex-child">
+      <mat-label>Investment Category</mat-label>
+      <mat-select formControlName="investmentCategory" (selectionChange)="OnSelectionChangeEvent($event)" [compareWith]="compareById">
+        @for( x of investmentCategoryTypeWrapper; track x.investmentCategory?.id)
+        {
+          <mat-option  [value]= x.investmentCategory>{{x.investmentCategory?.name}}</mat-option>
+        }
+      </mat-select>
+      @if (itemForm.get('investmentCategory')?.hasError('required') && itemForm.get('investmentCategory')?.touched) {
+        <mat-error >
+          Investment Category is required.
+        </mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="expense-flex-child">
+      <mat-label>Investment Type</mat-label>
+      <mat-select formControlName="investmentType" [compareWith]="compareById">
+        @for(x of expenseTypes; track x.id) {
+          <mat-option [value]=x>{{x.name}}</mat-option>
+        }
+      </mat-select>
+      @if(itemForm.get('investmentType')?.hasError('required') && itemForm.get('investmentType')?.touched) {
+        <mat-error >
+          Investment Type is required.
+        </mat-error>
+      }
+      @if(itemForm.get('investmentType')?.valid && itemForm.get('investmentType')?.value)
+      {
+        <mat-hint [style]="investmentRisk.get(itemForm.get('investmentType')?.value.risk)" > {{ itemForm.get('investmentType')?.value.risk }} Risk Investment.</mat-hint>
+      }
+    </mat-form-field>
+     
+  </div>
+
+  <div class="expense-flex-container">
+    <mat-form-field appearance="fill" class="expense-flex-child">
+      <mat-label>Frequency</mat-label>
+      <mat-select formControlName="frequency" [compareWith]="compareById">
+        @for(x of frequencies; track x.id) {
+          <mat-option [value]=x>{{x.name}}</mat-option>
+        }
+      </mat-select>
+      @if(itemForm.get('frequency')?.hasError('required') && itemForm.get('frequency')?.touched) {
+        <mat-error >
+          Frequency is required.
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="expense-flex-child">
+      <mat-label>Invested On</mat-label>
+      <input matInput [matDatepicker]="investedOn" formControlName="investedOn" [max]="disablefutureDates">
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="investedOn"></mat-datepicker-toggle>
+      <mat-datepicker #investedOn></mat-datepicker>
+      @if(itemForm.get('investedOn')?.hasError('required') && itemForm.get('investedOn')?.touched) {
+        <mat-error >
+          Investment Date is required.
+        </mat-error>
+      }
+    </mat-form-field>
+  </div>
+  <div class="expense-flex-container">
+    <mat-form-field appearance="fill" class="expense-flex-child">
+      <mat-label>Invested In</mat-label>
+      <input matInput formControlName="investedTo">
+      @if(itemForm.get('investedTo')?.hasError('required') && itemForm.get('investedTo')?.touched) {
+        <mat-error >
+          Invested In is required.
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill"  class="expense-flex-child">
+      <mat-label>Amount(in INR)</mat-label>
+      <input matInput formControlName="value">
+      @if (itemForm.get('value')?.hasError('required') && itemForm.get('value')?.touched) {
+        <mat-error >
+          {{itemForm.get('value')?.errors.required }}
+        </mat-error>
+      }
+      @if (itemForm.get('value')?.hasError('number') && itemForm.get('value')?.touched) {
+        <mat-error >
+          {{itemForm.get('value')?.errors.number}}
+        </mat-error>
+      }
+    </mat-form-field>
+    
+  </div>
+
+  <div class="expense-flex-container">
+    <mat-form-field appearance="fill" class="expense-flex-child">
+      <mat-label>Annual Growth Rate (in %)</mat-label>
+      <input matInput formControlName="growthRate">
+      
+      @if(itemForm.get('investmentType').value)
+      {
+      <mat-hint>If no value entered, {{itemForm.get('investmentType').value.growthRate}}% will be used.</mat-hint>
+      }
+      @if(itemForm.get('growthRate')?.hasError('required') && itemForm.get('growthRate')?.touched) {
+        <mat-error >
+          Growth Rate is required.
+        </mat-error>
+      }
+      @if(itemForm.get('growthRate')?.hasError('invalidRate') && itemForm.get('growthRate')?.touched) {
+        <mat-error >
+          {{itemForm.get('growthRate').errors.invalidRate}}
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill"  class="expense-flex-child">
+      <mat-label>Tenure (in years)</mat-label>
+      <input matInput formControlName="tenure">
+      @if (itemForm.get('tenure')?.hasError('required') && itemForm.get('tenure')?.touched) {
+        <mat-error >
+          {{itemForm.get('tenure')?.errors.required }}
+        </mat-error>
+      }
+      @if (itemForm.get('tenure')?.hasError('invalidTenure') && itemForm.get('tenure')?.touched) {
+        <mat-error >
+          {{itemForm.get('tenure')?.errors.number}}
+        </mat-error>
+      }
+    </mat-form-field>
+    
+  </div>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Invested Via</mat-label>
+    <mat-select formControlName="investedVia">
+      @if(userPaymentMethodWrapper)
+      {
+      @for(x of userPaymentMethodWrapper.cards; track x.id)
+      {
+        <mat-option [value]="x">{{x.cardType}} - {{x.provider|titlecase}} - {{x.customerName}} - {{x.cardNumber}} </mat-option>
+      }
+      @for(x of userPaymentMethodWrapper.banks; track x.id)
+      {
+        <mat-option [value]="x">Bank Transfer - {{x.bankName|titlecase}} - {{x.accountNumber}} </mat-option>
+      }
+      @for(x of userPaymentMethodWrapper.upis; track x.id){
+        <mat-option [value]="x">{{x.upiId}} </mat-option>
+      }
+      @for(x of userPaymentMethodWrapper.cash; track x.id){
+        <mat-option [value]="x">Cash</mat-option>
+      }
+      }
+      <mat-option [matMenuTriggerFor]="addPaymentsMenu">
+      <mat-icon>add_circle_outline</mat-icon> Add New Income Destination
+      <mat-menu #addPaymentsMenu = "matMenu" [yPosition]="'below'">
+        @for(x of defaultPaymentMethods; track x.id) {
+          <button mat-menu-item (click)="AddPayment(x.name)">{{x.name}}</button>
+        }
+    </mat-menu>
+      </mat-option>
+    </mat-select>
+    @if(itemForm.get('investedVia')?.hasError('required') && itemForm.get('investedVia')?.touched) {
+      <mat-error >
+        Payment Detail is required.
+      </mat-error>
+    }
+  </mat-form-field>
+   
+    <mat-form-field appearance="fill">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+    <mat-slide-toggle formControlName="invested" id="featureToggle" aria-describedby="featureHelp" (change)="onToggleChange($event)">Invested ?</mat-slide-toggle>
+    <span id="featureHelp" class="help-text">Toggle this only if the Investment is complete not expected in future.</span>
+  </form>
+}
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button (click)="onSave()">Save</button>
+</mat-dialog-actions>
+
+}
+
+@else if (data.component == "Expense" && ((data.action == "add")||(data.action == "edit")) ) {  
+  <h2 mat-dialog-title>{{data.title}}</h2>
+<mat-dialog-content>
+  @if (itemForm) {
+  <form [formGroup]="itemForm" class="form-container">
+    <div class="expense-flex-container">
+    <mat-form-field appearance="fill" class="expense-flex-child">
+      <mat-label>Expense Category</mat-label>
+      <mat-select formControlName="expenseCategory" (selectionChange)="OnSelectionChangeEvent($event)" [compareWith]="compareById">
+        @for( x of expenseCategoryTypeWrapper; track x.expenseCategory?.id)
+        {
+          <mat-option  [value]= x.expenseCategory>{{x.expenseCategory?.name}}</mat-option>
+        }
+      </mat-select>
+      @if (itemForm.get('expenseCategory')?.hasError('required') && itemForm.get('expenseCategory')?.touched) {
+        <mat-error >
+          Expense Category is required.
+        </mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="expense-flex-child">
+      <mat-label>Expense Type</mat-label>
+      <mat-select formControlName="expenseType" [compareWith]="compareById">
+        @for(x of expenseTypes; track x.id) {
+          <mat-option [value]=x>{{x.name}}</mat-option>
+        }
+      </mat-select>
+      @if(itemForm.get('expenseType')?.hasError('required') && itemForm.get('expenseType')?.touched) {
+        <mat-error >
+          Expense Type is required.
+        </mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <div class="expense-flex-container">
+    <mat-form-field appearance="fill" class="expense-flex-child">
+      <mat-label>Frequency</mat-label>
+      <mat-select formControlName="frequency" [compareWith]="compareById">
+        @for(x of frequencies; track x.id) {
+          <mat-option [value]=x>{{x.name}}</mat-option>
+        }
+      </mat-select>
+      @if(itemForm.get('frequency')?.hasError('required') && itemForm.get('frequency')?.touched) {
+        <mat-error >
+          Frequency is required.
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="expense-flex-child">
+      <mat-label>Paid On</mat-label>
+      <input matInput [matDatepicker]="paidOn" formControlName="paidOn" [max]="disablefutureDates">
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="paidOn"></mat-datepicker-toggle>
+      <mat-datepicker #paidOn></mat-datepicker>
+      @if(itemForm.get('paidOn')?.hasError('required') && itemForm.get('paidOn')?.touched) {
+        <mat-error >
+          Expense Date is required.
+        </mat-error>
+      }
+    </mat-form-field>
+    
+  </div>
+
+  <div class="expense-flex-container">
+    <mat-form-field appearance="fill" class="expense-flex-child">
+      <mat-label>Paid To</mat-label>
+      <input matInput formControlName="paidTo">
+      @if(itemForm.get('paidTo')?.hasError('required') && itemForm.get('paidTo')?.touched) {
+        <mat-error >
+          Paid To is required.
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill"  class="expense-flex-child">
+      <mat-label>Amount(in INR)</mat-label>
+      <input matInput formControlName="value">
+      @if (itemForm.get('value')?.hasError('required') && itemForm.get('value')?.touched) {
+        <mat-error >
+          {{itemForm.get('value')?.errors.required }}
+        </mat-error>
+      }
+      @if (itemForm.get('value')?.hasError('number') && itemForm.get('value')?.touched) {
+        <mat-error >
+          {{itemForm.get('value')?.errors.number}}
+        </mat-error>
+      }
+    </mat-form-field>
+    
+  </div>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Paid Via</mat-label>
+    <mat-select formControlName="paidVia">
+      @if(userPaymentMethodWrapper)
+      {
+      @for(x of userPaymentMethodWrapper.cards; track x.id)
+      {
+        <mat-option [value]="x">{{x.cardType}} - {{x.provider|titlecase}} - {{x.customerName}} - {{x.cardNumber}} </mat-option>
+      }
+      @for(x of userPaymentMethodWrapper.banks; track x.id)
+      {
+        <mat-option [value]="x">Bank Transfer - {{x.bankName|titlecase}} - {{x.accountNumber}} </mat-option>
+      }
+      @for(x of userPaymentMethodWrapper.upis; track x.id){
+        <mat-option [value]="x">{{x.upiId}} </mat-option>
+      }
+      @for(x of userPaymentMethodWrapper.cash; track x.id){
+        <mat-option [value]="x">Cash</mat-option>
+      }
+      }
+      <mat-option [matMenuTriggerFor]="addPaymentsMenu">
+      <mat-icon>add_circle_outline</mat-icon> Add New Income Destination
+      <mat-menu #addPaymentsMenu = "matMenu" [yPosition]="'below'">
+        @for(x of defaultPaymentMethods; track x.id) {
+          <button mat-menu-item (click)="AddPayment(x.name)">{{x.name}}</button>
+        }
+    </mat-menu>
+      </mat-option>
+    </mat-select>
+    @if(itemForm.get('paidVia')?.hasError('required') && itemForm.get('paidVia')?.touched) {
+      <mat-error >
+        Payment Detail is required.
+      </mat-error>
+    }
+  </mat-form-field>
+   
+    <mat-form-field appearance="fill">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+    <mat-slide-toggle formControlName="paid" id="featureToggle" aria-describedby="featureHelp" (change)="onToggleChange($event)">Paid ?</mat-slide-toggle>
+    <span id="featureHelp" class="help-text">Toggle this only if the Payment is complete not expected in future.</span>
+  </form>
+}
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSave()">Save</button>
+</mat-dialog-actions>
+
+}
+@else 
+{
+  <p> <strong>Something went wrong !</strong></p>
+}
+
+
+
+

@@ -1,0 +1,19 @@
+.footer{
+    display: flex;
+    align-items: center;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 35px;
+    position: fixed;
+    background-color:#0067C5;
+    z-index: 2;
+    color: white;
+    justify-content: center;
+    border: 2px #9c9191;
+    gap:5px;
+}
+
+.icon{
+    margin-top: 5px;
+}

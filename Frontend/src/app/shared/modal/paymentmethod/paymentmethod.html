@@ -1,0 +1,274 @@
+@if (data.component == 'Credit Card' || data.component == 'Debit Card') {
+    <h2 mat-dialog-title> {{data.title}}</h2>
+    <mat-dialog-content>
+      @if (itemForm) {
+        <form [formGroup]="itemForm" class="form-container">
+
+          <mat-form-field>
+            <mat-label> Card Provider</mat-label>
+            <input matInput formControlName="provider" placeholder="Card Provider eg., SBI, HDFC">
+            @if (itemForm.get('provider')?.hasError('required') && itemForm.get('provider')?.touched) {
+              <mat-error >
+                {{itemForm.get('provider')?.errors.required }}
+              </mat-error>
+            }
+            @if (itemForm.get('provider')?.hasError('minlength') && itemForm.get('provider')?.touched) {
+              <mat-error >
+                Minimum 6 characters needed.
+              </mat-error>
+            }
+            @if (itemForm.get('provider')?.hasError('maxlength') && itemForm.get('provider')?.touched) {
+              <mat-error >
+                Maximum 20 characters allowed.
+              </mat-error>
+            }
+            @if (itemForm.get('provider')?.hasError('text') && itemForm.get('provider')?.touched) {
+              <mat-error >
+                {{itemForm.get('provider')?.errors.text}}
+              </mat-error>
+            }
+            @if (itemForm.get('provider')?.hasError('lengthError') && itemForm.get('provider')?.touched) {
+              <mat-error >
+                {{itemForm.get('provider')?.errors.lengthError}}
+              </mat-error>
+            }
+            </mat-form-field>
+
+          <mat-form-field>
+            <mat-label> Name on Card</mat-label>
+            <input matInput formControlName="name">
+            @if (itemForm.get('name')?.hasError('required') && itemForm.get('name')?.touched) {
+              <mat-error >
+                {{itemForm.get('name')?.errors.required }}
+              </mat-error>
+            }
+            @if (itemForm.get('name')?.hasError('minlength') && itemForm.get('name')?.touched) {
+              <mat-error >
+                Minimum 6 characters needed.
+              </mat-error>
+            }
+            @if (itemForm.get('name')?.hasError('maxlength') && itemForm.get('name')?.touched) {
+              <mat-error >
+                Maximum 20 characters allowed.
+              </mat-error>
+            }
+            @if (itemForm.get('name')?.hasError('text') && itemForm.get('name')?.touched) {
+              <mat-error >
+                {{itemForm.get('name')?.errors.text}}
+              </mat-error>
+            }
+            @if (itemForm.get('name')?.hasError('lengthError') && itemForm.get('name')?.touched) {
+              <mat-error >
+                {{itemForm.get('name')?.errors.lengthError}}
+              </mat-error>
+            }
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>
+                Last 4 digits of Card Number
+              </mat-label>
+              <input matInput formControlName="cardNumber"/>
+              @if (itemForm.get('cardNumber')?.hasError('required') && itemForm.get('cardNumber')?.touched) {
+                <mat-error >
+                  {{itemForm.get('cardNumber')?.errors.required }}
+                </mat-error>
+              }
+              @if (itemForm.get('cardNumber')?.hasError('invalidNumber') && itemForm.get('cardNumber')?.touched) {
+                <mat-error >
+                  {{itemForm.get('cardNumber')?.errors.invalidNumber}}
+                </mat-error>
+              }
+          </mat-form-field>
+          <div class="credit-card">
+            <mat-form-field>
+              <mat-label> Card Expiry Date</mat-label>
+              <input matInput placeholder="MM/YY" formControlName="expiryDate"/> 
+              @if (itemForm.get('expiryDate')?.hasError('required') && itemForm.get('expiryDate')?.touched) {
+                <mat-error >
+                  {{itemForm.get('expiryDate')?.errors.required }}
+                </mat-error>
+              }
+              @if (itemForm.get('expiryDate')?.hasError('invalidNumber') && itemForm.get('expiryDate')?.touched) {
+                <mat-error >
+                  {{itemForm.get('expiryDate')?.errors.invalidNumber}}
+                </mat-error>
+              }
+              @if (itemForm.get('expiryDate')?.hasError('expiredCard') && itemForm.get('expiryDate')?.touched) {
+                <mat-error >
+                  {{itemForm.get('expiryDate')?.errors.expiredCard}}
+                </mat-error>
+              }
+              </mat-form-field>
+              
+  
+            <mat-form-field>
+              <mat-label>CVV</mat-label>
+              <input matInput formControlName="cvv"/> 
+              @if (itemForm.get('cvv')?.hasError('required') && itemForm.get('cvv')?.touched) {
+                <mat-error >
+                  {{itemForm.get('cvv')?.errors.required }}
+                </mat-error>
+              }
+              @if (itemForm.get('cvv')?.hasError('invalidNumber') && itemForm.get('cvv')?.touched) {
+                <mat-error >
+                  {{itemForm.get('cvv')?.errors.invalidNumber}}
+                </mat-error>
+              }
+            </mat-form-field>
+          </div>
+  
+          </form>
+      }
+    </mat-dialog-content>
+    
+    <mat-dialog-actions class="end">
+      <button mat-raised-button mat-dialog-close>Cancel</button>
+      <button mat-raised-button color="primary" (click)="onSave()">Save</button>
+    </mat-dialog-actions>
+  }
+    @else if (data.component == "Bank Transfer") {
+
+      <h2 mat-dialog-title> {{data.title}}</h2>
+    <mat-dialog-content>
+      @if (itemForm) {
+        <form [formGroup]="itemForm" class="form-container">
+
+          <mat-form-field>
+            <mat-label> Bank Name</mat-label>
+            <input matInput formControlName="bank" >
+            @if (itemForm.get('bank')?.hasError('required') && itemForm.get('bank')?.touched) {
+              <mat-error >
+                {{itemForm.get('bank')?.errors.required }}
+              </mat-error>
+            }
+            @if (itemForm.get('bank')?.hasError('minlength') && itemForm.get('bank')?.touched) {
+              <mat-error >
+                Minimum 3 characters needed.
+              </mat-error>
+            }
+            @if (itemForm.get('bank')?.hasError('maxlength') && itemForm.get('bank')?.touched) {
+              <mat-error >
+                Maximum 20 characters allowed.
+              </mat-error>
+            }
+            @if (itemForm.get('bank')?.hasError('invalidName') && itemForm.get('bank')?.touched) {
+              <mat-error >
+                {{itemForm.get('bank')?.errors.invalidName}}
+              </mat-error>
+            }
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Account Type</mat-label>
+              <mat-select formControlName="accountType">
+                <mat-option value="Savings"> Savings</mat-option>
+                <mat-option value="Current"> Current</mat-option>
+                <mat-option value="Other"> Other</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          <mat-form-field>
+            <mat-label> Account Number</mat-label>
+            <input matInput formControlName="accountNumber">
+            @if (itemForm.get('accountNumber')?.hasError('required') && itemForm.get('accountNumber')?.touched) {
+              <mat-error >
+                {{itemForm.get('accountNumber')?.errors.required }}
+              </mat-error>
+            }
+            @if (itemForm.get('accountNumber')?.hasError('minlength') && itemForm.get('accountNumber')?.touched) {
+              <mat-error >
+                Minimum 9 characters needed.
+              </mat-error>
+            }
+            @if (itemForm.get('accountNumber')?.hasError('maxlength') && itemForm.get('accountNumber')?.touched) {
+              <mat-error >
+                Maximum 20 characters allowed.
+              </mat-error>
+            }
+            @if (itemForm.get('accountNumber')?.hasError('invalidNumber') && itemForm.get('accountNumber')?.touched) {
+              <mat-error >
+                {{itemForm.get('accountNumber')?.errors.invalidNumber}}
+              </mat-error>
+            }
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>
+                IFSC Code
+              </mat-label>
+              <input matInput formControlName="ifsc"/>
+              @if (itemForm.get('ifsc')?.hasError('required') && itemForm.get('ifsc')?.touched) {
+                <mat-error >
+                  {{itemForm.get('ifsc')?.errors.required }}
+                </mat-error>
+              }
+              @if (itemForm.get('accountNumber')?.hasError('minlength') && itemForm.get('accountNumber')?.touched) {
+                <mat-error >
+                  Minimum 6 characters needed.
+                </mat-error>
+              }
+              @if (itemForm.get('accountNumber')?.hasError('maxlength') && itemForm.get('accountNumber')?.touched) {
+                <mat-error >
+                  Maximum 12 characters allowed.
+                </mat-error>
+              }
+              @if (itemForm.get('ifsc')?.hasError('invalidNumber') && itemForm.get('ifsc')?.touched) {
+                <mat-error >
+                  {{itemForm.get('ifsc')?.errors.invalidNumber}}
+                </mat-error>
+              }
+          </mat-form-field>
+  
+          </form>
+      }
+    </mat-dialog-content>
+    
+    <mat-dialog-actions class="end">
+      <button mat-raised-button mat-dialog-close>Cancel</button>
+      <button mat-raised-button color="primary" (click)="onSave()">Save</button>
+    </mat-dialog-actions>
+    }
+
+    @else if (data.component == "UPI") {
+
+      <h2 mat-dialog-title> {{data.title}}</h2>
+    <mat-dialog-content>
+      @if (itemForm) {
+        <form [formGroup]="itemForm" class="form-container">
+
+          <mat-form-field>
+            <mat-label> Enter UPI ID</mat-label>
+            <input matInput formControlName="upiid" >
+            @if (itemForm.get('upiid')?.hasError('required') && itemForm.get('upiid')?.touched) {
+              <mat-error >
+                {{itemForm.get('upiid')?.errors.required }}
+              </mat-error>
+            }
+            @if (itemForm.get('upiid')?.hasError('minlength') && itemForm.get('upiid')?.touched) {
+              <mat-error >
+                Minimum 6 characters needed.
+              </mat-error>
+            }
+            @if (itemForm.get('upiid')?.hasError('maxlength') && itemForm.get('upiid')?.touched) {
+              <mat-error >
+                Maximum 20 characters allowed.
+              </mat-error>
+            }
+            @if (itemForm.get('upiid')?.hasError('invalidName') && itemForm.get('upiid')?.touched) {
+              <mat-error >
+                {{itemForm.get('upiid')?.errors.invalidNumber}}
+              </mat-error>
+            }
+            </mat-form-field>
+  
+          </form>
+      }
+    </mat-dialog-content>
+    
+    <mat-dialog-actions class="end">
+      <button mat-raised-button mat-dialog-close>Cancel</button>
+      <button mat-raised-button color="primary" (click)="onSave()">Save</button>
+    </mat-dialog-actions>
+
+    }
+    
+  

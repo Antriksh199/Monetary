@@ -1,0 +1,199 @@
+@if(currentUser)
+{
+<div class="container">
+    <div class="info-grid">
+      <mat-card class="example-card hover-card" appearance="outlined">
+          <mat-card-header class="card-header-underline">
+            <mat-card-title>Your Latest Income Entry</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @if(latestIncome)
+            {
+            <div class="grid-content">
+            <div class="grid-item">
+              <div><strong>Source</strong></div>
+              <div>{{latestIncome.source?.name}}</div>
+            </div>
+            <div class="grid-item">
+              <div><strong>Frequency</strong></div>
+              <div>{{latestIncome.frequency?.name}}</div>
+            </div>
+             <div class="grid-item">
+              <div><strong>Received From</strong></div>
+              <div>{{latestIncome.receivedFrom}}</div>
+             </div> 
+            </div>
+            <div class="grid-content">
+             <div class="grid-item">
+              <div><strong>Received ?</strong></div>
+              <div>{{latestIncome.received ? "Yes": "Pending"}}</div>
+             </div>
+            <div class="grid-item">
+              <div><strong>Received On</strong></div>
+              <div>{{latestIncome.receivedOn | date:'dd-MMM-yy'}}</div>
+            </div>
+             <div class="grid-item">
+              <div><strong>Value</strong></div>
+              <div>{{latestIncome.value | currency:'INR':'symbol':'1.2-2':'en-IN'}}</div>
+             </div> 
+             </div>
+             <div class="grid-content">
+             <div class="grid-item">
+              <div><strong>Received Via</strong></div>
+              <div>{{latestIncome.receivedIn?.paymentMethod?.name ? latestIncome.receivedIn?.paymentMethod?.name : 'NA'}}</div>
+             </div>
+            <div class="grid-item">
+              <div><strong>Added On</strong></div>
+              <div>{{latestIncome.createdDate | date:'dd-MMM-yy hh:mm a':'Asia/Kolkata' }}</div>
+            </div>
+            </div>
+          }
+          @else 
+          {
+            <h3>Tou have not added any Incomes. </h3>
+          }
+          </mat-card-content>
+          <!-- <mat-card-actions> 
+            <div class="button-group">
+              <button mat-flat-button class="button-style" matTooltip="Add New Income" matTooltipShowDelay="500" matTooltipHideDelay="100">Add</button>
+              <button mat-flat-button matTooltip="Edit this Income" matTooltipShowDelay="500" matTooltipHideDelay="100">Edit</button>
+              <button mat-flat-button matTooltip="Delete this Income" matTooltipShowDelay="500" matTooltipHideDelay="100">Delete</button>
+            </div>
+          </mat-card-actions> -->
+      </mat-card>
+  
+        <mat-card class="example-card hover-card" appearance="outlined">
+          <mat-card-header class="card-header-underline">
+            <mat-card-title>Your Latest Expenditure Entry</mat-card-title>
+          </mat-card-header>
+          <mat-card-content >
+            @if(latestExpense)
+            {
+              <div class="grid-content">
+                <div class="grid-item">
+                  <div><strong>Category</strong></div>
+                  <div>{{latestExpense.expenseCategory?.name}}</div>
+                </div>
+                <div class="grid-item">
+                  <div><strong>Type</strong></div>
+                  <div>{{latestExpense.expenseType?.name}}</div>
+                </div>
+                <div class="grid-item">
+                  <div><strong>Frequency</strong></div>
+                  <div>{{latestExpense.frequency?.name}}</div>
+                </div>
+                </div>
+                <div class="grid-content">
+                 <div class="grid-item">
+                  <div><strong>Paid To</strong></div>
+                  <div>{{latestExpense.paidTo}}</div>
+                 </div> 
+                 <div class="grid-item">
+                  <div><strong>Paid ?</strong></div>
+                  <div>{{latestExpense.paid ? "Yes": "Pending"}}</div>
+                 </div>
+                <div class="grid-item">
+                  <div><strong>Paid On</strong></div>
+                  <div>{{latestExpense.paidOn | date:'dd-MMM-yy' }}</div>
+                </div> 
+                 </div>
+                 <div class="grid-content">
+                 <div class="grid-item">
+                  <div><strong>Value</strong></div>
+                  <div>{{latestExpense.value | currency:'INR':'symbol':'1.2-2':'en-IN'}}</div>
+                 </div>
+                 <div class="grid-item">
+                  <div><strong>Paid Via</strong></div>
+                  <div>{{latestExpense.paidVia?.paymentMethod?.name ? latestExpense.paidVia?.paymentMethod?.name : 'NA'}}</div>
+                 </div>
+                <div class="grid-item">
+                  <div><strong>Added On</strong></div>
+                  <div>{{latestExpense.createdDate | date:'dd-MMM-yy hh:mm a': 'Asia/Kolkata' }}</div>
+                </div>
+                </div>
+            }
+            @else {
+              <h3>You have not added any Expense.</h3>
+            }
+          </mat-card-content>
+          <!-- <mat-card-actions> 
+            <div class="button-group">
+              <button mat-flat-button matTooltip="Add New Income" matTooltipShowDelay="500" matTooltipHideDelay="100">Add</button>
+              <button mat-flat-button matTooltip="Edit this Income" matTooltipShowDelay="500" matTooltipHideDelay="100">Edit</button>
+              <button mat-flat-button matTooltip="Delete this Income" matTooltipShowDelay="500" matTooltipHideDelay="100">Delete</button>
+            </div>
+          </mat-card-actions> -->
+        </mat-card>
+  
+  </div>
+  
+  <div class="investment-card">
+  <mat-card class="example-card hover-card" appearance="outlined">
+      <mat-card-header class="card-header-underline">
+        <mat-card-title>Your Latest Investment Entry</mat-card-title>
+      </mat-card-header>
+      <mat-card-content >
+        @if(latestInvestment)
+        {
+          <div class="grid-content">
+            <div class="grid-item">
+              <div><strong>Category</strong></div>
+              <div>{{latestInvestment.investmentCategory?.name}}</div>
+            </div>
+            <div class="grid-item">
+              <div><strong>Type</strong></div>
+              <div>{{latestInvestment.investmentType?.name}}</div>
+            </div>
+            <div class="grid-item">
+              <div><strong>Frequency</strong></div>
+              <div>{{latestInvestment.frequency?.name}}</div>
+            </div>
+            </div>
+            <div class="grid-content">
+             <div class="grid-item">
+              <div><strong>Invested To</strong></div>
+              <div>{{latestInvestment.investedTo}}</div>
+             </div> 
+             <div class="grid-item">
+              <div><strong>Invested ?</strong></div>
+              <div>{{latestInvestment.invested ? "Yes": "Pending"}}</div>
+             </div>
+            <div class="grid-item">
+              <div><strong>Invested On</strong></div>
+              <div>{{latestInvestment.investedOn | date:'dd-MMM-yy hh:mm a': 'Asia/Kolkata' }}</div>
+            </div> 
+             </div>
+             <div class="grid-content">
+             <div class="grid-item">
+              <div><strong>Value</strong></div>
+              <div>{{latestInvestment.value | currency:'INR':'symbol':'1.2-2':'en-IN'}}</div>
+             </div>
+             <div class="grid-item">
+              <div><strong>Invested Via</strong></div>
+              <div>{{latestInvestment.investedVia?.paymentMethod?.name ? latestInvestment.investedVia?.paymentMethod?.name : 'NA'}}</div>
+             </div>
+            <div class="grid-item">
+              <div><strong>Added On</strong></div>
+              <div>{{latestInvestment.createdDate | date:'dd-MMM-yy' }}</div>
+            </div>
+            </div>
+        }
+        @else {
+          <h3> You have not added any Investment.</h3>
+        }
+      </mat-card-content>
+      <!-- <mat-card-actions> 
+        <div class="button-group">
+          <button mat-flat-button matTooltip="Add New Income" matTooltipShowDelay="500" matTooltipHideDelay="100">Add</button>
+          <button mat-flat-button matTooltip="Edit this Income" matTooltipShowDelay="500" matTooltipHideDelay="100">Edit</button>
+          <button mat-flat-button matTooltip="Delete this Income" matTooltipShowDelay="500" matTooltipHideDelay="100">Delete</button>
+        </div>
+      </mat-card-actions> -->
+    </mat-card>
+    </div>
+ 
+</div>
+}
+@else {
+  <h1> You are not authorized to view this page.</h1>
+}

@@ -1,0 +1,186 @@
+<div *ngIf="isLoading$ | async" class="fullscreen-spinner-overlay">
+  <mat-spinner></mat-spinner>
+</div>
+
+   @if (step() === 'signup') {
+          <div class="main-container">
+            <mat-card class="animated-card">
+              <mat-card-header class="header">
+                <div><mat-card-title>Create an Account</mat-card-title></div>
+              </mat-card-header>
+
+          <form [formGroup]="signupForm" (ngSubmit)="onSignUp()">
+            <mat-card-content>
+              <div class="form">
+                
+                @if (errorMessage()) {
+                  <div class="w-full"><mat-error>{{ errorMessage() }}</mat-error></div>
+                  <br>
+                }
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Username</mat-label>
+                <input matInput formControlName="username" 
+                matTooltip="Username is allowed to have 5 to 10 characters including letters & numbers."
+                matTooltipPosition="right"
+                matTooltipShowDelay="100"
+                matTooltipHideDelay="0"
+                #tooltipUsername="matTooltip"
+                (focus)="tooltipUsername.show()"
+                (blur)="tooltipUsername.hide()"
+                (mouseenter)="tooltipUsername.show()"
+                (mouseleave)="tooltipUsername.hide()"
+                required>
+                <mat-icon matSuffix >person</mat-icon>
+                @if (signupForm.get('username')?.hasError('required') && signupForm.get('username')?.touched) {
+                  <mat-error>Username is required.</mat-error>
+                }
+                @else if (signupForm.get('username')?.hasError('usernamelength') && signupForm.get('username')?.touched) {
+                    <mat-error>Username must contain 5 to 10 characters.</mat-error>
+                }
+                @else if (signupForm.get('username')?.hasError('invalidUsername') && signupForm.get('username')?.touched) {
+                    <mat-error>Username must contain letters & numbers only.</mat-error>
+                }
+                
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" type="email" 
+                matTooltip="A code will be sent to this email which needs to be verified to complete your signup."
+                matTooltipPosition="right"
+                matTooltipShowDelay="100"
+                matTooltipHideDelay="0"
+                #tooltipEmail="matTooltip"
+                (focus)="tooltipEmail.show()"
+                (blur)="tooltipEmail.hide()"
+                (mouseenter)="tooltipEmail.show()"
+                (mouseleave)="tooltipEmail.hide()" required>
+                <mat-icon matSuffix class="text-gray-500">email</mat-icon>
+                @if (signupForm.get('email')?.invalid && signupForm.get('email')?.touched) {
+                  <mat-error>Please enter a valid email.</mat-error>
+                }
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>First Name</mat-label>
+                <input matInput formControlName="first_name" type="text" required>
+                @if (signupForm.get('first_name')?.hasError('required') && signupForm.get('first_name')?.touched) {
+                    <mat-error>First Name is required.</mat-error>
+                  }
+                  @if (signupForm.get('first_name')?.hasError('maxlength') && signupForm.get('username')?.touched) {
+                      <mat-error>First Name cannot have more than 10 characters.</mat-error>
+                  }
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Middle Name (Optional)</mat-label>
+                <input matInput formControlName="middle_name">
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Last Name</mat-label>
+                <input matInput formControlName="last_name" required>
+                @if (signupForm.get('last_name')?.hasError('required') && signupForm.get('last_name')?.touched) {
+                    <mat-error>Last Name is required.</mat-error>
+                  }
+                @if (signupForm.get('last_name')?.hasError('maxlength') && signupForm.get('username')?.touched) {
+                      <mat-error>Last Name cannot have more than 10 characters.</mat-error>
+                }
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Password</mat-label>
+                <input matInput formControlName="password" type="password" 
+                matTooltip="Password must have 8 characters and combination of uppercase & lowercase letters, numbers & special character."
+                matTooltipPosition="right"
+                matTooltipShowDelay="100"
+                matTooltipHideDelay="0"
+                #tooltip="matTooltip"
+                (focus)="tooltip.show()"
+                (blur)="tooltip.hide()"
+                (mouseenter)="tooltip.show()"
+                (mouseleave)="tooltip.hide()"
+                required>
+                <mat-icon matSuffix >lock</mat-icon>
+                @if (signupForm.get('password')?.hasError('required') && signupForm.get('password')?.touched) {
+                    <mat-error>Passowrd is required.</mat-error>
+                }
+                @else if (signupForm.get('password')?.hasError('invalidPassword') && signupForm.get('password')?.touched) {
+                    <mat-error>Invalid Password</mat-error>
+                }
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Confirm Password</mat-label>
+                <input matInput formControlName="confirmPassword" type="password" required>
+                <mat-icon matSuffix class="text-gray-500">lock_outline</mat-icon>
+                @if (signupForm.get('confirmPassword')?.hasError('required') && signupForm.get('confirmPassword')?.touched) {
+                  <mat-error>Confirm Passowrd is required.</mat-error>
+              }
+                @if (signupForm.get('confirmPassword')?.hasError('passwordMismatch') && signupForm.get('confirmPassword')?.touched) {
+                  <mat-error>Passwords do not match.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            </mat-card-content>
+            <mat-card-actions class="actions">
+              <button mat-raised-button color="primary" type="submit" [disabled]="signupForm.invalid">
+                Sign Up
+              </button>
+            </mat-card-actions>
+          </form>
+          </mat-card>
+          </div>
+        }
+
+        <!-- Step 2: Confirmation Code -->
+   @if ( step() === 'confirm') 
+          {
+          <div class="confirm-container">
+            <mat-card class="animated-card-confim">
+              <mat-card-header class="header">
+                <div><mat-card-title>Create an Account</mat-card-title></div>
+              </mat-card-header>
+          
+          <form [formGroup]="confirmForm" (ngSubmit)="onConfirmSignUp()">
+            <mat-card-content>
+              <p>
+                A confirmation code has been sent to <strong>{{ signupForm.get('username')?.value }}</strong>. Please enter it below to complete your registration.
+              </p>
+              <div class="form">
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Confirmation Code</mat-label>
+                <input matInput formControlName="confirmationCode" required>
+                <mat-icon matSuffix>vpn_key</mat-icon>
+                @if (confirmForm.get('confirmationCode')?.invalid && confirmForm.get('confirmationCode')?.touched) {
+                  <mat-error>Code is required.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            </mat-card-content>
+            <mat-card-actions class="actions-confirm">
+              <button mat-raised-button color="primary" type="submit" [disabled]="confirmForm.invalid">
+                Confirm Account
+              </button>
+            </mat-card-actions>
+          </form>
+      </mat-card>
+    </div>
+        }
+
+        <!-- Step 3: Done -->
+        @if ( step() === 'done') {
+          <div class="confirm-container">
+            <div class="done">
+              <mat-card>
+                <mat-card-header class="done-card">
+                  <mat-icon class="green-tick">check_circle_outline</mat-icon>
+                  <h2>Account Confirmed!</h2>
+                </mat-card-header>
+                <mat-card-content>
+                  <p class="text">Your account is now active. You can proceed to sign in.</p>
+                </mat-card-content>
+                <mat-card-actions class="done-actions">
+                  <button mat-raised-button color="primary" routerLink="login">
+                    Go to Sign In
+                  </button>
+                </mat-card-actions>
+              </mat-card>  
+          </div>
+          </div>
+        }

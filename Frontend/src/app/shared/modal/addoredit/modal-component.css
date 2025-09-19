@@ -1,0 +1,60 @@
+.my-custom-dialog .mat-dialog-container {
+    background-color: #f0f0f0;
+    display: flex;
+    gap: 10px;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    color: #333;
+    overflow-y: hidden;
+  }
+
+  ::ng-deep .mat-dialog-content {
+    max-height: 80vh;
+  }
+
+  .form-container{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .group-fields{
+    display: flex;
+    gap: 5px;
+    padding: 0px;
+    margin: 0px;
+  }
+
+  .expense-flex-container {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+  }
+  
+  .expense-flex-child {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  
+  .help-text {
+    font-size: 12px;
+    color: rgba(0,0,0,0.6);
+    display: block;
+  }
+
+  .delete-content
+  {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .end
+  {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }

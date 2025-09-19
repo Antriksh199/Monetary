@@ -1,0 +1,371 @@
+@if(data.component == 'Investment') 
+{
+    <h2 mat-dialog-title>View Investment</h2>
+    <mat-dialog-content>
+        <div class="section">
+            <div class="heading">Basic Investment Details</div>
+            <div class="items">
+            <div class="item">
+                <div><strong>Category</strong></div>
+                <div>{{data.row.investmentCategory.name}}</div>
+            </div>
+            <div class="item">
+                <div><strong>Type</strong></div>
+                <div>{{data.row.investmentType.name}}</div>
+            </div>
+            <div class="item">
+                <div><strong>Frequency</strong></div>
+                <div>{{data.row.frequency.name}}</div>
+            </div>
+            <div class="item">
+                <div><strong>Invested?</strong></div>
+                <div>{{data.row.invested  && data.row.invested ? 'Yes' : 'Pending'}}</div>
+            </div>
+            </div>
+        </div>
+        <br>
+        <mat-divider></mat-divider>
+        <br>
+
+        <div class="section">
+            <div class="heading">Investment Metrics</div>
+            <div class="items">
+            <div class="item">
+                <div><strong>Invested on</strong></div>
+                <div>{{data.row.investedTo}}</div>
+            </div>
+            <div class="item">
+                <div><strong>Amount</strong></div>
+                <div>{{data.row.value | currency:'INR':'symbol':'1.2-2':'en-IN'}}</div>
+            </div>
+            
+
+            <div class="item">
+                <div><strong>Invested On</strong></div>
+                <div>{{data.row.investedOn | date:'dd-MMM-yy'}}</div>
+            </div>
+            @if(data.row.investedVia.paymentMethod.name == "Credit Card" || data.row.investedVia.paymentMethod.name == "Debit Card" )
+            {
+            <div class="item">
+                <div><strong>Invested Via</strong></div>
+                <div>{{data.row.investedVia.paymentMethod.name}}</div>
+                </div>
+                <div class="item">
+                 <div><strong>Card Details</strong></div>
+                 <div>{{currentPaymentMethod?.provider|titlecase}} - {{currentPaymentMethod?.customerName}} - {{currentPaymentMethod?.cardNumber}} </div>
+                </div>
+            }
+            @else if(data.row.investedVia.paymentMethod.name == "UPI" )
+            {
+            <div class="item">
+                <div><strong>Invested Via</strong></div>
+                <div>{{data.row.investedVia.paymentMethod.name}}</div>
+                </div>
+                <div class="item">
+                 <div><strong>UPI ID</strong></div>
+                 <div>{{currentPaymentMethod?.upiId}}</div>
+                </div>
+            }
+            @else if(data.row.investedVia.paymentMethod.name == "Bank Transfer" )
+            {
+            <div class="item">
+                <div><strong>Invested Via</strong></div>
+                <div>{{data.row.investedVia.paymentMethod.name}}</div>
+                </div>
+                <div class="item">
+                 <div><strong>Bank Details</strong></div>
+                 <div>{{currentPaymentMethod?.bankName|titlecase}} - {{currentPaymentMethod?.accountNumber}} </div>
+                </div>
+            }
+            @else {
+                <div class="item">
+                    <div><strong>Invested Via</strong></div>
+                    <div>{{data.row.investedVia.paymentMethod.name}}</div>
+                    </div>
+            }
+            <div class="item">
+                <div><strong>Description</strong></div>
+                <div>{{data.row.description}}</div>
+            </div>
+        </div>
+        </div>
+        <br>
+        <mat-divider></mat-divider>
+        <br>
+        <div class="section">
+            <div class="heading">Audit Trail</div>
+            <div class="items">
+            <div class="item">
+                <div><strong>Added On</strong></div>
+                <div>{{data.row.createdDate | date:'dd-MMM-yy hh:mm a': 'Asia/Kolkata'}}</div>
+            </div>
+            <div class="item">
+                <div><strong>Added By</strong></div>
+                <div>{{data.row.createdBy}}</div>
+            </div>
+            <div class="item">
+                <div><strong>Modified On</strong></div>
+                <div>{{data.row.modifiedDate | date:'dd-MMM-yy hh:mm a': 'Asia/Kolkata'}}</div>
+            </div>
+            <div class="item">
+                <div><strong>Modified By</strong></div>
+                <div>{{data.row.modifiedBy}}</div>
+            </div>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions class="end">
+  <button mat-raised-button mat-dialog-close>Close</button>
+    </mat-dialog-actions>
+}
+@else if(data.component == 'Expense') 
+{
+    <h2 mat-dialog-title>View Expense</h2>
+    <mat-dialog-content>
+        <div class="section">
+            <div class="heading">Basic Expense Details</div>
+            <div class="items">
+            <div class="basic">
+                <div><strong>Category</strong></div>
+                <div>{{data.row.expenseCategory.name}}</div>
+            </div>
+            <div class="basic">
+                <div><strong>Type</strong></div>
+                <div>{{data.row.expenseType.name}}</div>
+            </div>
+            <div class="basic">
+                <div><strong>Frequency</strong></div>
+                <div>{{data.row.frequency.name}}</div>
+            </div>
+            <div class="basic">
+                <div><strong>Paid?</strong></div>
+                <div>{{data.row.paid  && data.row.paid ? 'Yes' : 'Pending'}}</div>
+            </div>
+            </div>
+        </div>
+        <br>
+        <mat-divider></mat-divider>
+        <br>
+
+        <div class="section">
+            <div class="heading">Expense Metrics</div>
+            <div class="items">
+            <div class="item">
+                <div><strong>Paid To</strong></div>
+                <div>{{data.row.paidTo}}</div>
+            </div>
+            <div class="item">
+                <div><strong>Amount</strong></div>
+                <div>{{data.row.value | currency:'INR':'symbol':'1.2-2':'en-IN'}}</div>
+            </div>
+            
+
+            <div class="item">
+                <div><strong>Paid On</strong></div>
+                <div>{{data.row.paidOn | date:'dd-MMM-yy'}}</div>
+            </div>
+            @if(data.row.paidVia.paymentMethod.name == "Credit Card" || data.row.paidVia.paymentMethod.name == "Debit Card" )
+            {
+            <div class="item">
+                <div><strong>Paid Via</strong></div>
+                <div>{{data.row.paidVia.paymentMethod.name}}</div>
+                </div>
+                <div class="item">
+                 <div><strong>Card Details</strong></div>
+                 <div>{{currentPaymentMethod?.provider|titlecase}} - {{currentPaymentMethod?.customerName}} - {{currentPaymentMethod?.cardNumber}} </div>
+                </div>
+            }
+            @else if(data.row.paidVia.paymentMethod.name == "UPI" )
+            {
+            <div class="item">
+                <div><strong>Paid Via</strong></div>
+                <div>{{data.row.paidVia.paymentMethod.name}}</div>
+                </div>
+                <div class="item">
+                 <div><strong>UPI ID</strong></div>
+                 <div>{{currentPaymentMethod?.upiId}}</div>
+                </div>
+            }
+            @else if(data.row.paidVia.paymentMethod.name == "Bank Transfer" )
+            {
+            <div class="item">
+                <div><strong>Paid Via</strong></div>
+                <div>{{data.row.paidVia.paymentMethod.name}}</div>
+                </div>
+                <div class="item">
+                 <div><strong>Bank Details</strong></div>
+                 <div>{{currentPaymentMethod?.bankName|titlecase}} - {{currentPaymentMethod?.accountNumber}} </div>
+                </div>
+            }
+            @else {
+                <div class="item">
+                    <div><strong>Paid Via</strong></div>
+                    <div>{{data.row.paidVia.paymentMethod.name}}</div>
+                    </div>
+            }
+            <div class="item">
+                <div><strong>Description</strong></div>
+                <div>{{data.row.description}}</div>
+            </div>
+        </div>
+        </div>
+        <br>
+        <mat-divider></mat-divider>
+        <br>
+        <div class="section">
+            <div class="heading">Audit Trail</div>
+            <div class="items">
+            <div class="item">
+                <div><strong>Added On</strong></div>
+                <div>{{data.row.createdDate | date:'dd-MMM-yy hh:mm a': 'Asia/Kolkata'}}</div>
+            </div>
+            <div class="item">
+                <div><strong>Added By</strong></div>
+                <div>{{data.row.createdBy}}</div>
+            </div>
+            <div class="item">
+                <div><strong>Modified On</strong></div>
+                <div>{{data.row.modifiedDate | date:'dd-MMM-yy hh:mm a': 'Asia/Kolkata'}}</div>
+            </div>
+            <div class="item">
+                <div><strong>Modified By</strong></div>
+                <div>{{data.row.modifiedBy}}</div>
+            </div>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions class="end">
+  <button mat-raised-button mat-dialog-close>Close</button>
+    </mat-dialog-actions>
+}
+@else if(data.component == 'Income') 
+{
+    <h2 mat-dialog-title>View Income</h2>
+    <mat-dialog-content>
+        <div class="section">
+            <div class="heading">Basic Income Details</div>
+            <div class="items">
+            <div class="item">
+                <div><strong>Source</strong></div>
+                <div>{{data.row.source.name}}</div>
+            </div>
+            <div class="item">
+                <div><strong>Frequency</strong></div>
+                <div>{{data.row.frequency.name}}</div>
+            </div>
+            <div class="item">
+                <div><strong>Received?</strong></div>
+                <div>{{data.row.received  && data.row.received ? 'Yes' : 'Pending'}}</div>
+            </div>
+            </div>
+        </div>
+        <br>
+        <mat-divider></mat-divider>
+        <br>
+
+        <div class="section">
+            <div class="heading">Income Metrics</div>
+            <div class="items">
+            <div class="item">
+                <div><strong>Received From</strong></div>
+                <div>{{data.row.receivedFrom}}</div>
+            </div>
+            <div class="item">
+                <div><strong>Amount</strong></div>
+                <div>{{data.row.value | currency:'INR':'symbol':'1.2-2':'en-IN'}}</div>
+            </div>
+            
+
+            <div class="item">
+                <div><strong>Received On</strong></div>
+                <div>{{data.row.receivedOn | date:'dd-MMM-yy'}}</div>
+            </div>
+            @if(data.row.receivedIn.paymentMethod.name == "Credit Card" || data.row.receivedIn.paymentMethod.name == "Debit Card" )
+            {
+            <div class="item">
+                <div><strong>Received In</strong></div>
+                <div>{{data.row.receivedIn.paymentMethod.name}}</div>
+                </div>
+                <div class="item">
+                 <div><strong>Card Details</strong></div>
+                 <div>{{currentPaymentMethod?.provider|titlecase}} - {{currentPaymentMethod?.customerName}} - {{currentPaymentMethod?.cardNumber}} </div>
+                </div>
+            }
+            @else if(data.row.receivedIn.paymentMethod.name == "UPI" )
+            {
+            <div class="item">
+                <div><strong>Received In</strong></div>
+                <div>{{data.row.receivedIn.paymentMethod.name}}</div>
+                </div>
+                <div class="item">
+                 <div><strong>UPI ID</strong></div>
+                 @if(currentPaymentMethod?.upiId)
+                 {
+                 <div>{{currentPaymentMethod?.upiId}}</div>
+                 }
+                </div>
+            }
+            @else if(data.row.receivedIn.paymentMethod.name == "Bank Transfer" )
+            {
+            <div class="item">
+                <div><strong>Received In</strong></div>
+                <div>{{data.row.receivedIn.paymentMethod.name}}</div>
+                </div>
+                <div class="item">
+                 <div><strong>Bank Details</strong></div>
+                 <div>{{currentPaymentMethod?.bankName|titlecase}} - {{currentPaymentMethod?.accountNumber}} </div>
+                </div>
+            }
+            @else {
+                <div class="item">
+                    <div><strong>Received In</strong></div>
+                    <div>{{data.row.receivedIn.paymentMethod.name}}</div>
+                    </div>
+            }
+            <div class="item">
+                <div><strong>Description</strong></div>
+                <div>{{data.row.description}}</div>
+            </div>
+        </div>
+        </div>
+        <br>
+        <mat-divider></mat-divider>
+        <br>
+        <div class="section">
+            <div class="heading">Audit Trail</div>
+            <div class="items">
+            <div class="item">
+                <div><strong>Added On</strong></div>
+                <div>{{date | date:'dd-MMM-yy hh:mm a': 'Asia/Kolkata'}}</div>
+            </div>
+            <div class="item">
+                <div><strong>Added By</strong></div>
+                <div>{{data.row.createdBy}}</div>
+            </div>
+            <div class="item">
+                <div><strong>Modified On</strong></div>
+                <div>{{data.row.modifiedDate| date:'dd-MMM-yy hh:mm a': 'Asia/Kolkata'}}</div>
+            </div>
+            <div class="item">
+                <div><strong>Modified By</strong></div>
+                <div>{{data.row.modifiedBy}}</div>
+            </div>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions class="end">
+  <button mat-raised-button mat-dialog-close>Close</button>
+    </mat-dialog-actions>
+}
+
+
+
+
+   
+   
+
+
+
+
+   
+   

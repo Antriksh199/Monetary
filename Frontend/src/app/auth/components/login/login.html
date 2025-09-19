@@ -1,0 +1,61 @@
+<div *ngIf="isLoading$ | async" class="fullscreen-spinner-overlay">
+  <mat-spinner></mat-spinner>
+</div>
+
+
+<div class="login-container">
+    <mat-card class="login-card">
+      <mat-card-header class="header">
+        <mat-card-title>Login to Monetary !</mat-card-title> 
+      </mat-card-header>
+      
+      
+        @if(loginForm){
+        <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <mat-card-content>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Username</mat-label>
+            <input matInput type="text" formControlName="username" required>
+            @if(loginForm.get('username')?.hasError('required'))
+            {
+            <mat-error>
+              Username is required.
+            </mat-error>
+          }
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Password</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" required>
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" type="button">
+              <mat-icon matSuffix>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            @if(loginForm.get('password')?.hasError('required'))
+            {
+            <mat-error>
+              Password is required.
+            </mat-error>
+          }
+          </mat-form-field>
+  
+          <div class="forgot-password">
+            <a routerLink="/forgot-password" (click)="onForgotPassword($event)">Forgot Password?</a>
+          </div>
+          @if(loginError)
+          {
+          <div class="login-error">
+            <mat-error>{{ loginError }}</mat-error>
+          </div>
+        }
+          
+      </mat-card-content>
+      <mat-card-actions class="login-actions">
+        <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Login</button>
+          <div class="create-account">
+            <p>Don't have an account? <a href="/signup" (click)="onCreateAccount($event)">Create Account</a></p>
+          </div>
+      </mat-card-actions>
+        </form>
+      }
+    </mat-card>
+  </div>

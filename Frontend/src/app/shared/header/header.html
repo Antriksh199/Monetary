@@ -1,0 +1,61 @@
+
+@if(user)
+{
+  <mat-toolbar color="primary" class="toolbar">
+    <button matIconButton class="example-icon" aria-label="Example icon-button with menu icon" (click)="toggleSideNav()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span> {{'Monetary' | titlecase }}</span>
+    <span class="example-spacer"></span>
+    <div class="items-group">
+      <div class="flex-it">
+      <div class="home-icon">
+        <a style="text-decoration: none; color: white;" routerLink=""><mat-icon class="icon" aria-hidden="false" 
+          aria-label="Example home icon" fontIcon="home"></mat-icon></a>
+      </div>
+      <div class="menu-bar">
+      <button mat-stroked-button class="example-icon-menu" [matMenuTriggerFor]="menu">
+        <span>ADD ITEM</span>
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" class="example-icon">
+        <button mat-menu-item class="example-icon-item"  (click)="openIncomeModalSignal()">Add Income</button>
+        <button mat-menu-item class="example-icon-item" (click)="openExpenseModalSignal()">Add Expense</button>
+        <button mat-menu-item class="example-icon-item" (click)="openInvestmentModalSignal()">Add Investment</button>
+      </mat-menu>
+      </div>
+      <div class="menu-bar">
+      <button mat-stroked-button class="example-icon-menu" [matMenuTriggerFor]="profile">
+        <span>{{user.userName | uppercase}}</span>
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </button>
+      <mat-menu #profile="matMenu" class="example-icon">
+        <button mat-menu-item class="example-icon-item" (click)="logout()">Logout</button>
+      </mat-menu>
+      </div>
+    </div>
+    </div>
+  </mat-toolbar>
+}
+    <mat-sidenav-container color="primary" class="sidenav-container">
+      <mat-sidenav class="sidenav" mode="over" [opened]="sideNav"> 
+            <div class="sidenav-menu">
+              <div class="item"><a class="router-link" routerLink="income" (click)="toggleSideNav()"><b>Income</b></a></div>
+              <div class="item"><a class="router-link" routerLink="expense" (click)="toggleSideNav()"><b>Expenditure</b></a></div>
+              <div class="item"><a class="router-link" routerLink="investment"  (click)="toggleSideNav()"><b>Investment</b></a></div>
+            </div>
+      </mat-sidenav>
+    
+    <mat-sidenav-content class="sidenav-content">
+        <div><router-outlet /></div>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+<!--
+  <button matIconButton class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon>favorite</mat-icon>
+    </button>
+    <button matIconButton class="example-icon" aria-label="Example icon-button with share icon">
+      <mat-icon>share</mat-icon>
+    </button>
+-->
+    

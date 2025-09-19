@@ -1,0 +1,44 @@
+.section
+{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    gap: 10px;
+}
+
+.items
+{
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    flex-wrap: wrap;
+}
+
+.item
+{
+    width: 31%;
+    margin-top: 15px;
+    white-space: normal;
+}
+
+.basic
+{
+    width: 22%;
+    margin-top: 15px;
+    white-space: normal;
+}
+
+.heading
+{
+    font-weight: bolder;
+    text-decoration:underline;
+}
+
+.end
+{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 15px;
+}
