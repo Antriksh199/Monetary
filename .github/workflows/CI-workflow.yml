@@ -19,44 +19,44 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      # - name: Checkout repository
-      #   uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      # - name: Start Frontend Build
-      #   run: echo "Starting Frontend Build."
+      - name: Start Frontend Build
+        run: echo "Starting Frontend Build."
 
-      # - name: Setup Node.js
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: 20
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-      # - name: Install dependencies
-      #   run: |
-      #     cd Frontend
-      #     npm ci
+      - name: Install dependencies
+        run: |
+          cd Frontend
+          npm ci
 
-      # - name: Inject Secrets
-      #   run: |
-      #     cd Frontend
-      #     sed -i "s|COGNITO_DOMAIN|${{secrets.COGNITO_DOMAIN}}|g" src/environments/environment.ts
-      #     sed -i "s|COGNITO_USER_POOL_ID|${{secrets.COGNITO_USER_POOL_ID}}|g" src/environments/environment.ts
-      #     sed -i "s|COGNITO_CLIENT_ID|${{secrets.COGNITO_CLIENT_ID}}|g" src/environments/environment.ts
-      #     sed -i "s|COGNITO_AUTHORITY|${{secrets.COGNITO_AUTHORITY}}|g" src/environments/environment.ts
-      #     sed -i "s|COGNITO_REDIRECT_URL|${{secrets.COGNITO_REDIRECT_URL}}|g" src/environments/environment.ts
-      #     sed -i "s|COGNITO_LOGOUT_URL|${{secrets.COGNITO_LOGOUT_URL}}|g" src/environments/environment.ts
-      #     sed -i "s|COGNITO_SCOPE|${{secrets.COGNITO_SCOPE}}|g" src/environments/environment.ts
-      #     sed -i "s|COGNITO_RESPONSE_TYPE|${{secrets.COGNITO_RESPONSE_TYPE}}|g" src/environments/environment.ts
+      - name: Inject Secrets
+        run: |
+          cd Frontend
+          sed -i "s|COGNITO_DOMAIN|${{secrets.COGNITO_DOMAIN}}|g" src/environments/environment.ts
+          sed -i "s|COGNITO_USER_POOL_ID|${{secrets.COGNITO_USER_POOL_ID}}|g" src/environments/environment.ts
+          sed -i "s|COGNITO_CLIENT_ID|${{secrets.COGNITO_CLIENT_ID}}|g" src/environments/environment.ts
+          sed -i "s|COGNITO_AUTHORITY|${{secrets.COGNITO_AUTHORITY}}|g" src/environments/environment.ts
+          sed -i "s|COGNITO_REDIRECT_URL|${{secrets.COGNITO_REDIRECT_URL}}|g" src/environments/environment.ts
+          sed -i "s|COGNITO_LOGOUT_URL|${{secrets.COGNITO_LOGOUT_URL}}|g" src/environments/environment.ts
+          sed -i "s|COGNITO_SCOPE|${{secrets.COGNITO_SCOPE}}|g" src/environments/environment.ts
+          sed -i "s|COGNITO_RESPONSE_TYPE|${{secrets.COGNITO_RESPONSE_TYPE}}|g" src/environments/environment.ts
 
-      # - name: Build FrontEnd
-      #   run: |
-      #     cd Frontend
-      #     npm run build -- --configuration production
+      - name: Build FrontEnd
+        run: |
+          cd Frontend
+          npm run build -- --configuration production
 
-      # - name: Upload build artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: frontend-build
-      #     path: Frontend/dist/Monetary/browser
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: Frontend/dist/Monetary/browser
 
       - name: Start Backend Build for Admin
         run: echo "Starting AdminController Build"
@@ -75,13 +75,10 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build Admin Docker image
+      - name: Build & Push Admin Docker image
         run: |
           IMAGE_URI=${{ secrets.ADMIN_ECR }}:${GITHUB_SHA::7}
           docker build -t $IMAGE_URI ./AdminController
-          docker push $IMAGE_URI
-      - name: Push Docker image to ECR
-        run: |
           docker push $IMAGE_URI
 
   deploy:
