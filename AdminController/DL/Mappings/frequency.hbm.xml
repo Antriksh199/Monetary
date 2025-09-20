@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="AdminController"
+                   namespace="AdminController.DL.Entities">
+
+	<class name="Frequency" table="Admin_Frequencies">
+
+		<!-- Inherited from BaseModel -->
+		<id name="Id" column="Id">
+			<generator class="sequence" >
+				<param name="sequence">AdminFrequencies_Id_Seq</param>
+			</generator>
+		</id>
+
+		<property name="Name" column="name" type="String"/>
+		<property name="CreatedDate" column="created_date" type="DateTime"/>
+		<property name="ModifiedDate" column="modified_date" type="DateTime" />
+		<property name="CreatedBy" column="created_by" type="String" />
+		<property name="ModifiedBy" column="modified_by" type="String" />
+
+		<!-- Own property -->
+		<property name="Value" column="Value" />
+
+	</class>
+</hibernate-mapping>

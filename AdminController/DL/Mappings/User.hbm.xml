@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="AdminController"
+                   namespace="AdminController.DL.Entities">
+
+	<class name="User" table="Admin_Users" lazy ="true" >
+		<id name="Id" column="Id">
+			<generator class="sequence" >
+				<param name="sequence">AdminUserss_Id_Seq</param>
+			</generator>
+		</id>
+
+		<property name="CreatedDate" column="created_date" type="DateTime" not-null="false" />
+		<property name="ModifiedDate" column="modified_date" type="DateTime" not-null="false"/>
+
+		<property name="CreatedBy"
+					 column="created_by"
+					 not-null="false"
+				  type="String"/>
+
+		<property name="ModifiedBy"
+					 column="modified_by"
+					 not-null="false"
+				 type="String"/>
+
+		<property name="UserName" column="username" type="String" unique="true" />
+		<property name="FirstName" column="first_name" type="String" not-null="false" />
+		<property name="LastName" column="last_name" type="String" not-null="false"/>
+		<property name="MiddleName" column="middle_name" type="String" not-null="false"/>
+		<property name="Email" column="email" type="String" not-null="false"/>
+		<property name="Active" column="active" type="Boolean" not-null="false"/>
+	</class>
+</hibernate-mapping>
