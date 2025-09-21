@@ -27,4 +27,9 @@ RUN dotnet publish "./AdminController.csproj" -c $BUILD_CONFIGURATION -o /app/pu
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+
+# Copy NHibernate config
+COPY AdminController/DL/hibernate.cfg.xml ./DL/hibernate.cfg.xml
+
 ENTRYPOINT ["dotnet", "AdminController.dll"]
