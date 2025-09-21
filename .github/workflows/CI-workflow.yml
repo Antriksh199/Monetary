@@ -19,44 +19,44 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      # - name: Checkout repository
+      #   uses: actions/checkout@v4
 
-      - name: Start Frontend Build
-        run: echo "Starting Frontend Build."
+      # - name: Start Frontend Build
+      #   run: echo "Starting Frontend Build."
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 20
 
-      - name: Install dependencies
-        run: |
-          cd Frontend
-          npm ci
+      # - name: Install dependencies
+      #   run: |
+      #     cd Frontend
+      #     npm ci
 
-      - name: Inject Secrets
-        run: |
-          cd Frontend
-          sed -i "s|COGNITO_DOMAIN|$(echo "${{ secrets.COGNITO_DOMAIN }}" | tr -d '\n')|g" src/environments/environment.ts
-          sed -i "s|COGNITO_USER_POOL_ID|$(echo "${{ secrets.COGNITO_USER_POOL_ID }}" | tr -d '\n')|g" src/environments/environment.ts
-          sed -i "s|COGNITO_CLIENT_ID|$(echo "${{ secrets.COGNITO_CLIENT_ID }}" | tr -d '\n')|g" src/environments/environment.ts
-          sed -i "s|COGNITO_AUTHORITY|$(echo "${{ secrets.COGNITO_AUTHORITY }}" | tr -d '\n')|g" src/environments/environment.ts
-          sed -i "s|COGNITO_REDIRECT_URL|$(echo "${{ secrets.COGNITO_REDIRECT_URL }}" | tr -d '\n')|g" src/environments/environment.ts
-          sed -i "s|COGNITO_LOGOUT_URL|$(echo "${{ secrets.COGNITO_LOGOUT_URL }}" | tr -d '\n')|g" src/environments/environment.ts
-          sed -i "s|COGNITO_SCOPE|$(echo "${{ secrets.COGNITO_SCOPE }}" | tr -d '\n')|g" src/environments/environment.ts
-          sed -i "s|COGNITO_RESPONSE_TYPE|$(echo "${{ secrets.COGNITO_RESPONSE_TYPE }}" | tr -d '\n')|g" src/environments/environment.ts
+      # - name: Inject Secrets
+      #   run: |
+      #     cd Frontend
+      #     sed -i "s|COGNITO_DOMAIN|$(echo "${{ secrets.COGNITO_DOMAIN }}" | tr -d '\n')|g" src/environments/environment.ts
+      #     sed -i "s|COGNITO_USER_POOL_ID|$(echo "${{ secrets.COGNITO_USER_POOL_ID }}" | tr -d '\n')|g" src/environments/environment.ts
+      #     sed -i "s|COGNITO_CLIENT_ID|$(echo "${{ secrets.COGNITO_CLIENT_ID }}" | tr -d '\n')|g" src/environments/environment.ts
+      #     sed -i "s|COGNITO_AUTHORITY|$(echo "${{ secrets.COGNITO_AUTHORITY }}" | tr -d '\n')|g" src/environments/environment.ts
+      #     sed -i "s|COGNITO_REDIRECT_URL|$(echo "${{ secrets.COGNITO_REDIRECT_URL }}" | tr -d '\n')|g" src/environments/environment.ts
+      #     sed -i "s|COGNITO_LOGOUT_URL|$(echo "${{ secrets.COGNITO_LOGOUT_URL }}" | tr -d '\n')|g" src/environments/environment.ts
+      #     sed -i "s|COGNITO_SCOPE|$(echo "${{ secrets.COGNITO_SCOPE }}" | tr -d '\n')|g" src/environments/environment.ts
+      #     sed -i "s|COGNITO_RESPONSE_TYPE|$(echo "${{ secrets.COGNITO_RESPONSE_TYPE }}" | tr -d '\n')|g" src/environments/environment.ts
 
-      - name: Build FrontEnd
-        run: |
-          cd Frontend
-          npm run build -- --configuration production
+      # - name: Build FrontEnd
+      #   run: |
+      #     cd Frontend
+      #     npm run build -- --configuration production
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: frontend-build
-          path: Frontend/dist/Monetary/browser
+      # - name: Upload build artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: frontend-build
+      #     path: Frontend/dist/Monetary/browser
 
       - name: Start Backend Build for Admin
         run: echo "Starting AdminController Build"

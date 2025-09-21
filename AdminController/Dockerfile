@@ -30,6 +30,6 @@ COPY --from=publish /app/publish .
 
 
 # Copy NHibernate config
-COPY AdminController/DL/hibernate.cfg.xml ./DL/hibernate.cfg.xml
+COPY DL/hibernate.cfg.xml ./DL/hibernate.cfg.xml
 
 ENTRYPOINT ["dotnet", "AdminController.dll"]
