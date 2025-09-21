@@ -2,13 +2,6 @@
 <hibernate-configuration xmlns="urn:nhibernate-configuration-2.2">
 	<session-factory>
 		<property name="connection.driver_class">NHibernate.Driver.SqlClientDriver</property>
-		<property name="connection.connection_string">
-			Host=monetarydatabase.c8xa8miksi5i.us-east-1.rds.amazonaws.com;
-			Port = 1433;
-			Database=Monetary;Trusted_Connection=True;
-			Username: MONTX1;
-			Password = Satyam123_;
-		</property>
 		<property name="dialect">NHibernate.Dialect.MsSql2012Dialect</property>
 		<property name="show_sql">true</property>
 	</session-factory>

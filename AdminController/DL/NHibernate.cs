@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using static System.Environment;
 using System.Reflection;
 
 using AdminController.DL.Implementation;
@@ -22,8 +23,7 @@ namespace AdminController.DL
         {
             if (sessionFactory != null) return;
 
-            var connectionString = config.GetConnectionString("DefaultConnection");
-
+            var connectionString = System.Environment.GetEnvironmentVariable(config.GetConnectionString("DefaultConnection"));
             var configure = new NHibernate.Cfg.Configuration();
             configure.Configure(Path.Combine(Directory.GetCurrentDirectory(), "DL", "hibernate.cfg.xml"));
 

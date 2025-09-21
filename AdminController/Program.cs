@@ -37,13 +37,13 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
 {
-    options.Authority = builder.Configuration["Authentication:Cognito:Authority"];
+    options.Authority = Environment.GetEnvironmentVariable(builder.Configuration["Authentication:Cognito:Authority"]);
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
         ValidateAudience = true,
-        ValidAudience = builder.Configuration["Authentication:Cognito:Audience"],
-        ValidIssuer = builder.Configuration["Authentication:Cognito:Authority"]
+        ValidAudience = Environment.GetEnvironmentVariable(builder.Configuration["Authentication:Cognito:Audience"]),
+        ValidIssuer = Environment.GetEnvironmentVariable(builder.Configuration["Authentication:Cognito:Authority"])
     };
 });
 
