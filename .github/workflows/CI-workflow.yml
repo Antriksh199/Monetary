@@ -135,7 +135,7 @@ jobs:
         run: |
           IMAGE_URI_ADMIN=${{ needs.build-and-push.outputs.IMAGE_URI_ADMIN }}
           TASK_DEF_ADMIN_JSON=$(aws ecs describe-task-definition --task-definition ${{ env.TASK_FAMILY_ADMIN }} --query "taskDefinition")
-          CLEAN_TASK_DEF_ADMIN=$(echo $TASK_DEF_ADMIN_JSON | jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)')
+          CLEAN_TASK_DEF_ADMIN=$(echo $TASK_DEF_ADMIN_JSON | jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy, .enableFaultInjection, .containerDefinitions[].portMappings[].name, .containerDefinitions[].portMappings[].appProtocol, .containerDefinitions[].ulimits, .containerDefinitions[].environmentFiles, .containerDefinitions[].mountPoints, .containerDefinitions[].volumesFrom, .containerDefinitions[].systemControls)')
           echo "TASK_DEF_ADMIN_JSON:"
           echo "$TASK_DEF_ADMIN_JSON"
           echo "CLEAN_TASK_DEF:"
@@ -145,7 +145,7 @@ jobs:
 
           IMAGE_URI_FEATURES=${{ needs.build-and-push.outputs.IMAGE_URI_FEATURES }}
           TASK_DEF_FEATURES_JSON=$(aws ecs describe-task-definition --task-definition ${{ env.TASK_FAMILY_FEATURES }} --query "taskDefinition")
-          CLEAN_TASK_DEF_FEATURES_JSON=$(echo $TASK_DEF_FEATURES_JSON | jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)')
+          CLEAN_TASK_DEF_FEATURES_JSON=$(echo $TASK_DEF_FEATURES_JSON | jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy, .enableFaultInjection, .containerDefinitions[].portMappings[].name, .containerDefinitions[].portMappings[].appProtocol, .containerDefinitions[].ulimits, .containerDefinitions[].environmentFiles, .containerDefinitions[].mountPoints, .containerDefinitions[].volumesFrom, .containerDefinitions[].systemControls)')
           echo "TASK_DEF_FEATURES_JSON:"
           echo "$TASK_DEF_FEATURES_JSON"
           echo "CLEAN_TASK_DEF:"

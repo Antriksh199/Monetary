@@ -13,22 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 NHibernateHelper.Initialize(builder.Configuration);
 
-
-
-// Add services to the container.
-
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy("AllowFrontend",
-//            builder =>
-//            {
-//                builder.WithOrigins("http://localhost:4200")
-//                       .AllowAnyHeader()
-//                       .AllowAnyMethod();
-//            });
-   
-//});
-
 builder.Services.AddControllers();
 
 builder.Services.AddAuthentication(options =>
