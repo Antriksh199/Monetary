@@ -1,5 +1,6 @@
 using Features.BL.Contracts;
 using Features.BL.Implementation;
+using Features.DL;
 using Features.DL.Contracts;
 using Features.DL.Implementation;
 
@@ -8,7 +9,9 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+NHibernateHelper.Initialize(builder.Configuration);
+
+builder.Services.AddControllers();
 
 builder.Services.AddAuthentication(options =>
 {
