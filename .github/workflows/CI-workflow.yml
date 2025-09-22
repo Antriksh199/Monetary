@@ -81,7 +81,7 @@ jobs:
           docker build -t $IMAGE_URI_ADMIN ./Features
           docker push $IMAGE_URI_ADMIN
           IMAGE_URI_FEATURES=${{ secrets.FEATURES_ECR }}:${GITHUB_SHA::7}
-          docker build -t $IMAGE_URI_ADMIN ./Features
+          docker build -t $IMAGE_URI_FEATURES ./Features
           docker push $IMAGE_URI_FEATURES
 
   # deploy:
