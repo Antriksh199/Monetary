@@ -61,7 +61,11 @@ export class AuthService {
                     this.dbUser = res;
                     this.userSubject.next(this.dbUser);
                   },
-                  error: (e) => this.toastr.error("Something went wrong !"),
+                  error: (e) => 
+                  {
+                    this.toastr.error("Something went wrong !");
+                    this._isLoading.next(false); 
+                },
                   complete: () => { this._isLoading.next(false) }
                 }
               );

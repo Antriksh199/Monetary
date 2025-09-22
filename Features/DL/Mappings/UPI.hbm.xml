@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="Features"
+                   namespace="Features.DL.Entities">
+
+	<class name="UPI" table="Admin_User_UPI">
+
+		<!-- Primary Key (assuming auto-generated) -->
+		<id name="Id" column="Id">
+			<generator class="sequence" >
+				<param name="sequence">AdminUserUpis_Id_Seq</param>
+			</generator>
+		</id>
+
+		<!-- Reference to UserPaymentMethod -->
+		<many-to-one name="UPaymentMethod"
+					 column="U_PAYMENT_METHOD_ID"
+					 class="UserPaymentMethod"
+					 lazy ="proxy"
+					 fetch="join"
+					 cascade="all" />
+
+		<property name="UpiId" column="Upi_Id" type="String" not-null="true"/>
+
+		<property name="CreatedDate" column="created_date" type="DateTime"/>
+		<property name="ModifiedDate" column="modified_date" type="DateTime" />
+		<property name="CreatedBy" column="created_by" type="String" />
+		<property name="ModifiedBy" column="modified_by" type="String" />
+
+	</class>
+</hibernate-mapping>

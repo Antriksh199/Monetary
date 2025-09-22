@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="Features"
+                   namespace="Features.DL.Entities">
+
+	<class name="Investment" table="Investment">
+
+		<id name="Id" column="Id">
+			<generator class="sequence" >
+				<param name="sequence">Investment_Id_Seq</param>
+			</generator>
+		</id>
+
+		<many-to-one name="Frequency" class="Frequency" column="FREQUENCY_ID"
+					 lazy ="proxy"
+					 fetch="join"/>
+		<many-to-one name="User" class="User" column="USER_ID"
+					 lazy ="proxy"
+					 fetch="join"/>
+		<many-to-one name="InvestedVia"
+					 column="U_PAYMENT_METHOD_ID"
+					 class="UserPaymentMethod"
+					 lazy ="proxy"
+					 fetch="join"/>
+		<many-to-one name="InvestmentCategory"
+					 column="Category_ID"
+					 class="InvestmentCategory"
+					 lazy ="proxy"
+					 fetch="join"/>
+		<many-to-one name="InvestmentType"
+					 column="Type_ID"
+					 class="InvestmentType"
+					 lazy ="proxy"
+					 fetch="join"/>
+
+		<property name="Value" column="AMOUNT" type="Decimal"/>
+		<property name="GrowthRate" column="Rate" type="Decimal"/>
+		<property name="Tenure" column="Tenure" type="Decimal" />
+		<property name="InvestedTo" column="Invested_In" type="String"/>
+		<property name="InvestedOn" column="Invested_Date" type="DateTime"/>
+		<property name="Invested" column="Invested" type="Boolean"/>
+		<property name="Description" column="Description" type="String"/>
+		<property name="CreatedDate" column="created_date" type="DateTime"/>
+		<property name="ModifiedDate" column="modified_date" type="DateTime" />
+		<property name="CreatedBy" column="created_by" type="String" />
+		<property name="ModifiedBy" column="modified_by" type="String" />
+
+
+	</class>
+</hibernate-mapping>
