@@ -15,6 +15,9 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     environment: Production
+    outputs:
+      IMAGE_URI_ADMIN: ${{ steps.build-images.outputs.IMAGE_URI_ADMIN }}
+      IMAGE_URI_FEATURES: ${{ steps.build-images.outputs.IMAGE_URI_FEATURES }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
