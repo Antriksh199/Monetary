@@ -79,6 +79,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build & Push Admin & Features Docker image
+        id: build-images
         run: |
           IMAGE_URI_ADMIN=${{ secrets.ADMIN_ECR }}:${GITHUB_SHA::7}
           docker build -t $IMAGE_URI_ADMIN ./Features
