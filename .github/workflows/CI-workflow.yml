@@ -138,13 +138,17 @@ jobs:
       - name: Update Task Definitions for Admin & Features
         run: |
           IMAGE_URI_ADMIN=${{ needs.build.outputs.IMAGE_URI_ADMIN }}
+          echo "IMAGE_URI_ADMIN = "
+          echo $IMAGE_URI_ADMIN
+          echo "Output = "
+          echo ${{ needs.build.outputs.IMAGE_URI_ADMIN }}
           TASK_DEF_ADMIN_JSON=$(aws ecs describe-task-definition --task-definition ${{ env.TASK_FAMILY_ADMIN }} --query "taskDefinition")
           CLEAN_TASK_DEF_ADMIN_JSON=$(echo $TASK_DEF_ADMIN_JSON | jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy, .enableFaultInjection, .containerDefinitions[].portMappings[].name, .containerDefinitions[].portMappings[].appProtocol, .containerDefinitions[].ulimits, .containerDefinitions[].environmentFiles, .containerDefinitions[].mountPoints, .containerDefinitions[].volumesFrom, .containerDefinitions[].systemControls)')
           echo "TASK_DEF_ADMIN_JSON:"
           echo "$TASK_DEF_ADMIN_JSON"
           echo "CLEAN_TASK_DEF:"
           echo "$CLEAN_TASK_DEF_ADMIN_JSON"
-          echo $CLEAN_TASK_DEF_ADMIN_JSON | jq --arg IMAGE "$IMAGE_URI_ADMIN" '.containerDefinitions[0].image=$IMAGE' > new-task-def-admin.json
+          echo $CLEAN_TASK_DEF_ADMIN_JSON | jq --arg IMAGE "${{ needs.build.outputs.IMAGE_URI_ADMIN }}" '.containerDefinitions[0].image=$IMAGE' > new-task-def-admin.json
           aws ecs register-task-definition --cli-input-json file://new-task-def-admin.json
 
           IMAGE_URI_FEATURES=${{ needs.build.outputs.IMAGE_URI_FEATURES }}
@@ -154,7 +158,7 @@ jobs:
           echo "$TASK_DEF_FEATURES_JSON"
           echo "CLEAN_TASK_DEF:"
           echo "$CLEAN_TASK_DEF_FEATURES_JSON"
-          echo $CLEAN_TASK_DEF_FEATURES_JSON | jq --arg IMAGE "$IMAGE_URI_FEATURES" '.containerDefinitions[0].image=$IMAGE' > new-task-def-features.json
+          echo $CLEAN_TASK_DEF_FEATURES_JSON | jq --arg IMAGE "${{ needs.build.outputs.IMAGE_URI_FEATURES }}" '.containerDefinitions[0].image=$IMAGE' > new-task-def-features.json
           aws ecs register-task-definition --cli-input-json file://new-task-def-features.json
 
       - name: Update Cluster Services for Admin & Features
