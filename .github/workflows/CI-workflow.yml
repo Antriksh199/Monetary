@@ -85,7 +85,6 @@ jobs:
   #         docker push $IMAGE_URI_FEATURES
 
   deploy:
-    #needs: build
     environment: Production
     runs-on: ubuntu-latest
     env:
@@ -147,28 +146,32 @@ jobs:
 
       - name: Update Cluster Services for Admin & Features
         run: |
-          ADMIN_ARN=$(aws ecs list-task-definitions --family-prefix Admin --sort DESC --max-items 1 --query "taskDefinitionArns[0]" --output text)
-          if [[ -z "$ADMIN_ARN" || "$ADMIN_ARN" == "None" ]]; then
-              echo "No task definition found for family Admin"; exit 1
-          fi
-          ADMIN_VERSION=$(echo "$ADMIN_ARN" | awk -F: '{print $NF}')
-          echo "Latest Admin Version = $ADMIN_VERSION"
-
+          ADMIN_VERSION=$(aws ecs list-task-definitions \
+            --family-prefix "${{ env.TASK_FAMILY_ADMIN }}" \
+            --sort DESC \
+            --max-items 1 \
+            --query "taskDefinitionArns[0]" \
+            --output text | tr -d '\n')
 
           echo "Latest Admin Version = $ADMIN_VERSION"
 
           aws ecs update-service \
-          --cluster ${{ env.ECS_CLUSTER }} \
-          --service ${{ env.ECS_SERVICE_ADMIN }} \
-          --task-definition "${{ env.TASK_FAMILY_ADMIN }}:$ADMIN_VERSION" \
-          --force-new-deployment
+            --cluster "${{ env.ECS_CLUSTER }}" \
+            --service "${{ env.ECS_SERVICE_ADMIN }}" \
+            --task-definition "$ADMIN_VERSION" \
+            --force-new-deployment
 
-          FEATURES_VERSION=$(aws ecs list-task-definitions --family-prefix ${{ env.TASK_FAMILY_FEATURES }} --sort DESC --max-items 1 --query "taskDefinitionArns[0]" --output text | awk -F: '{print $NF}'  | tr -d '\n')
+          FEATURES_VERSION=$(aws ecs list-task-definitions \
+            --family-prefix "${{ env.TASK_FAMILY_FEATURES }}" \
+            --sort DESC \
+            --max-items 1 \
+            --query "taskDefinitionArns[0]" \
+            --output text | tr -d '\n')
 
           echo "Latest Feature Version = $FEATURES_VERSION"
 
           aws ecs update-service \
-          --cluster ${{ env.ECS_CLUSTER }} \
-          --service ${{ env.ECS_SERVICE_FEATURES }} \
-          --task-definition "${{ env.TASK_FAMILY_FEATURES }}:$FEATURES_VERSION" \
-          --force-new-deployment
+            --cluster "${{ env.ECS_CLUSTER }}" \
+            --service "${{ env.ECS_SERVICE_FEATURES }}" \
+            --task-definition "$FEATURES_VERSION" \
+            --force-new-deployment
