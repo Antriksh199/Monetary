@@ -78,7 +78,7 @@ jobs:
       - name: Build & Push Admin & Features Docker image
         run: |
           IMAGE_URI_ADMIN=${{ secrets.ADMIN_ECR }}:${GITHUB_SHA::7}
-          docker build -t $IMAGE_URI_ADMIN ./Features
+          docker build -t $IMAGE_URI_ADMIN ./AdminController
           docker push $IMAGE_URI_ADMIN
           IMAGE_URI_FEATURES=${{ secrets.FEATURES_ECR }}:${GITHUB_SHA::7}
           docker build -t $IMAGE_URI_FEATURES ./Features
