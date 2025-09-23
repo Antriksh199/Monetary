@@ -147,7 +147,13 @@ jobs:
 
       - name: Update Cluster Services for Admin & Features
         run: |
-          ADMIN_VERSION=$(aws ecs list-task-definitions --family-prefix ${{ env.TASK_FAMILY_ADMIN }} --sort DESC --max-items 1 --query "taskDefinitionArns[0]" --output text | awk -F: '{print $NF}' | tr -d '\n')
+          ADMIN_ARN=$(aws ecs list-task-definitions --family-prefix Admin --sort DESC --max-items 1 --query "taskDefinitionArns[0]" --output text)
+          if [[ -z "$ADMIN_ARN" || "$ADMIN_ARN" == "None" ]]; then
+              echo "No task definition found for family Admin"; exit 1
+          fi
+          ADMIN_VERSION=$(echo "$ADMIN_ARN" | awk -F: '{print $NF}')
+          echo "Latest Admin Version = $ADMIN_VERSION"
+
 
           echo "Latest Admin Version = $ADMIN_VERSION"
 
