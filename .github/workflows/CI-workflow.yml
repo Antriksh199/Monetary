@@ -147,18 +147,18 @@ jobs:
 
       - name: Update Cluster Services for Admin & Features
         run: |
-          ADMIN_VERSION=$(aws ecs list-task-definitions --family-prefix ${{ env.TASK_FAMILY_ADMIN }} --sort DESC --max-items 1 --query "taskDefinitionArns[0]" --output text | awk -F: '{print $NF}' )
-          echo "Latest Admin Version = ${ADMIN_VERSION}"
+          ADMIN_VERSION=$(aws ecs list-task-definitions --family-prefix ${{ env.TASK_FAMILY_ADMIN }} --sort DESC --max-items 1 --query "taskDefinitionArns[0]" --output text)
+          echo "Latest Admin Version = $ADMIN_VERSION"
           aws ecs update-service \
           --cluster ${{ env.ECS_CLUSTER }} \
           --service ${{ env.ECS_SERVICE_ADMIN }} \
-          --task-definition ${{ env.TASK_FAMILY_ADMIN }}:${ADMIN_VERSION} \
+          --task-definition $ADMIN_VERSION \
           --force-new-deployment
 
-          FEATURES_VERSION=$(aws ecs list-task-definitions --family-prefix ${{ env.TASK_FAMILY_FEATURES }} --sort DESC --max-items 1 --query "taskDefinitionArns[0]" --output text | awk -F: '{print $NF}' )
-          echo "Latest Feature Version = ${FEATURES_VERSION}"
+          FEATURES_VERSION=$(aws ecs list-task-definitions --family-prefix ${{ env.TASK_FAMILY_FEATURES }} --sort DESC --max-items 1 --query "taskDefinitionArns[0]" --output text)
+          echo "Latest Feature Version = $FEATURES_VERSION"
           aws ecs update-service \
           --cluster ${{ env.ECS_CLUSTER }} \
           --service ${{ env.ECS_SERVICE_FEATURES }} \
-          --task-definition ${{ env.TASK_FAMILY_ADMIN }}:${FEATURES_VERSION} \
+          --task-definition $FEATURES_VERSION \
           --force-new-deployment
