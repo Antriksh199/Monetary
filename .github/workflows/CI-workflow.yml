@@ -146,42 +146,35 @@ jobs:
 
       - name: Update Cluster Services for Admin & Features
         run: |
-          ADMIN_VERSION=$(aws ecs list-task-definitions \
+          # Latest Admin revision
+          ADMIN_REVISION=$(aws ecs list-task-definitions \
             --family-prefix Admin \
             --sort DESC \
             --max-items 1 \
             --query "taskDefinitionArns[0]" \
-            --output text | tr -d '\n')
+            --output text | awk -F: '{print $NF}' | tr -d '\n')
 
-          if [ -z "$ADMIN_VERSION" ]; then
-            echo "Error: No active task definition found for family 'Admin'. Please check the family name and ensure a task definition exists."
-            exit 1
-          fi
-
-          echo "Latest Admin Version = $ADMIN_VERSION"
+          echo "Latest Admin Revision = $ADMIN_REVISION"
 
           aws ecs update-service \
             --cluster monetary \
             --service Admin \
-            --task-definition "$ADMIN_VERSION" \
+            --task-definition "Admin:$ADMIN_REVISION" \
             --force-new-deployment
 
-          FEATURES_VERSION=$(aws ecs list-task-definitions \
+
+          # Latest Features revision
+          FEATURES_REVISION=$(aws ecs list-task-definitions \
             --family-prefix Features \
             --sort DESC \
             --max-items 1 \
             --query "taskDefinitionArns[0]" \
-            --output text | tr -d '\n')
+            --output text | awk -F: '{print $NF}' | tr -d '\n')
 
-          if [ -z "$FEATURES_VERSION" ]; then
-            echo "Error: No active task definition found for family 'Features'. Please check the family name and ensure a task definition exists."
-            exit 1
-          fi
-
-          echo "Latest Feature Version = $FEATURES_VERSION"
+          echo "Latest Features Revision = $FEATURES_REVISION"
 
           aws ecs update-service \
             --cluster monetary \
             --service Features \
-            --task-definition "$FEATURES_VERSION" \
+            --task-definition "Features:$FEATURES_REVISION" \
             --force-new-deployment
