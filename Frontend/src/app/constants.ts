@@ -1,7 +1,7 @@
 export const ApiEndpoints = {
 
     admin: {
-        host:  "http://localhost:5176/api/admin/",
+        host:  "https://05le12tlh0.execute-api.us-east-1.amazonaws.com/v1/api/admin/",
         user: 
         {
           route: "User/",
@@ -33,7 +33,7 @@ export const ApiEndpoints = {
     },
 
     income: {
-      host:  "http://localhost:5048/api/income/",
+      host:  "https://05le12tlh0.execute-api.us-east-1.amazonaws.com/v1/api/features/income/",
       endpoints: {
         userIncomes: "userincomes/",
         latest:'latest/',
@@ -41,7 +41,7 @@ export const ApiEndpoints = {
     },
 
     expense: {
-      host: "http://localhost:5048/api/expense/",
+      host: "https://05le12tlh0.execute-api.us-east-1.amazonaws.com/v1/api/features/expense/",
       endpoints:
       {
         userExpenses: "userexpenses/",
@@ -50,7 +50,7 @@ export const ApiEndpoints = {
     },
 
     investments: {
-      host: "http://localhost:5048/api/investment/",
+      host: "https://05le12tlh0.execute-api.us-east-1.amazonaws.com/v1/api/features/investment/",
       endpoints:
       {
         userInvestment: "userinvestments/",

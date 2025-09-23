@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Features.Controllers
 {
     [Authorize]
-    [Area("investment")]
-    [Route("api/[controller]")]
+    [Area("features")]
+    [Route("api/[Area]/[controller]")]
     [ApiController]
     public class InvestmentController : Controller
     {

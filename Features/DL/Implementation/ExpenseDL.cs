@@ -28,7 +28,7 @@ namespace Features.DL.Implementation
                           join fetch i.User
                           join fetch i.Frequency
                           join fetch i.ExpenseCategory
-                          join fetch i.ExpenseItem
+                          join fetch i.ExpenseType
                           join fetch i.PaidVia iU 
                           join fetch iU.User join fetch iU.PaymentMethod";
             using (NHibernate.ISession session = NHibernateHelper.OpenSession())
