@@ -153,6 +153,8 @@ jobs:
             --query "taskDefinitionArns[0]" \
             --output text | awk -F: '{print $NF}' | tr -d '\n')"
 
+            ADMIN_REVISION = ${ADMIN_REVISION%None}
+
           aws ecs update-service \
             --cluster monetary \
             --service Admin \
@@ -161,14 +163,14 @@ jobs:
 
 
           # Latest Features revision
-          FEATURES_REVISION=$(aws ecs list-task-definitions \
+          echo "FEATURES_REVISION=$(aws ecs list-task-definitions \
             --family-prefix Features \
             --sort DESC \
             --max-items 1 \
             --query "taskDefinitionArns[0]" \
             --output text | awk -F: '{print $NF}' | tr -d '\n')
 
-          echo "Latest Features Revision = $FEATURES_REVISION"
+          FEATURES_REVISION = ${FEATURES_REVISION%None}
 
           aws ecs update-service \
             --cluster monetary \
