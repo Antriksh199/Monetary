@@ -13,6 +13,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 NHibernateHelper.Initialize(builder.Configuration);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowCloudFront", policy =>
+    {
+        policy.WithOrigins("https://d3qwr51i4yo0oq.cloudfront.net")
+              .AllowAnyMethod()
+              .WithHeaders("authorization", "content-type");
+    });
+});
+
 builder.Services.AddControllers();
 
 builder.Services.AddAuthentication(options =>
@@ -56,7 +66,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-//app.UseCors("AllowFrontend");
+app.UseCors("AllowCloudFront");
 
 //app.UseHttpsRedirection();
 
