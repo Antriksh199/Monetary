@@ -149,7 +149,7 @@ jobs:
           ADMIN_VERSION=$(aws ecs list-task-definitions \
             --family-prefix Admin \
             --sort DESC \
-            --max-items 1 \
+            --head -n 1 \
             --query "taskDefinitionArns[0]" \
             --output text | tr -d '\n')
 
@@ -164,7 +164,7 @@ jobs:
           FEATURES_VERSION=$(aws ecs list-task-definitions \
             --family-prefix Features \
             --sort DESC \
-            --max-items 1 \
+            --head -n 1 \
             --query "taskDefinitionArns[0]" \
             --output text | tr -d '\n')
 
