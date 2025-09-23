@@ -19,47 +19,47 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      # - name: Checkout repository
+      #   uses: actions/checkout@v4
 
-      - name: Start Frontend Build
-        run: echo "Starting Frontend Build."
+      # - name: Start Frontend Build
+      #   run: echo "Starting Frontend Build."
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 20
 
-      - name: Install dependencies
-        run: |
-          cd Frontend
-          npm ci
+      # - name: Install dependencies
+      #   run: |
+      #     cd Frontend
+      #     npm ci
 
-      - name: Inject Secrets
-        run: |
-          cd Frontend
-          sed -i "s|COGNITO_DOMAIN|$(echo "${{ secrets.COGNITO_DOMAIN }}" | tr -d '\n')|g" src/environments/environment.ts
-          sed -i "s|COGNITO_USER_POOL_ID|$(echo "${{ secrets.COGNITO_USER_POOL_ID }}" | tr -d '\n')|g" src/environments/environment.ts
-          sed -i "s|COGNITO_CLIENT_ID|$(echo "${{ secrets.COGNITO_CLIENT_ID }}" | tr -d '\n')|g" src/environments/environment.ts
-          sed -i "s|COGNITO_AUTHORITY|$(echo "${{ secrets.COGNITO_AUTHORITY }}" | tr -d '\n')|g" src/environments/environment.ts
-          sed -i "s|COGNITO_REDIRECT_URL|$(echo "${{ secrets.COGNITO_REDIRECT_URL }}" | tr -d '\n')|g" src/environments/environment.ts
-          sed -i "s|COGNITO_LOGOUT_URL|$(echo "${{ secrets.COGNITO_LOGOUT_URL }}" | tr -d '\n')|g" src/environments/environment.ts
-          sed -i "s|COGNITO_SCOPE|$(echo "${{ secrets.COGNITO_SCOPE }}" | tr -d '\n')|g" src/environments/environment.ts
-          sed -i "s|COGNITO_RESPONSE_TYPE|$(echo "${{ secrets.COGNITO_RESPONSE_TYPE }}" | tr -d '\n')|g" src/environments/environment.ts
+      # - name: Inject Secrets
+      #   run: |
+      #     cd Frontend
+      #     sed -i "s|COGNITO_DOMAIN|$(echo "${{ secrets.COGNITO_DOMAIN }}" | tr -d '\n')|g" src/environments/environment.ts
+      #     sed -i "s|COGNITO_USER_POOL_ID|$(echo "${{ secrets.COGNITO_USER_POOL_ID }}" | tr -d '\n')|g" src/environments/environment.ts
+      #     sed -i "s|COGNITO_CLIENT_ID|$(echo "${{ secrets.COGNITO_CLIENT_ID }}" | tr -d '\n')|g" src/environments/environment.ts
+      #     sed -i "s|COGNITO_AUTHORITY|$(echo "${{ secrets.COGNITO_AUTHORITY }}" | tr -d '\n')|g" src/environments/environment.ts
+      #     sed -i "s|COGNITO_REDIRECT_URL|$(echo "${{ secrets.COGNITO_REDIRECT_URL }}" | tr -d '\n')|g" src/environments/environment.ts
+      #     sed -i "s|COGNITO_LOGOUT_URL|$(echo "${{ secrets.COGNITO_LOGOUT_URL }}" | tr -d '\n')|g" src/environments/environment.ts
+      #     sed -i "s|COGNITO_SCOPE|$(echo "${{ secrets.COGNITO_SCOPE }}" | tr -d '\n')|g" src/environments/environment.ts
+      #     sed -i "s|COGNITO_RESPONSE_TYPE|$(echo "${{ secrets.COGNITO_RESPONSE_TYPE }}" | tr -d '\n')|g" src/environments/environment.ts
 
-      - name: Build FrontEnd
-        run: |
-          cd Frontend
-          npm run build -- --configuration production
+      # - name: Build FrontEnd
+      #   run: |
+      #     cd Frontend
+      #     npm run build -- --configuration production
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: frontend-build
-          path: Frontend/dist/Monetary/browser
+      # - name: Upload build artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: frontend-build
+      #     path: Frontend/dist/Monetary/browser
 
-      - name: Start Backend Build for Admin
-        run: echo "Starting AdminController Build"
+      - name: Start Backend Build for Backend
+        run: echo "Starting Backend Build"
 
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -96,31 +96,31 @@ jobs:
       TASK_FAMILY_ADMIN: Admin
       TASK_FAMILY_FEATURES: Features
     steps:
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: frontend-build
-          path: Frontend/dist/Monetary/browser
+      # - name: Download build artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: frontend-build
+      #     path: Frontend/dist/Monetary/browser
 
-      - name: Sync files to S3
-        uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --delete
-        env:
-          AWS_S3_BUCKET: ${{ secrets.S3_BUCKET }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: "us-east-1"
-          SOURCE_DIR: Frontend/dist/Monetary/browser
+      # - name: Sync files to S3
+      #   uses: jakejarvis/s3-sync-action@master
+      #   with:
+      #     args: --delete
+      #   env:
+      #     AWS_S3_BUCKET: ${{ secrets.S3_BUCKET }}
+      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     AWS_REGION: "us-east-1"
+      #     SOURCE_DIR: Frontend/dist/Monetary/browser
 
-      - name: Invalidate CloudFront Cache
-        uses: chetan/invalidate-cloudfront-action@v2
-        env:
-          DISTRIBUTION: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
-          PATHS: "/*"
-          AWS_REGION: "us-east-1"
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID  }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      # - name: Invalidate CloudFront Cache
+      #   uses: chetan/invalidate-cloudfront-action@v2
+      #   env:
+      #     DISTRIBUTION: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+      #     PATHS: "/*"
+      #     AWS_REGION: "us-east-1"
+      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID  }}
+      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -138,6 +138,7 @@ jobs:
           echo $CLEAN_TASK_DEF_ADMIN_JSON | jq --arg IMAGE "$IMAGE_URI_ADMIN" '.containerDefinitions[0].image=$IMAGE' > new-task-def-admin.json
           aws ecs register-task-definition --cli-input-json file://new-task-def-admin.json
 
+
           IMAGE_URI_FEATURES=${{ secrets.FEATURES_ECR }}:${GITHUB_SHA::7}
           TASK_DEF_FEATURES_JSON=$(aws ecs describe-task-definition --task-definition ${{ env.TASK_FAMILY_FEATURES }} --query "taskDefinition")
           CLEAN_TASK_DEF_FEATURES_JSON=$(echo $TASK_DEF_FEATURES_JSON | jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy, .enableFaultInjection, .containerDefinitions[].portMappings[].name, .containerDefinitions[].portMappings[].appProtocol, .containerDefinitions[].ulimits, .containerDefinitions[].environmentFiles, .containerDefinitions[].mountPoints, .containerDefinitions[].volumesFrom, .containerDefinitions[].systemControls)')
@@ -146,12 +147,16 @@ jobs:
 
       - name: Update Cluster Services for Admin & Features
         run: |
+          ADMIN_LATEST_DEFINITION=$(aws ecs list-task-definitions --family-prefix ${{ env.TASK_FAMILY_ADMIN }} --sort DESC --max-items 1 --query "taskDefinitionArns[0]" --output text )
           aws ecs update-service \
           --cluster ${{ env.ECS_CLUSTER }} \
           --service ${{ env.ECS_SERVICE_ADMIN }} \
+          --task-definition $ADMIN_LATEST_DEFINITION
           --force-new-deployment
 
+          FEATURES_LATEST_DEFINITION=$(aws ecs list-task-definitions --family-prefix ${{ env.TASK_FAMILY_FEATURES }} --sort DESC --max-items 1 --query "taskDefinitionArns[0]" --output text )
           aws ecs update-service \
           --cluster ${{ env.ECS_CLUSTER }} \
           --service ${{ env.ECS_SERVICE_FEATURES }} \
+          --task-definition $FEATURES_LATEST_DEFINITION
           --force-new-deployment

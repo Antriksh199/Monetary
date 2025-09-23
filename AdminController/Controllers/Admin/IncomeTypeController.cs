@@ -8,6 +8,7 @@ namespace AdminController.Controllers.Admin
     [Authorize]
     [Area("admin")]
     [Route("api/[Area]/[controller]")]
+    [ApiController]
     public class IncomeTypeController : Controller
     {
         //private static readonly ILog //_logger = LogManager.GetLogger(typeof(IncomeTypeController));

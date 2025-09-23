@@ -6,9 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AdminController.Controllers.Admin
 {
-    //[Authorize]
+    [Authorize]
     [Area("admin")]
     [Route("api/[Area]/[controller]")]
+    [ApiController]
     public class UserController : Controller
     {
         private readonly IUserBL UserBL;
