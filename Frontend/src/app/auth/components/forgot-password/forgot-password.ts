@@ -24,7 +24,7 @@ import { IncomeRoutingModule } from "../../../income/income-routing/income-routi
 })
 export class ForgotPassword {
 
-  step: 'start' | 'confirm' | 'done' = 'confirm';
+  step: 'start' | 'confirm' | 'done' = 'start';
   isLoading = false;
   errorMessage = signal<string | null>(null);
   usernameForm: FormGroup;

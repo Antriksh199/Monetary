@@ -55,6 +55,7 @@ export class AuthService {
           case 'DONE':
             if(tokens.tokens?.idToken)
             {
+              this.ss.setItem("idToken",tokens.tokens?.idToken.toString());
               await this.getUserfromDataBase(tokens.tokens.idToken.toString()).subscribe(
                 {
                   next: (res: User) => {
@@ -218,7 +219,7 @@ getUserfromDataBase(id_token: string): Observable<User> {
   {
     try
     {
-      const session = localStorage.getItem('CognitoIdentityServiceProvider.qqq6spl82al6gincljuevem4p.satyam.idToken');
+      const session = localStorage.getItem('idToken');
       if(session)
       {
         return session.toString();

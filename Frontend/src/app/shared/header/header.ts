@@ -4,7 +4,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatSidenavModule} from '@angular/material/sidenav';
 import { RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import {MatMenuModule, MatMenu } from '@angular/material/menu';
 import { Modalservice } from '../../services/modal/modalservice.js';
@@ -38,7 +38,7 @@ export class Header implements OnInit {
 
     constructor(private modalService: Modalservice, private ss:SessionService, 
       private is: IncomeService, private es: ExpenseService, private investmentService: InvestmentService, private au: AuthService
-      , private toastr: ToastrService, private router: Router){
+      , private toastr: ToastrService, private router: Router, private location: Location){
         this.user = this.au.getCurrentUser();
         this._isLoading$ = this.au.isLoading$;
     }
@@ -81,6 +81,9 @@ export class Header implements OnInit {
               if(res)
               {
                 this.toastr.success('Income saved successfully !');
+                if(this.location.path() == '/income')
+                window.location.reload();
+                else
                 this.router.navigate(['income']);
               }
             },
@@ -122,6 +125,9 @@ export class Header implements OnInit {
             next: (res: Expense)=> 
             {
               this.toastr.success('Expense Saved Successfully !');
+              if(this.location.path() == '/expense')
+              window.location.reload();
+              else
               this.router.navigate(['expense']);
             },
             error: (error)=> {
@@ -169,6 +175,9 @@ export class Header implements OnInit {
               if(res)
               {
               this.toastr.success('Investment added successfully');
+              if(this.location.path() == '/investment')
+              window.location.reload();
+              else
               this.router.navigate(['investment']);
               }
             },
