@@ -149,9 +149,14 @@ jobs:
           ADMIN_VERSION=$(aws ecs list-task-definitions \
             --family-prefix Admin \
             --sort DESC \
-            --head -n 1 \
+            --max-items 1 \
             --query "taskDefinitionArns[0]" \
-            --output text | head -n 1 | tr -d '\n')
+            --output text | tr -d '\n')
+
+          if [ -z "$ADMIN_VERSION" ]; then
+            echo "Error: No active task definition found for family 'Admin'. Please check the family name and ensure a task definition exists."
+            exit 1
+          fi
 
           echo "Latest Admin Version = $ADMIN_VERSION"
 
@@ -164,8 +169,14 @@ jobs:
           FEATURES_VERSION=$(aws ecs list-task-definitions \
             --family-prefix Features \
             --sort DESC \
+            --max-items 1 \
             --query "taskDefinitionArns[0]" \
-            --output text | head -n 1 | tr -d '\n')
+            --output text | tr -d '\n')
+
+          if [ -z "$FEATURES_VERSION" ]; then
+            echo "Error: No active task definition found for family 'Features'. Please check the family name and ensure a task definition exists."
+            exit 1
+          fi
 
           echo "Latest Feature Version = $FEATURES_VERSION"
 
