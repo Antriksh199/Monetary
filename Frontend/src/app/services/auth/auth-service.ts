@@ -87,6 +87,7 @@ export class AuthService {
       }
       catch(error)
       {
+        this._isLoading.next(true); 
         throw error;
       } 
       finally {
