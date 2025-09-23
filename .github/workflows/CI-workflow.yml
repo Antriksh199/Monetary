@@ -153,7 +153,7 @@ jobs:
             --query "taskDefinitionArns[0]" \
             --output text | awk -F: '{print $NF}' | tr -d '\n')"
 
-            ADMIN_REVISION = "${ADMIN_REVISION%None}"
+            ADMIN_REVISION="${ADMIN_REVISION%None}"
 
           aws ecs update-service \
             --cluster monetary \
@@ -170,7 +170,7 @@ jobs:
             --query "taskDefinitionArns[0]" \
             --output text | awk -F: '{print $NF}' | tr -d '\n')
 
-          FEATURES_REVISION = "${FEATURES_REVISION%None}"
+          FEATURES_REVISION="${FEATURES_REVISION%None}"
 
           aws ecs update-service \
             --cluster monetary \
