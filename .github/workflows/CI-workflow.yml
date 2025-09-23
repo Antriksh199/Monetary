@@ -11,81 +11,81 @@ on:
   # Allows you to run this workflow manually from the Actions tab
 jobs:
   # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-    environment: Production
+  # build:
+  #   # The type of runner that the job will run on
+  #   runs-on: ubuntu-latest
+  #   environment: Production
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      # - name: Checkout repository
-      #   uses: actions/checkout@v4
+  #   # Steps represent a sequence of tasks that will be executed as part of the job
+  #   steps:
+  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+  #     # - name: Checkout repository
+  #     #   uses: actions/checkout@v4
 
-      # - name: Start Frontend Build
-      #   run: echo "Starting Frontend Build."
+  #     # - name: Start Frontend Build
+  #     #   run: echo "Starting Frontend Build."
 
-      # - name: Setup Node.js
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: 20
+  #     # - name: Setup Node.js
+  #     #   uses: actions/setup-node@v4
+  #     #   with:
+  #     #     node-version: 20
 
-      # - name: Install dependencies
-      #   run: |
-      #     cd Frontend
-      #     npm ci
+  #     # - name: Install dependencies
+  #     #   run: |
+  #     #     cd Frontend
+  #     #     npm ci
 
-      # - name: Inject Secrets
-      #   run: |
-      #     cd Frontend
-      #     sed -i "s|COGNITO_DOMAIN|$(echo "${{ secrets.COGNITO_DOMAIN }}" | tr -d '\n')|g" src/environments/environment.ts
-      #     sed -i "s|COGNITO_USER_POOL_ID|$(echo "${{ secrets.COGNITO_USER_POOL_ID }}" | tr -d '\n')|g" src/environments/environment.ts
-      #     sed -i "s|COGNITO_CLIENT_ID|$(echo "${{ secrets.COGNITO_CLIENT_ID }}" | tr -d '\n')|g" src/environments/environment.ts
-      #     sed -i "s|COGNITO_AUTHORITY|$(echo "${{ secrets.COGNITO_AUTHORITY }}" | tr -d '\n')|g" src/environments/environment.ts
-      #     sed -i "s|COGNITO_REDIRECT_URL|$(echo "${{ secrets.COGNITO_REDIRECT_URL }}" | tr -d '\n')|g" src/environments/environment.ts
-      #     sed -i "s|COGNITO_LOGOUT_URL|$(echo "${{ secrets.COGNITO_LOGOUT_URL }}" | tr -d '\n')|g" src/environments/environment.ts
-      #     sed -i "s|COGNITO_SCOPE|$(echo "${{ secrets.COGNITO_SCOPE }}" | tr -d '\n')|g" src/environments/environment.ts
-      #     sed -i "s|COGNITO_RESPONSE_TYPE|$(echo "${{ secrets.COGNITO_RESPONSE_TYPE }}" | tr -d '\n')|g" src/environments/environment.ts
+  #     # - name: Inject Secrets
+  #     #   run: |
+  #     #     cd Frontend
+  #     #     sed -i "s|COGNITO_DOMAIN|$(echo "${{ secrets.COGNITO_DOMAIN }}" | tr -d '\n')|g" src/environments/environment.ts
+  #     #     sed -i "s|COGNITO_USER_POOL_ID|$(echo "${{ secrets.COGNITO_USER_POOL_ID }}" | tr -d '\n')|g" src/environments/environment.ts
+  #     #     sed -i "s|COGNITO_CLIENT_ID|$(echo "${{ secrets.COGNITO_CLIENT_ID }}" | tr -d '\n')|g" src/environments/environment.ts
+  #     #     sed -i "s|COGNITO_AUTHORITY|$(echo "${{ secrets.COGNITO_AUTHORITY }}" | tr -d '\n')|g" src/environments/environment.ts
+  #     #     sed -i "s|COGNITO_REDIRECT_URL|$(echo "${{ secrets.COGNITO_REDIRECT_URL }}" | tr -d '\n')|g" src/environments/environment.ts
+  #     #     sed -i "s|COGNITO_LOGOUT_URL|$(echo "${{ secrets.COGNITO_LOGOUT_URL }}" | tr -d '\n')|g" src/environments/environment.ts
+  #     #     sed -i "s|COGNITO_SCOPE|$(echo "${{ secrets.COGNITO_SCOPE }}" | tr -d '\n')|g" src/environments/environment.ts
+  #     #     sed -i "s|COGNITO_RESPONSE_TYPE|$(echo "${{ secrets.COGNITO_RESPONSE_TYPE }}" | tr -d '\n')|g" src/environments/environment.ts
 
-      # - name: Build FrontEnd
-      #   run: |
-      #     cd Frontend
-      #     npm run build -- --configuration production
+  #     # - name: Build FrontEnd
+  #     #   run: |
+  #     #     cd Frontend
+  #     #     npm run build -- --configuration production
 
-      # - name: Upload build artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: frontend-build
-      #     path: Frontend/dist/Monetary/browser
+  #     # - name: Upload build artifact
+  #     #   uses: actions/upload-artifact@v4
+  #     #   with:
+  #     #     name: frontend-build
+  #     #     path: Frontend/dist/Monetary/browser
 
-      - name: Start Backend Build for Backend
-        run: echo "Starting Backend Build"
+  #     - name: Start Backend Build for Backend
+  #       run: echo "Starting Backend Build"
 
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: "us-east-1"
+  #     - name: Configure AWS Credentials
+  #       uses: aws-actions/configure-aws-credentials@v4
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: "us-east-1"
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
+  #     - name: Login to Amazon ECR
+  #       id: login-ecr
+  #       uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build & Push Admin & Features Docker image
-        run: |
-          IMAGE_URI_ADMIN=${{ secrets.ADMIN_ECR }}:${GITHUB_SHA::7}
-          docker build -t $IMAGE_URI_ADMIN ./AdminController
-          docker push $IMAGE_URI_ADMIN
-          IMAGE_URI_FEATURES=${{ secrets.FEATURES_ECR }}:${GITHUB_SHA::7}
-          docker build -t $IMAGE_URI_FEATURES ./Features
-          docker push $IMAGE_URI_FEATURES
+  #     - name: Build & Push Admin & Features Docker image
+  #       run: |
+  #         IMAGE_URI_ADMIN=${{ secrets.ADMIN_ECR }}:${GITHUB_SHA::7}
+  #         docker build -t $IMAGE_URI_ADMIN ./AdminController
+  #         docker push $IMAGE_URI_ADMIN
+  #         IMAGE_URI_FEATURES=${{ secrets.FEATURES_ECR }}:${GITHUB_SHA::7}
+  #         docker build -t $IMAGE_URI_FEATURES ./Features
+  #         docker push $IMAGE_URI_FEATURES
 
   deploy:
-    needs: build
+    #needs: build
     environment: Production
     runs-on: ubuntu-latest
     env:
@@ -147,22 +147,22 @@ jobs:
 
       - name: Update Cluster Services for Admin & Features
         run: |
-          ADMIN_VERSION=$(aws ecs list-task-definitions --family-prefix ${{ env.TASK_FAMILY_ADMIN }} --sort DESC --max-items 1 --query "taskDefinitionArns[0]" --output text | tr -d '\n')
+          ADMIN_VERSION=$(aws ecs list-task-definitions --family-prefix ${{ env.TASK_FAMILY_ADMIN }} --sort DESC --max-items 1 --query "taskDefinitionArns[0]" --output text | awk -F: '{print $NF}' | tr -d '\n')
 
           echo "Latest Admin Version = $ADMIN_VERSION"
 
           aws ecs update-service \
           --cluster ${{ env.ECS_CLUSTER }} \
           --service ${{ env.ECS_SERVICE_ADMIN }} \
-          --task-definition "$ADMIN_VERSION" \
+          --task-definition "${{ env.TASK_FAMILY_ADMIN }}:$ADMIN_VERSION" \
           --force-new-deployment
 
-          FEATURES_VERSION=$(aws ecs list-task-definitions --family-prefix ${{ env.TASK_FAMILY_FEATURES }} --sort DESC --max-items 1 --query "taskDefinitionArns[0]" --output text | tr -d '\n')
+          FEATURES_VERSION=$(aws ecs list-task-definitions --family-prefix ${{ env.TASK_FAMILY_FEATURES }} --sort DESC --max-items 1 --query "taskDefinitionArns[0]" --output text | awk -F: '{print $NF}'  | tr -d '\n')
 
           echo "Latest Feature Version = $FEATURES_VERSION"
 
           aws ecs update-service \
           --cluster ${{ env.ECS_CLUSTER }} \
           --service ${{ env.ECS_SERVICE_FEATURES }} \
-          --task-definition "$FEATURES_VERSION" \
+          --task-definition "${{ env.TASK_FAMILY_FEATURES }}:$FEATURES_VERSION" \
           --force-new-deployment
