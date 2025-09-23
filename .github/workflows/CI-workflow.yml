@@ -147,7 +147,7 @@ jobs:
 
       - name: Update Cluster Services for Admin & Features
         run: |
-          ADMIN_VERSION=$(aws ecs list-task-definitions --family-prefix ${{ env.TASK_FAMILY_ADMIN }} --sort DESC --max-items 1 --query "taskDefinitionArns[0]" --output text)
+          ADMIN_VERSION=$(aws ecs list-task-definitions --family-prefix ${{ env.TASK_FAMILY_ADMIN }} --sort DESC --max-items 1 --query "taskDefinitionArns[0]" --output text | tr -d '\n')
 
           echo "Latest Admin Version = $ADMIN_VERSION"
 
@@ -157,7 +157,7 @@ jobs:
           --task-definition $ADMIN_VERSION \
           --force-new-deployment
 
-          FEATURES_VERSION=$(aws ecs list-task-definitions --family-prefix ${{ env.TASK_FAMILY_FEATURES }} --sort DESC --max-items 1 --query "taskDefinitionArns[0]" --output text)
+          FEATURES_VERSION=$(aws ecs list-task-definitions --family-prefix ${{ env.TASK_FAMILY_FEATURES }} --sort DESC --max-items 1 --query "taskDefinitionArns[0]" --output text | tr -d '\n')
 
           echo "Latest Feature Version = $FEATURES_VERSION"
 
