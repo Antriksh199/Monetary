@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, of, firstValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { SignInInput, fetchAuthSession, signOut, signIn, signUp, confirmSignUp, resetPassword, ResetPasswordInput } from 'aws-amplify/auth';
 import { SessionService } from '../session/session-service.js';
@@ -11,7 +11,6 @@ import { User } from '../../models/Admin/user.js';
 import { throwError, tap, Observable, switchMap } from 'rxjs';
 import { CustomError } from './custom-error.js';
 import { ToastrService } from 'ngx-toastr';
-
 
 
 @Injectable({
@@ -48,29 +47,27 @@ export class AuthService {
       this.ss.deleteAll();
       try {
         const { nextStep } = await signIn(signInInput);
-        const tokens = await fetchAuthSession();
 
         switch(nextStep.signInStep)
         {
           case 'DONE':
-            if(tokens.tokens?.idToken)
+            let tokens;
+            try
             {
-              this.ss.setItem("idToken",tokens.tokens?.idToken.toString());
-              await this.getUserfromDataBase(tokens.tokens.idToken.toString()).subscribe(
-                {
-                  next: (res: User) => {
-                    this.dbUser = res;
-                    this.userSubject.next(this.dbUser);
-                  },
-                  error: (e) => 
-                  {
-                    this.toastr.error("Something went wrong !");
-                    this._isLoading.next(false); 
-                },
-                  complete: () => { this._isLoading.next(false) }
-                }
-              );
+              tokens = await fetchAuthSession();
             }
+            catch {
+              throw new CustomError('NotAuthorizedException', 'Incorrect username or password');
+            }
+    
+            const idToken = tokens?.tokens?.idToken;
+            if (!idToken) {
+              throw new CustomError('NotAuthorizedException', 'Incorrect username or password');
+            }
+    
+            this.ss.setItem("idToken", idToken.toString());
+            this.dbUser = await firstValueFrom(this.getUserfromDataBase(idToken.toString()));
+            this.userSubject.next(this.dbUser);
             break;
           case 'CONFIRM_SIGN_UP':
               throw new CustomError('UserNotConfirmedException', 'User account is not confirmed.');
@@ -81,16 +78,18 @@ export class AuthService {
 
             default:
               throw new CustomError('Unhanled','You cannot Signin at the moment.');
-
         }
 
       }
       catch(error)
       {
-        this._isLoading.next(true); 
+        console.log(error)
+        this._isLoading.next(false); 
         throw error;
       } 
       finally {
+        
+        this._isLoading.next(false); 
       }
     }
   
@@ -154,7 +153,6 @@ getUserfromDataBase(id_token: string): Observable<User> {
         // Create user if not found
         const newUser = new User();
         newUser.userName = this.cognitoUser.cognitoUsername;
-        newUser.isActive = true;
         newUser.email = this.cognitoUser.email;
         newUser.firstName = this.cognitoUser.given_name;
         newUser.middleName = '';
@@ -163,7 +161,7 @@ getUserfromDataBase(id_token: string): Observable<User> {
         newUser.modifiedDate = new Date();
         newUser.createdBy = this.cognitoUser.cognitoUsername;
         newUser.modifiedBy = this.cognitoUser.cognitoUsername;
-        newUser.isActive = true;
+        newUser.active = true;
         return this.as.addUser(newUser).pipe(
           tap((addedUser: any) => {
             if (addedUser) {
