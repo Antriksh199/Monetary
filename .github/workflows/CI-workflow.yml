@@ -11,78 +11,78 @@ on:
   # Allows you to run this workflow manually from the Actions tab
 jobs:
   # This workflow contains a single job called "build"
-  # build:
-  #   # The type of runner that the job will run on
-  #   runs-on: ubuntu-latest
-  #   environment: Production
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    environment: Production
 
-  #   # Steps represent a sequence of tasks that will be executed as part of the job
-  #   steps:
-  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-  #     # - name: Checkout repository
-  #     #   uses: actions/checkout@v4
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-  #     # - name: Start Frontend Build
-  #     #   run: echo "Starting Frontend Build."
+      - name: Start Frontend Build
+        run: echo "Starting Frontend Build."
 
-  #     # - name: Setup Node.js
-  #     #   uses: actions/setup-node@v4
-  #     #   with:
-  #     #     node-version: 20
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-  #     # - name: Install dependencies
-  #     #   run: |
-  #     #     cd Frontend
-  #     #     npm ci
+      - name: Install dependencies
+        run: |
+          cd Frontend
+          npm ci
 
-  #     # - name: Inject Secrets
-  #     #   run: |
-  #     #     cd Frontend
-  #     #     sed -i "s|COGNITO_DOMAIN|$(echo "${{ secrets.COGNITO_DOMAIN }}" | tr -d '\n')|g" src/environments/environment.ts
-  #     #     sed -i "s|COGNITO_USER_POOL_ID|$(echo "${{ secrets.COGNITO_USER_POOL_ID }}" | tr -d '\n')|g" src/environments/environment.ts
-  #     #     sed -i "s|COGNITO_CLIENT_ID|$(echo "${{ secrets.COGNITO_CLIENT_ID }}" | tr -d '\n')|g" src/environments/environment.ts
-  #     #     sed -i "s|COGNITO_AUTHORITY|$(echo "${{ secrets.COGNITO_AUTHORITY }}" | tr -d '\n')|g" src/environments/environment.ts
-  #     #     sed -i "s|COGNITO_REDIRECT_URL|$(echo "${{ secrets.COGNITO_REDIRECT_URL }}" | tr -d '\n')|g" src/environments/environment.ts
-  #     #     sed -i "s|COGNITO_LOGOUT_URL|$(echo "${{ secrets.COGNITO_LOGOUT_URL }}" | tr -d '\n')|g" src/environments/environment.ts
-  #     #     sed -i "s|COGNITO_SCOPE|$(echo "${{ secrets.COGNITO_SCOPE }}" | tr -d '\n')|g" src/environments/environment.ts
-  #     #     sed -i "s|COGNITO_RESPONSE_TYPE|$(echo "${{ secrets.COGNITO_RESPONSE_TYPE }}" | tr -d '\n')|g" src/environments/environment.ts
+      - name: Inject Secrets
+        run: |
+          cd Frontend
+          sed -i "s|COGNITO_DOMAIN|$(echo "${{ secrets.COGNITO_DOMAIN }}" | tr -d '\n')|g" src/environments/environment.ts
+          sed -i "s|COGNITO_USER_POOL_ID|$(echo "${{ secrets.COGNITO_USER_POOL_ID }}" | tr -d '\n')|g" src/environments/environment.ts
+          sed -i "s|COGNITO_CLIENT_ID|$(echo "${{ secrets.COGNITO_CLIENT_ID }}" | tr -d '\n')|g" src/environments/environment.ts
+          sed -i "s|COGNITO_AUTHORITY|$(echo "${{ secrets.COGNITO_AUTHORITY }}" | tr -d '\n')|g" src/environments/environment.ts
+          sed -i "s|COGNITO_REDIRECT_URL|$(echo "${{ secrets.COGNITO_REDIRECT_URL }}" | tr -d '\n')|g" src/environments/environment.ts
+          sed -i "s|COGNITO_LOGOUT_URL|$(echo "${{ secrets.COGNITO_LOGOUT_URL }}" | tr -d '\n')|g" src/environments/environment.ts
+          sed -i "s|COGNITO_SCOPE|$(echo "${{ secrets.COGNITO_SCOPE }}" | tr -d '\n')|g" src/environments/environment.ts
+          sed -i "s|COGNITO_RESPONSE_TYPE|$(echo "${{ secrets.COGNITO_RESPONSE_TYPE }}" | tr -d '\n')|g" src/environments/environment.ts
 
-  #     # - name: Build FrontEnd
-  #     #   run: |
-  #     #     cd Frontend
-  #     #     npm run build -- --configuration production
+      - name: Build FrontEnd
+        run: |
+          cd Frontend
+          npm run build -- --configuration production
 
-  #     # - name: Upload build artifact
-  #     #   uses: actions/upload-artifact@v4
-  #     #   with:
-  #     #     name: frontend-build
-  #     #     path: Frontend/dist/Monetary/browser
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: Frontend/dist/Monetary/browser
 
-  #     - name: Start Backend Build for Backend
-  #       run: echo "Starting Backend Build"
+      - name: Start Backend Build for Backend
+        run: echo "Starting Backend Build"
 
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-  #     - name: Configure AWS Credentials
-  #       uses: aws-actions/configure-aws-credentials@v4
-  #       with:
-  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #         aws-region: "us-east-1"
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: "us-east-1"
 
-  #     - name: Login to Amazon ECR
-  #       id: login-ecr
-  #       uses: aws-actions/amazon-ecr-login@v2
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
-  #     - name: Build & Push Admin & Features Docker image
-  #       run: |
-  #         IMAGE_URI_ADMIN=${{ secrets.ADMIN_ECR }}:${GITHUB_SHA::7}
-  #         docker build -t $IMAGE_URI_ADMIN ./AdminController
-  #         docker push $IMAGE_URI_ADMIN
-  #         IMAGE_URI_FEATURES=${{ secrets.FEATURES_ECR }}:${GITHUB_SHA::7}
-  #         docker build -t $IMAGE_URI_FEATURES ./Features
-  #         docker push $IMAGE_URI_FEATURES
+      - name: Build & Push Admin & Features Docker image
+        run: |
+          IMAGE_URI_ADMIN=${{ secrets.ADMIN_ECR }}:${GITHUB_SHA::7}
+          docker build -t $IMAGE_URI_ADMIN ./AdminController
+          docker push $IMAGE_URI_ADMIN
+          IMAGE_URI_FEATURES=${{ secrets.FEATURES_ECR }}:${GITHUB_SHA::7}
+          docker build -t $IMAGE_URI_FEATURES ./Features
+          docker push $IMAGE_URI_FEATURES
 
   deploy:
     environment: Production
@@ -95,31 +95,31 @@ jobs:
       TASK_FAMILY_ADMIN: Admin
       TASK_FAMILY_FEATURES: Features
     steps:
-      # - name: Download build artifact
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: frontend-build
-      #     path: Frontend/dist/Monetary/browser
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-build
+          path: Frontend/dist/Monetary/browser
 
-      # - name: Sync files to S3
-      #   uses: jakejarvis/s3-sync-action@master
-      #   with:
-      #     args: --delete
-      #   env:
-      #     AWS_S3_BUCKET: ${{ secrets.S3_BUCKET }}
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     AWS_REGION: "us-east-1"
-      #     SOURCE_DIR: Frontend/dist/Monetary/browser
+      - name: Sync files to S3
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --delete
+        env:
+          AWS_S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: "us-east-1"
+          SOURCE_DIR: Frontend/dist/Monetary/browser
 
-      # - name: Invalidate CloudFront Cache
-      #   uses: chetan/invalidate-cloudfront-action@v2
-      #   env:
-      #     DISTRIBUTION: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
-      #     PATHS: "/*"
-      #     AWS_REGION: "us-east-1"
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID  }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Invalidate CloudFront Cache
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          DISTRIBUTION: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+          PATHS: "/*"
+          AWS_REGION: "us-east-1"
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID  }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -128,20 +128,20 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      # - name: Update Task Definitions for Admin & Features
-      #   run: |
-      #     IMAGE_URI_ADMIN=${{ secrets.ADMIN_ECR }}:${GITHUB_SHA::7}
-      #     echo ${{ needs.build.outputs.IMAGE_URI_ADMIN }}
-      #     TASK_DEF_ADMIN_JSON=$(aws ecs describe-task-definition --task-definition ${{ env.TASK_FAMILY_ADMIN }} --query "taskDefinition")
-      #     CLEAN_TASK_DEF_ADMIN_JSON=$(echo $TASK_DEF_ADMIN_JSON | jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy, .enableFaultInjection, .containerDefinitions[].portMappings[].name, .containerDefinitions[].portMappings[].appProtocol, .containerDefinitions[].ulimits, .containerDefinitions[].environmentFiles, .containerDefinitions[].mountPoints, .containerDefinitions[].volumesFrom, .containerDefinitions[].systemControls)')
-      #     echo $CLEAN_TASK_DEF_ADMIN_JSON | jq --arg IMAGE "$IMAGE_URI_ADMIN" '.containerDefinitions[0].image=$IMAGE' > new-task-def-admin.json
-      #     aws ecs register-task-definition --cli-input-json file://new-task-def-admin.json
+      - name: Update Task Definitions for Admin & Features
+        run: |
+          IMAGE_URI_ADMIN=${{ secrets.ADMIN_ECR }}:${GITHUB_SHA::7}
+          echo ${{ needs.build.outputs.IMAGE_URI_ADMIN }}
+          TASK_DEF_ADMIN_JSON=$(aws ecs describe-task-definition --task-definition ${{ env.TASK_FAMILY_ADMIN }} --query "taskDefinition")
+          CLEAN_TASK_DEF_ADMIN_JSON=$(echo $TASK_DEF_ADMIN_JSON | jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy, .enableFaultInjection, .containerDefinitions[].portMappings[].name, .containerDefinitions[].portMappings[].appProtocol, .containerDefinitions[].ulimits, .containerDefinitions[].environmentFiles, .containerDefinitions[].mountPoints, .containerDefinitions[].volumesFrom, .containerDefinitions[].systemControls)')
+          echo $CLEAN_TASK_DEF_ADMIN_JSON | jq --arg IMAGE "$IMAGE_URI_ADMIN" '.containerDefinitions[0].image=$IMAGE' > new-task-def-admin.json
+          aws ecs register-task-definition --cli-input-json file://new-task-def-admin.json
 
-      #     IMAGE_URI_FEATURES=${{ secrets.FEATURES_ECR }}:${GITHUB_SHA::7}
-      #     TASK_DEF_FEATURES_JSON=$(aws ecs describe-task-definition --task-definition ${{ env.TASK_FAMILY_FEATURES }} --query "taskDefinition")
-      #     CLEAN_TASK_DEF_FEATURES_JSON=$(echo $TASK_DEF_FEATURES_JSON | jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy, .enableFaultInjection, .containerDefinitions[].portMappings[].name, .containerDefinitions[].portMappings[].appProtocol, .containerDefinitions[].ulimits, .containerDefinitions[].environmentFiles, .containerDefinitions[].mountPoints, .containerDefinitions[].volumesFrom, .containerDefinitions[].systemControls)')
-      #     echo $CLEAN_TASK_DEF_FEATURES_JSON | jq --arg IMAGE "$IMAGE_URI_FEATURES" '.containerDefinitions[0].image=$IMAGE' > new-task-def-features.json
-      #     aws ecs register-task-definition --cli-input-json file://new-task-def-features.json
+          IMAGE_URI_FEATURES=${{ secrets.FEATURES_ECR }}:${GITHUB_SHA::7}
+          TASK_DEF_FEATURES_JSON=$(aws ecs describe-task-definition --task-definition ${{ env.TASK_FAMILY_FEATURES }} --query "taskDefinition")
+          CLEAN_TASK_DEF_FEATURES_JSON=$(echo $TASK_DEF_FEATURES_JSON | jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy, .enableFaultInjection, .containerDefinitions[].portMappings[].name, .containerDefinitions[].portMappings[].appProtocol, .containerDefinitions[].ulimits, .containerDefinitions[].environmentFiles, .containerDefinitions[].mountPoints, .containerDefinitions[].volumesFrom, .containerDefinitions[].systemControls)')
+          echo $CLEAN_TASK_DEF_FEATURES_JSON | jq --arg IMAGE "$IMAGE_URI_FEATURES" '.containerDefinitions[0].image=$IMAGE' > new-task-def-features.json
+          aws ecs register-task-definition --cli-input-json file://new-task-def-features.json
 
       - name: Update Cluster Services for Admin & Features
         run: |
