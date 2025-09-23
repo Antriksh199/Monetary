@@ -85,6 +85,7 @@ jobs:
           docker push $IMAGE_URI_FEATURES
 
   deploy:
+    needs: build
     environment: Production
     runs-on: ubuntu-latest
     env:
