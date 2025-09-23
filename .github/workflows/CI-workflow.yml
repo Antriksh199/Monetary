@@ -128,33 +128,30 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Update Task Definitions for Admin & Features
-        run: |
-          IMAGE_URI_ADMIN=${{ secrets.ADMIN_ECR }}:${GITHUB_SHA::7}
-          echo ${{ needs.build.outputs.IMAGE_URI_ADMIN }}
-          TASK_DEF_ADMIN_JSON=$(aws ecs describe-task-definition --task-definition ${{ env.TASK_FAMILY_ADMIN }} --query "taskDefinition")
-          CLEAN_TASK_DEF_ADMIN_JSON=$(echo $TASK_DEF_ADMIN_JSON | jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy, .enableFaultInjection, .containerDefinitions[].portMappings[].name, .containerDefinitions[].portMappings[].appProtocol, .containerDefinitions[].ulimits, .containerDefinitions[].environmentFiles, .containerDefinitions[].mountPoints, .containerDefinitions[].volumesFrom, .containerDefinitions[].systemControls)')
-          echo $CLEAN_TASK_DEF_ADMIN_JSON | jq --arg IMAGE "$IMAGE_URI_ADMIN" '.containerDefinitions[0].image=$IMAGE' > new-task-def-admin.json
-          aws ecs register-task-definition --cli-input-json file://new-task-def-admin.json
+      # - name: Update Task Definitions for Admin & Features
+      #   run: |
+      #     IMAGE_URI_ADMIN=${{ secrets.ADMIN_ECR }}:${GITHUB_SHA::7}
+      #     echo ${{ needs.build.outputs.IMAGE_URI_ADMIN }}
+      #     TASK_DEF_ADMIN_JSON=$(aws ecs describe-task-definition --task-definition ${{ env.TASK_FAMILY_ADMIN }} --query "taskDefinition")
+      #     CLEAN_TASK_DEF_ADMIN_JSON=$(echo $TASK_DEF_ADMIN_JSON | jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy, .enableFaultInjection, .containerDefinitions[].portMappings[].name, .containerDefinitions[].portMappings[].appProtocol, .containerDefinitions[].ulimits, .containerDefinitions[].environmentFiles, .containerDefinitions[].mountPoints, .containerDefinitions[].volumesFrom, .containerDefinitions[].systemControls)')
+      #     echo $CLEAN_TASK_DEF_ADMIN_JSON | jq --arg IMAGE "$IMAGE_URI_ADMIN" '.containerDefinitions[0].image=$IMAGE' > new-task-def-admin.json
+      #     aws ecs register-task-definition --cli-input-json file://new-task-def-admin.json
 
-
-          IMAGE_URI_FEATURES=${{ secrets.FEATURES_ECR }}:${GITHUB_SHA::7}
-          TASK_DEF_FEATURES_JSON=$(aws ecs describe-task-definition --task-definition ${{ env.TASK_FAMILY_FEATURES }} --query "taskDefinition")
-          CLEAN_TASK_DEF_FEATURES_JSON=$(echo $TASK_DEF_FEATURES_JSON | jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy, .enableFaultInjection, .containerDefinitions[].portMappings[].name, .containerDefinitions[].portMappings[].appProtocol, .containerDefinitions[].ulimits, .containerDefinitions[].environmentFiles, .containerDefinitions[].mountPoints, .containerDefinitions[].volumesFrom, .containerDefinitions[].systemControls)')
-          echo $CLEAN_TASK_DEF_FEATURES_JSON | jq --arg IMAGE "$IMAGE_URI_FEATURES" '.containerDefinitions[0].image=$IMAGE' > new-task-def-features.json
-          aws ecs register-task-definition --cli-input-json file://new-task-def-features.json
+      #     IMAGE_URI_FEATURES=${{ secrets.FEATURES_ECR }}:${GITHUB_SHA::7}
+      #     TASK_DEF_FEATURES_JSON=$(aws ecs describe-task-definition --task-definition ${{ env.TASK_FAMILY_FEATURES }} --query "taskDefinition")
+      #     CLEAN_TASK_DEF_FEATURES_JSON=$(echo $TASK_DEF_FEATURES_JSON | jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy, .enableFaultInjection, .containerDefinitions[].portMappings[].name, .containerDefinitions[].portMappings[].appProtocol, .containerDefinitions[].ulimits, .containerDefinitions[].environmentFiles, .containerDefinitions[].mountPoints, .containerDefinitions[].volumesFrom, .containerDefinitions[].systemControls)')
+      #     echo $CLEAN_TASK_DEF_FEATURES_JSON | jq --arg IMAGE "$IMAGE_URI_FEATURES" '.containerDefinitions[0].image=$IMAGE' > new-task-def-features.json
+      #     aws ecs register-task-definition --cli-input-json file://new-task-def-features.json
 
       - name: Update Cluster Services for Admin & Features
         run: |
           # Latest Admin revision
-          ADMIN_REVISION=$(aws ecs list-task-definitions \
+          echo "ADMIN_REVISION=$(aws ecs list-task-definitions \
             --family-prefix Admin \
             --sort DESC \
             --max-items 1 \
             --query "taskDefinitionArns[0]" \
-            --output text | awk -F: '{print $NF}' | tr -d '\n')
-
-          echo "Latest Admin Revision = $ADMIN_REVISION"
+            --output text | awk -F: '{print $NF}' | tr -d '\n')"
 
           aws ecs update-service \
             --cluster monetary \
