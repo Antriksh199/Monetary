@@ -1,9 +1,12 @@
+using System.Drawing;
+
 using AdminController;
 using AdminController.BL.Contracts;
 using AdminController.BL.Implementation;
 using AdminController.DL;
 using AdminController.DL.contracts;
 using AdminController.DL.Implementation;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -17,29 +20,36 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowCloudFront", policy =>
     {
-        policy.WithOrigins("https://d3qwr51i4yo0oq.cloudfront.net")
+        policy.WithOrigins("http://localhost:4200")
               .AllowAnyMethod()
               .WithHeaders("authorization", "content-type");
     });
 });
 
-builder.Services.AddControllers();
+var awsOptions = builder.Configuration.GetSection("AWS");
+var cognitoSettings = builder.Configuration.GetSection("Authentication:Cognito");
 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
+})
+.AddJwtBearer(options =>
 {
-    options.Authority = Environment.GetEnvironmentVariable(builder.Configuration["Authentication:Cognito:Authority"]);
+    // The issuer is always the Cognito User Pool URL
+    options.Authority = cognitoSettings["Authority"];
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
+        ValidIssuer = cognitoSettings["Authority"],
         ValidateAudience = true,
-        ValidAudience = Environment.GetEnvironmentVariable(builder.Configuration["Authentication:Cognito:Audience"]),
-        ValidIssuer = Environment.GetEnvironmentVariable(builder.Configuration["Authentication:Cognito:Authority"])
+        ValidAudience = cognitoSettings["Audience"],
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.FromMinutes(5)
     };
 });
+
+builder.Services.AddControllers();
 
 builder.Services.AddScoped<IFrequencyBL, FrequencyBL>();
 builder.Services.AddScoped<IFrequencyDL, FrequencyDL>();
@@ -77,4 +87,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-

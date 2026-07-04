@@ -11,33 +11,32 @@ var builder = WebApplication.CreateBuilder(args);
 
 NHibernateHelper.Initialize(builder.Configuration);
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowCloudFront", policy =>
-    {
-        policy.WithOrigins("https://d3qwr51i4yo0oq.cloudfront.net")
-              .AllowAnyMethod()
-              .WithHeaders("authorization", "content-type");
-    });
-});
-
-builder.Services.AddControllers();
+var awsOptions = builder.Configuration.GetSection("AWS");
+var cognitoSettings = builder.Configuration.GetSection("Authentication:Cognito");
 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
+})
+.AddJwtBearer(options =>
 {
-    options.Authority = Environment.GetEnvironmentVariable(builder.Configuration["Authentication:Cognito:Authority"]);
+    // The issuer is always the Cognito User Pool URL
+    options.Authority = cognitoSettings["Authority"];
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
+        ValidIssuer = cognitoSettings["Authority"],
         ValidateAudience = true,
-        ValidAudience = Environment.GetEnvironmentVariable(builder.Configuration["Authentication:Cognito:Audience"]),
-        ValidIssuer = Environment.GetEnvironmentVariable(builder.Configuration["Authentication:Cognito:Authority"])
+        ValidAudience = cognitoSettings["Audience"],
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.FromMinutes(5)
     };
 });
+
+builder.Services.AddControllers();
+
+
 
 builder.Services.AddScoped<IIncomeBL, IncomeBL>();
 builder.Services.AddScoped<IIncomeDL, IncomeDL>();

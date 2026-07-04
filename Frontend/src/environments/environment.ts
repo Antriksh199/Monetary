@@ -2,14 +2,14 @@
 
 export const configuration = {
     awsCognitoSettings: {
-        domain: 'COGNITO_DOMAIN',
+        domain: '',
         userPoolId: 'COGNITO_USER_POOL_ID',
         clientId: 'COGNITO_CLIENT_ID',
         authority: 'COGNITO_AUTHORITY',
-        redirectUrl: 'COGNITO_REDIRECT_URL',
-        logoutURL:'COGNITO_LOGOUT_URL',
-        scope: 'COGNITO_SCOPE',
-        responseType: 'COGNITO_RESPONSE_TYPE',
+        redirectUrl: 'https://monetary.antriksh.site/',
+        logoutURL:'https://monetary.antriksh.site/',
+        scope: ['openid', 'phone', 'email'],
+        responseType: 'code',
     },
 secretKey: 'Monetary'
 };

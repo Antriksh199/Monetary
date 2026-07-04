@@ -261,7 +261,7 @@ getUserfromDataBase(id_token: string): Observable<User> {
             'email': email,
             'given_name': first_name,
             'family_name': last_name,
-            'custom:middle_name': middle_name,
+            'middle_name': middle_name,
           }
         }
       });

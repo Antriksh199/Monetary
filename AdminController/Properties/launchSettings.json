@@ -25,7 +25,11 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DB_HOST": "(localdb)\\mssqllocaldb",
+        "DATABASE": "monetary",
+        "USER_ID": "ignored;Integrated Security=True",
+        "PASSWORD": "ignored"
       }
     },
     "Container (Dockerfile)": {

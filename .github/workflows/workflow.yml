@@ -1,0 +1,93 @@
+name: Production Multi-Service Build and Push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    environment: Production
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Get Short Git SHA and Set Tags
+        id: vars
+        run: |
+          SHA_SHORT=$(git rev-parse --short HEAD)
+          echo "sha_short=$SHA_SHORT" >> $GITHUB_OUTPUT
+          
+          # Tags for Angular Frontend
+          echo "ang_sha=${SHA_SHORT}-f" >> $GITHUB_OUTPUT
+          echo "ang_latest=latest-f" >> $GITHUB_OUTPUT
+          
+          # Tags for .NET Service AdminController
+          echo "s1_sha=${SHA_SHORT}-s1" >> $GITHUB_OUTPUT
+          echo "s1_latest=latest-s1" >> $GITHUB_OUTPUT
+          
+          # Tags for .NET Service Features
+          echo "s2_sha=${SHA_SHORT}-s2" >> $GITHUB_OUTPUT
+          echo "s2_latest=latest-s2" >> $GITHUB_OUTPUT
+      
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+    
+      - name: Inject Angular Production Secrets
+        run: |
+          echo "Injecting production secrets into Angular environment.ts..."
+          TARGET_FILE="./Frontend/src/environments/environment.ts"
+          
+          sed -i "s|GH_COGNITO_USER_POOL_ID|${{ secrets.COGNITO_USER_POOL_ID }}|g" $TARGET_FILE
+          sed -i "s|GH_COGNITO_CLIENT_ID|${{ secrets.COGNITO_CLIENT_ID }}|g" $TARGET_FILE
+          sed -i "s|GH_COGNITO_AUTHORITY|${{ secrets.COGNITO_AUTHORITY }}|g" $TARGET_FILE
+    
+      - name: Build and Push Angular Frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./Frontend
+          file: ./Frontend/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/${{secrets.DOCKER_REPO}}:${{ steps.vars.outputs.ang_sha }}
+            ${{ secrets.DOCKER_USERNAME }}/${{secrets.DOCKER_REPO}}:${{ steps.vars.outputs.ang_latest }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and Push .NET Service 1
+        uses: docker/build-push-action@v5
+        with:
+          context: ./AdminController
+          file: ./AdminController/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/${{secrets.DOCKER_REPO}}:${{ steps.vars.outputs.s1_sha }}
+            ${{ secrets.DOCKER_USERNAME }}/${{secrets.DOCKER_REPO}}:${{ steps.vars.outputs.s1_latest }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and Push .NET Service 2
+        uses: docker/build-push-action@v5
+        with:
+          context: ./Features
+          file: ./Features/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/${{secrets.DOCKER_REPO}}:${{ steps.vars.outputs.s2_sha }}
+            ${{ secrets.DOCKER_USERNAME }}/${{secrets.DOCKER_REPO}}:${{ steps.vars.outputs.s2_latest }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
