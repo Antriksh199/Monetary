@@ -40,6 +40,7 @@ namespace Features.DL
                 db.LogSqlInConsole = true;
                 db.LogFormattedSql = true;
 
+                configure.SetProperty("hbm2ddl.auto_keywords", "none");
                 configure.AddAssembly(Assembly.GetExecutingAssembly());
                 sessionFactory = configure.BuildSessionFactory();
             });

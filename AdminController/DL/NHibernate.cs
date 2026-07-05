@@ -41,8 +41,8 @@ namespace AdminController.DL
                 db.LogFormattedSql = true;
             });
 
-            configure.AddAssembly(Assembly.GetExecutingAssembly());
             configure.SetProperty("hbm2ddl.auto_keywords", "none");
+            configure.AddAssembly(Assembly.GetExecutingAssembly());
             sessionFactory = configure.BuildSessionFactory();
         }
 
