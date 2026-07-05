@@ -11,6 +11,6 @@ COPY . .
 RUN npx ng build Monetary --configuration production
 
 FROM nginx:alpine
-COPY --from=builder /app/dist/monetary/browser /usr/share/nginx/html
+COPY --from=builder /app/dist/Monetary/browser /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
