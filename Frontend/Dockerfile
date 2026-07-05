@@ -8,7 +8,7 @@ RUN npm ci --quiet
 
 COPY . .
 
-RUN npm run build --configuration production
+RUN npx ng build Monetary --configuration production
 
 FROM nginx:alpine
 COPY --from=builder /app/dist/monetary/browser /usr/share/nginx/html
