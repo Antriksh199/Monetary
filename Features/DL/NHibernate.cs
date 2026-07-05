@@ -34,14 +34,13 @@ namespace Features.DL
                 {
                     db.ConnectionString = connectionString;
                     db.Dialect<MsSql2012Dialect>();
-                    db.Driver<SqlClientDriver>();
+                    db.Driver<MicrosoftDataSqlClientDriver>();
                     db.ConnectionProvider<NHibernate.Connection.DriverConnectionProvider>();
                     db.Timeout = 10;
                     db.LogSqlInConsole = true;
                     db.LogFormattedSql = true;
-                });
 
-                configure.AddAssembly(Assembly.GetExecutingAssembly());
+                    configure.AddAssembly(Assembly.GetExecutingAssembly());
                 sessionFactory = configure.BuildSessionFactory();
             }
 

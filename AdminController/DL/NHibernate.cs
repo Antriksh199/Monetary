@@ -22,7 +22,6 @@ namespace AdminController.DL
         public static void Initialize(IConfiguration config)
         {
             if (sessionFactory != null) return;
-          
             var dbHost = config["DB_HOST"];
             var db = config["DATABASE"];
             var dbUser = config["USER_ID"];
@@ -35,7 +34,7 @@ namespace AdminController.DL
             {
                 db.ConnectionString = connectionString;
                 db.Dialect<MsSql2012Dialect>();
-                db.Driver<SqlClientDriver>();
+                db.Driver<MicrosoftDataSqlClientDriver>();
                 db.ConnectionProvider<NHibernate.Connection.DriverConnectionProvider>();
                 db.Timeout = 10;
                 db.LogSqlInConsole = true;
@@ -43,6 +42,7 @@ namespace AdminController.DL
             });
 
             configure.AddAssembly(Assembly.GetExecutingAssembly());
+            configure.SetProperty("hbm2ddl.auto_keywords", "none");
             sessionFactory = configure.BuildSessionFactory();
         }
 
