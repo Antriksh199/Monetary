@@ -4,5 +4,6 @@
 		<property name="connection.driver_class">NHibernate.Driver.SqlClientDriver</property>
 		<property name="dialect">NHibernate.Dialect.MsSql2012Dialect</property>
 		<property name="show_sql">true</property>
+		<property name="hbm2ddl.auto_keywords">none</property>
 	</session-factory>
 </hibernate-configuration>
