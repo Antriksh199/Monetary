@@ -1,21 +1,16 @@
-FROM node:22-alpine AS builder
-
+FROM node:20-slim AS builder
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN --mount=type=cache,target=/root/.npm \
-    npm ci
+RUN npm ci --quiet
 
 COPY . .
 
-RUN npm run build -- --configuration production
+RUN npx ng build Monetary --configuration production
 
 FROM nginx:alpine
-
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/dist/Monetary/browser /usr/share/nginx/html
-
 EXPOSE 80
-
 CMD ["nginx", "-g", "daemon off;"]
