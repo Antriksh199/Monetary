@@ -1,0 +1,209 @@
+BEGIN;
+
+-- 1. admin_frequencies
+INSERT INTO admin_frequencies
+    (name, value, created_date, modified_date, created_by, modified_by)
+VALUES
+    ('Monthly',   30,  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Weekly',    7,   CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Annually',  365, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Quarterly', 90,  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Once',      1,   CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Daily',     1,   CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin');
+
+-- 2. admin_income_types
+INSERT INTO admin_income_types
+    (name, description, created_date, modified_date, created_by, modified_by)
+VALUES
+    ('Salary',     'Monthly salary from employer',               CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Bonus',      'Annual or performance-based bonus',          CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Business',   'Income Received from businesses.',           CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Freelance',  'Income from freelance or contract work',    CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Interest',   'Interest earned from savings or deposits',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Dividends',  'Dividends received from investments',       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Rental',     'Rental income from properties',              CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Royalty',    'Income from royalties (books, music, etc.)', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Pension',    'Pension or retirement fund income',          CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Commission', 'Sales or service commissions',               CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Other',      'Other miscellaneous income',                 CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin');
+
+-- 3. admin_investment_category
+INSERT INTO admin_investment_category
+    (name, created_date, modified_date, created_by, modified_by)
+VALUES
+    ('Mutual Funds',          CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Equity / Stocks',       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Fixed Income',          CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Real Estate',           CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Cryptocurrency',        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Retirement & Pension',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Gold & Commodities',    CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Other / Alternative',   CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin');
+
+-- 4. admin_investment_type
+INSERT INTO admin_investment_type
+    (category_id, name, growth, risk, created_date, modified_date, created_by, modified_by)
+VALUES
+    (1, 'Equity Mutual Fund', CAST(12.00 AS Decimal(5, 2)), 'High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (1, 'Debt Mutual Fund', CAST(6.00 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (1, 'Hybrid Fund', CAST(9.00 AS Decimal(5, 2)), 'Medium', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (1, 'ELSS', CAST(12.00 AS Decimal(5, 2)), 'High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (1, 'Index Fund', CAST(10.00 AS Decimal(5, 2)), 'Medium', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (2, 'Individual Stock', CAST(15.00 AS Decimal(5, 2)), 'High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (2, 'Blue Chip Stock', CAST(10.00 AS Decimal(5, 2)), 'Medium', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (2, 'Mid-Cap Stock', CAST(13.00 AS Decimal(5, 2)), 'High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (2, 'ETF', CAST(10.00 AS Decimal(5, 2)), 'Medium', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (3, 'Fixed Deposit', CAST(5.00 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (3, 'Government Bond', CAST(6.00 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (3, 'Corporate Bond', CAST(7.00 AS Decimal(5, 2)), 'Medium', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (4, 'Residential Property', CAST(8.00 AS Decimal(5, 2)), 'Medium', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (4, 'Commercial Property', CAST(10.00 AS Decimal(5, 2)), 'Medium', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (5, 'Bitcoin', CAST(20.00 AS Decimal(5, 2)), 'High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (5, 'Ethereum', CAST(20.00 AS Decimal(5, 2)), 'High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (5, 'Altcoins', CAST(25.00 AS Decimal(5, 2)), 'High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (6, 'NPS', CAST(8.00 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (6, 'EPF', CAST(7.10 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (6, 'Roth IRA', CAST(9.00 AS Decimal(5, 2)), 'Medium', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (7, 'Gold ETF', CAST(6.00 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (7, 'Digital Gold', CAST(6.00 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (8, 'P2P Lending', CAST(12.00 AS Decimal(5, 2)), 'High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (8, 'Startup Investment', CAST(20.00 AS Decimal(5, 2)), 'High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (8, 'Art / Collectibles', CAST(10.00 AS Decimal(5, 2)), 'Medium', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (1, 'Equity Mutual Fund', CAST(12.00 AS Decimal(5, 2)), 'High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (1, 'Debt Mutual Fund', CAST(6.00 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (1, 'Hybrid Mutual Fund', CAST(9.00 AS Decimal(5, 2)), 'Medium', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (1, 'ELSS (Tax Saver)', CAST(12.00 AS Decimal(5, 2)), 'High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (1, 'Index Mutual Fund', CAST(10.00 AS Decimal(5, 2)), 'Medium', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (1, 'Fund of Funds', CAST(9.00 AS Decimal(5, 2)), 'Medium', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (1, 'Thematic Fund', CAST(13.00 AS Decimal(5, 2)), 'High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (2, 'Large Cap Stock', CAST(10.00 AS Decimal(5, 2)), 'Medium', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (2, 'Mid Cap Stock', CAST(13.00 AS Decimal(5, 2)), 'High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (2, 'Small Cap Stock', CAST(16.00 AS Decimal(5, 2)), 'High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (2, 'Blue Chip Stock', CAST(9.00 AS Decimal(5, 2)), 'Medium', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (2, 'Penny Stocks', CAST(20.00 AS Decimal(5, 2)), 'Very High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (2, 'Dividend Stocks', CAST(8.00 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (2, 'Exchange Traded Funds (ETFs)', CAST(10.00 AS Decimal(5, 2)), 'Medium', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (3, 'Fixed Deposit (FD)', CAST(5.50 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (3, 'Recurring Deposit (RD)', CAST(5.25 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (3, 'Public Provident Fund (PPF)', CAST(7.10 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (3, 'Government Bonds', CAST(6.00 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (3, 'Corporate Bonds', CAST(7.00 AS Decimal(5, 2)), 'Medium', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (3, 'Sovereign Gold Bond', CAST(6.50 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (4, 'Residential Property', CAST(8.00 AS Decimal(5, 2)), 'Medium', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (4, 'Commercial Property', CAST(10.00 AS Decimal(5, 2)), 'Medium', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (4, 'Real Estate Investment Trusts (REITs)', CAST(9.00 AS Decimal(5, 2)), 'Medium', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (4, 'Land Investment', CAST(12.00 AS Decimal(5, 2)), 'High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (5, 'Bitcoin', CAST(20.00 AS Decimal(5, 2)), 'High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (5, 'Ethereum', CAST(20.00 AS Decimal(5, 2)), 'High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (5, 'Altcoins', CAST(25.00 AS Decimal(5, 2)), 'Very High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (5, 'Stablecoins (USDT/USDC)', CAST(4.00 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (5, 'Crypto Staking', CAST(8.00 AS Decimal(5, 2)), 'High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (6, 'National Pension Scheme (NPS)', CAST(8.00 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (6, 'Employee Provident Fund (EPF)', CAST(7.10 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (6, 'Public Provident Fund (PPF)', CAST(7.10 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (6, 'Annuities', CAST(6.00 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (7, 'Physical Gold', CAST(6.00 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (7, 'Gold ETFs', CAST(6.00 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (7, 'Digital Gold', CAST(6.00 AS Decimal(5, 2)), 'Low', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (7, 'Silver Investment', CAST(7.00 AS Decimal(5, 2)), 'Medium', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (7, 'Commodity Futures', CAST(15.00 AS Decimal(5, 2)), 'High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (8, 'P2P Lending', CAST(12.00 AS Decimal(5, 2)), 'High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (8, 'Startup Investment', CAST(20.00 AS Decimal(5, 2)), 'Very High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (8, 'Angel Investing', CAST(18.00 AS Decimal(5, 2)), 'Very High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (8, 'Art & Collectibles', CAST(10.00 AS Decimal(5, 2)), 'Medium', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (8, 'Venture Capital Fund', CAST(25.00 AS Decimal(5, 2)), 'Very High', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin');
+
+-- 5. admin_payment_methods
+INSERT INTO admin_payment_methods
+    (name, description, created_date, modified_date, created_by, modified_by)
+VALUES
+    ('Credit Card',   'Visa, MasterCard, Amex',       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Debit Card',    'Bank-issued debit cards',      CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('UPI',           'Online payment via UPI',       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Bank Transfer', 'Direct bank-to-bank transfer', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Cash',          'In-person cash payment',       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin');
+
+-- 6. admin_expense_category
+INSERT INTO admin_expense_category
+    (name, created_date, modified_date, created_by, modified_by)
+VALUES
+    ('Housing',            CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Food & Dining',      CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Transport',          CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Utilities',          CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Health & Fitness',   CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Entertainment',      CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Shopping',           CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Education',          CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Personal Care',      CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Travel',             CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Gifts & Donations',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Financial',          CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Business Expenses',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Household Expenses', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    ('Miscellaneous',      CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin');
+
+-- 7. admin_expense_type
+INSERT INTO admin_expense_type
+    (expense_category_id, name, created_date, modified_date, created_by, modified_by)
+VALUES
+    (1, 'Rent', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (1, 'Mortgage', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (1, 'Maintenance', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (1, 'Property Taxes', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (1, 'Other', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (2, 'Groceries', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (2, 'Dining Out', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (2, 'Coffee & Tea', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (3, 'Fuel', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (3, 'Public Transport', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (3, 'Vehicle Maintenance', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (3, 'Vehicle Purchase', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (4, 'Electricity', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (4, 'Water', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (4, 'Gas', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (4, 'Internet & Cable', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (5, 'Medical Expenses', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (5, 'Insurance', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (5, 'Fitness', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (6, 'Movies & Shows', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (6, 'Events', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (6, 'Hobbies', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (7, 'Clothing & Accessories', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (7, 'Electronics', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (7, 'Household Items', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (8, 'Tuition & Fees', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (8, 'Books & Supplies', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (8, 'Online Learning', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (9, 'Haircare', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (9, 'Skincare & Cosmetics', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (9, 'Toiletries', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (10, 'Accommodation', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (10, 'Transportation', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (10, 'Food', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (10, 'Activities', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (11, 'Gifts', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (11, 'Charitable Donations', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (12, 'Loans', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (12, 'Savings & Investments', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (12, 'Fees & Charges', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (13, 'Office Supplies', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (13, 'Software & Subscriptions', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (13, 'Travel & Accommodation', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (13, 'Marketing & Advertising', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (13, 'Professional Services', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (13, 'Equipment & Assets', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (13, 'Meals & Entertainment', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (13, 'Telecommunications', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (14, 'Furniture', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (14, 'Appliances', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (14, 'Kitchenware', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (14, 'Cleaning Supplies', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (14, 'Cleaning Services', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (14, 'Pest Control', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (14, 'Lawn Care & Gardening', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (14, 'Security', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (14, 'Repairs & Renovations', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin'),
+    (15, 'Other Expenses', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'admin', 'admin');
+
+COMMIT;

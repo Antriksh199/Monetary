@@ -11,33 +11,33 @@
 			</generator>
 		</id>
 
-		<many-to-one name="Frequency" class="Frequency" column="FREQUENCY_ID"
+		<many-to-one name="Frequency" class="Frequency" column="frequency_id"
 					 lazy ="proxy"
 					 fetch="join"/>
-		<many-to-one name="User" class="User" column="USER_ID"
+		<many-to-one name="User" class="User" column="user_id"
 					 lazy ="proxy"
 					 fetch="join"/>
 		<many-to-one name="PaidVia"
-					 column="U_PAYMENT_METHOD_ID"
+					 column="u_payment_method_id"
 					 class="UserPaymentMethod"
 					 lazy ="proxy"
 					 fetch="join"/>
 		<many-to-one name="ExpenseCategory"
-					 column="Category_ID"
+					 column="category_id"
 					 class="ExpenseCategory"
 					 lazy ="proxy"
 					 fetch="join"/>
 		<many-to-one name="ExpenseType"
-					 column="Type_ID"
+					 column="type_id"
 					 class="ExpenseType"
 					 lazy ="proxy"
 					 fetch="join"/>
 
-		<property name="Value" column="AMOUNT" type="Decimal"/>
-		<property name="PaidTo" column="Paid_To" type="String"/>
-		<property name="PaidOn" column="Paid_Date" type="DateTime"/>
-		<property name="Paid" column="Paid" type="Boolean"/>
-		<property name="Description" column="Description" type="String"/>
+		<property name="Value" column="amount" type="Decimal"/>
+		<property name="PaidTo" column="paid_to" type="String"/>
+		<property name="PaidOn" column="paid_date" type="DateTime"/>
+		<property name="Paid" column="paid" type="Boolean"/>
+		<property name="Description" column="description" type="String"/>
 		<property name="CreatedDate" column="created_date" type="DateTime"/>
 		<property name="ModifiedDate" column="modified_date" type="DateTime" />
 		<property name="CreatedBy" column="created_by" type="String" />

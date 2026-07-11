@@ -1,0 +1,271 @@
+-- ==========================================
+-- 1. USER & DATABASE CREATION
+--  
+CREATE USER monetary WITH PASSWORD 'Monetary#';
+CREATE DATABASE monetary WITH OWNER monetary;
+GRANT ALL PRIVILEGES ON DATABASE monetary TO monetary;
+
+-- Switch to the newly created database context
+\c monetary
+
+-- ============================================================================
+-- 2. SEQUENCE CREATION (All 16 Sequences starting at 1)
+-- ============================================================================
+CREATE SEQUENCE admin_payment_methods_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE admin_users_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE admin_expense_category_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE admin_frequencies_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE admin_income_types_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE admin_investment_category_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE admin_user_payment_methods_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE admin_expense_type_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE admin_investment_type_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE admin_user_banks_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE admin_user_cards_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE admin_user_cash_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE admin_user_upi_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE expense_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE income_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE investment_id_seq START WITH 1 INCREMENT BY 1;
+
+CREATE TABLE admin_payment_methods (
+    id            INT            NOT NULL DEFAULT nextval('admin_payment_methods_id_seq'),
+    name          VARCHAR(255)   NULL,
+    description   VARCHAR(255)   NULL,
+    created_date  TIMESTAMP      NULL,
+    modified_date TIMESTAMP      NULL,
+    created_by    VARCHAR(255)   NULL,
+    modified_by   VARCHAR(255)   NULL,
+    CONSTRAINT pk_admin_payment_methods PRIMARY KEY (id)
+);
+
+CREATE TABLE admin_users (
+    id            INT            NOT NULL DEFAULT nextval('admin_users_id_seq'),
+    username      VARCHAR(255)   NULL,
+    first_name    VARCHAR(255)   NULL,
+    last_name     VARCHAR(255)   NULL,
+    middle_name   VARCHAR(255)   NULL,
+    email         VARCHAR(255)   NULL,
+    active        BOOLEAN        NULL,
+    created_date  TIMESTAMP      NULL,
+    modified_date TIMESTAMP      NULL,
+    created_by    VARCHAR(255)   NULL,
+    modified_by   VARCHAR(255)   NULL,
+    CONSTRAINT pk_admin_users PRIMARY KEY (id),
+    CONSTRAINT uq_admin_users_username UNIQUE (username)
+);
+
+CREATE TABLE admin_expense_category (
+    id            INT            NOT NULL DEFAULT nextval('admin_expense_category_id_seq'),
+    name          VARCHAR(255)   NULL,
+    created_date  TIMESTAMP      NULL,
+    modified_date TIMESTAMP      NULL,
+    created_by    VARCHAR(255)   NULL,
+    modified_by   VARCHAR(255)   NULL,
+    CONSTRAINT pk_admin_expense_category PRIMARY KEY (id)
+);
+
+CREATE TABLE admin_frequencies (
+    id            INT            NOT NULL DEFAULT nextval('admin_frequencies_id_seq'),
+    name          VARCHAR(255)   NULL,
+    value         INT            NULL,
+    created_date  TIMESTAMP      NULL,
+    modified_date TIMESTAMP      NULL,
+    created_by    VARCHAR(255)   NULL,
+    modified_by   VARCHAR(255)   NULL,
+    CONSTRAINT pk_admin_frequencies PRIMARY KEY (id)
+);
+
+CREATE TABLE admin_income_types (
+    id            INT            NOT NULL DEFAULT nextval('admin_income_types_id_seq'),
+    name          VARCHAR(255)   NULL,
+    description   VARCHAR(255)   NULL,
+    created_date  TIMESTAMP      NULL,
+    modified_date TIMESTAMP      NULL,
+    created_by    VARCHAR(255)   NULL,
+    modified_by   VARCHAR(255)   NULL,
+    CONSTRAINT pk_admin_income_types PRIMARY KEY (id)
+);
+
+CREATE TABLE admin_investment_category (
+    id            INT            NOT NULL DEFAULT nextval('admin_investment_category_id_seq'),
+    name          VARCHAR(255)   NULL,
+    created_date  TIMESTAMP      NULL,
+    modified_date TIMESTAMP      NULL,
+    created_by    VARCHAR(255)   NULL,
+    modified_by   VARCHAR(255)   NULL,
+    CONSTRAINT pk_admin_investment_category PRIMARY KEY (id)
+);
+
+-- =========================================================================
+-- STEP 2: CREATE LEVEL 1 DEPENDENT TABLES (References Step 1 Tables)
+-- =========================================================================
+
+CREATE TABLE admin_user_payment_methods (
+    id                INT            NOT NULL DEFAULT nextval('admin_user_payment_methods_id_seq'),
+    user_id           INT            NOT NULL,
+    payment_method_id INT            NOT NULL,
+    created_date      TIMESTAMP      NULL,
+    modified_date     TIMESTAMP      NULL,
+    created_by        VARCHAR(255)   NULL,
+    modified_by       VARCHAR(255)   NULL,
+    CONSTRAINT pk_admin_user_payment_methods PRIMARY KEY (id),
+    CONSTRAINT fk_userpaymentmethods_user FOREIGN KEY (user_id) REFERENCES admin_users (id),
+    CONSTRAINT fk_userpaymentmethods_method FOREIGN KEY (payment_method_id) REFERENCES admin_payment_methods (id)
+);
+
+CREATE TABLE admin_expense_type (
+    id                  INT            NOT NULL DEFAULT nextval('admin_expense_type_id_seq'),
+    expense_category_id INT            NOT NULL,
+    name                VARCHAR(255)   NULL,
+    created_date        TIMESTAMP      NULL,
+    modified_date       TIMESTAMP      NULL,
+    created_by          VARCHAR(255)   NULL,
+    modified_by         VARCHAR(255)   NULL,
+    CONSTRAINT pk_admin_expense_type PRIMARY KEY (id),
+    CONSTRAINT fk_expensetype_category FOREIGN KEY (expense_category_id) REFERENCES admin_expense_category (id)
+);
+
+CREATE TABLE admin_investment_type (
+    id            INT            NOT NULL DEFAULT nextval('admin_investment_type_id_seq'),
+    category_id   INT            NULL,
+    growth        DECIMAL(18, 4) NULL,
+    risk          VARCHAR(255)   NULL,
+    name          VARCHAR(255)   NULL,
+    created_date  TIMESTAMP      NULL,
+    modified_date TIMESTAMP      NULL,
+    created_by    VARCHAR(255)   NULL,
+    modified_by   VARCHAR(255)   NULL,
+    CONSTRAINT pk_admin_investment_type PRIMARY KEY (id),
+    CONSTRAINT fk_investmenttype_category FOREIGN KEY (category_id) REFERENCES admin_investment_category (id)
+);
+
+-- =========================================================================
+-- STEP 3: CREATE LEVEL 2 DEPENDENT TABLES (Concrete Payment Extensions)
+-- =========================================================================
+
+CREATE TABLE admin_user_banks (
+    id                  INT            NOT NULL DEFAULT nextval('admin_user_banks_id_seq'),
+    u_payment_method_id INT            NULL,
+    bank                VARCHAR(255)   NOT NULL,
+    account_type        VARCHAR(255)   NOT NULL,
+    account_number      VARCHAR(255)   NOT NULL,
+    ifsc                VARCHAR(255)   NOT NULL,
+    created_date        TIMESTAMP      NULL,
+    modified_date       TIMESTAMP      NULL,
+    created_by          VARCHAR(255)   NULL,
+    modified_by         VARCHAR(255)   NULL,
+    CONSTRAINT pk_admin_user_banks PRIMARY KEY (id),
+    CONSTRAINT fk_userbanks_paymentmethod FOREIGN KEY (u_payment_method_id) REFERENCES admin_user_payment_methods (id)
+);
+
+CREATE TABLE admin_user_cards (
+    id                  INT            NOT NULL DEFAULT nextval('admin_user_cards_id_seq'),
+    u_payment_method_id INT            NULL,
+    provider            VARCHAR(255)   NOT NULL,
+    name                VARCHAR(255)   NOT NULL,
+    card_number         VARCHAR(255)   NOT NULL,
+    cvv                 INT            NOT NULL,
+    card_type           VARCHAR(255)   NOT NULL,
+    expiry_date         DATE           NULL,
+    created_date        TIMESTAMP      NULL,
+    modified_date       TIMESTAMP      NULL,
+    created_by          VARCHAR(255)   NULL,
+    modified_by         VARCHAR(255)   NULL,
+    CONSTRAINT pk_admin_user_cards PRIMARY KEY (id),
+    CONSTRAINT fk_usercards_paymentmethod FOREIGN KEY (u_payment_method_id) REFERENCES admin_user_payment_methods (id)
+);
+
+CREATE TABLE admin_user_cash (
+    id                  INT            NOT NULL DEFAULT nextval('admin_user_cash_id_seq'),
+    u_payment_method_id INT            NULL,
+    created_date        TIMESTAMP      NULL,
+    modified_date       TIMESTAMP      NULL,
+    created_by          VARCHAR(255)   NULL,
+    modified_by         VARCHAR(255)   NULL,
+    CONSTRAINT pk_admin_user_cash PRIMARY KEY (id),
+    CONSTRAINT fk_usercash_paymentmethod FOREIGN KEY (u_payment_method_id) REFERENCES admin_user_payment_methods (id)
+);
+
+CREATE TABLE admin_user_upi (
+    id                  INT            NOT NULL DEFAULT nextval('admin_user_upi_id_seq'),
+    u_payment_method_id INT            NULL,
+    upi_id              VARCHAR(255)   NOT NULL,
+    created_date        TIMESTAMP      NULL,
+    modified_date       TIMESTAMP      NULL,
+    created_by          VARCHAR(255)   NULL,
+    modified_by         VARCHAR(255)   NULL,
+    CONSTRAINT pk_admin_user_upi PRIMARY KEY (id),
+    CONSTRAINT fk_userupi_paymentmethod FOREIGN KEY (u_payment_method_id) REFERENCES admin_user_payment_methods (id)
+);
+
+CREATE TABLE expense (
+    id                  INT            NOT NULL DEFAULT nextval('expense_id_seq'),
+    frequency_id        INT             NOT NULL,
+    user_id             INT             NOT NULL,
+    u_payment_method_id INT             NULL,
+    category_id         INT             NOT NULL,
+    type_id             INT             NOT NULL,
+    amount              DECIMAL(18, 2)  NOT NULL,
+    paid_to             VARCHAR(255)    NULL,
+    paid_date           TIMESTAMP       NULL,
+    paid                BOOLEAN         DEFAULT false NOT NULL,
+    description         TEXT            NULL,
+    created_date        TIMESTAMP       DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    modified_date       TIMESTAMP       NULL,
+    created_by          VARCHAR(100)    NULL,
+    modified_by         VARCHAR(100)    NULL,
+    CONSTRAINT pk_expense PRIMARY KEY (id),
+    CONSTRAINT fk_expense_frequency FOREIGN KEY (frequency_id) REFERENCES admin_frequencies (id),
+    CONSTRAINT fk_expense_user FOREIGN KEY (user_id) REFERENCES admin_users (id),
+    CONSTRAINT fk_expense_userpaymentmethod FOREIGN KEY (u_payment_method_id) REFERENCES admin_user_payment_methods (id),
+    CONSTRAINT fk_expense_category FOREIGN KEY (category_id) REFERENCES admin_expense_category (id),
+    CONSTRAINT fk_expense_type FOREIGN KEY (type_id) REFERENCES admin_expense_type (id)
+);
+
+CREATE TABLE income (
+    id                  INT            NOT NULL DEFAULT nextval('income_id_seq'),
+    frequency_id        INT             NOT NULL,
+    income_type_id      INT             NOT NULL,
+    user_id             INT             NOT NULL,
+    u_payment_method_id INT             NULL,
+    amount              DECIMAL(18, 2)  NOT NULL,
+    received_from       VARCHAR(255)    NULL,
+    received            BOOLEAN         DEFAULT false NOT NULL,
+    received_on         TIMESTAMP       NULL,
+    description         TEXT            NULL,
+    created_date        TIMESTAMP       DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    modified_date       TIMESTAMP       NULL,
+    created_by          VARCHAR(100)    NULL,
+    modified_by         VARCHAR(100)    NULL,
+    CONSTRAINT pk_income PRIMARY KEY (id),
+    CONSTRAINT fk_income_frequency FOREIGN KEY (frequency_id) REFERENCES admin_frequencies (id),
+    CONSTRAINT fk_income_incometype FOREIGN KEY (income_type_id) REFERENCES admin_income_types (id),
+    CONSTRAINT fk_income_user FOREIGN KEY (user_id) REFERENCES admin_users (id)
+);
+
+CREATE TABLE investment (
+    id                  INT            NOT NULL DEFAULT nextval('investment_id_seq'),
+    frequency_id        INT             NOT NULL,
+    user_id             INT             NOT NULL,
+    u_payment_method_id INT             NULL,
+    category_id         INT             NOT NULL,
+    type_id             INT             NOT NULL,
+    amount              DECIMAL(18, 2)  NOT NULL,
+    rate                DECIMAL(5, 2)   NULL,
+    tenure              DECIMAL(5, 2)   NULL,
+    invested_in         VARCHAR(255)    NULL,
+    invested_date       TIMESTAMP       NULL,
+    invested            BOOLEAN         DEFAULT false NOT NULL,
+    description         TEXT            NULL,
+    created_date        TIMESTAMP       DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    modified_date       TIMESTAMP       NULL,
+    created_by          VARCHAR(100)    NULL,
+    modified_by         VARCHAR(100)    NULL,
+    CONSTRAINT pk_investment PRIMARY KEY (id),
+    CONSTRAINT fk_investment_userpaymentmethod FOREIGN KEY (u_payment_method_id) REFERENCES admin_user_payment_methods (id),
+    CONSTRAINT fk_investment_category FOREIGN KEY (category_id) REFERENCES admin_investment_category (id),
+    CONSTRAINT fk_investment_type FOREIGN KEY (type_id) REFERENCES admin_investment_type (id),
+    CONSTRAINT fk_investment_frequency FOREIGN KEY (frequency_id) REFERENCES admin_frequencies (id),
+    CONSTRAINT fk_investment_user FOREIGN KEY (user_id) REFERENCES admin_users (id)
+);

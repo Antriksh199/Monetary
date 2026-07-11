@@ -25,31 +25,64 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="DL\Mappings\InvestmentType.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\InvestmentType.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="DL\hibernate.cfg.xml" />
-    <EmbeddedResource Include="DL\Mappings\Bank.hbm.xml" />
-    <EmbeddedResource Include="DL\Mappings\Card.hbm.xml" />
-    <EmbeddedResource Include="DL\Mappings\Cash.hbm.xml" />
-    <EmbeddedResource Include="DL\Mappings\ExpenseCategory.hbm.xml" />
-    <EmbeddedResource Include="DL\Mappings\ExpenseType.hbm.xml" />
-    <EmbeddedResource Include="DL\Mappings\frequency.hbm.xml" />
-    <EmbeddedResource Include="DL\Mappings\IncomeType.hbm.xml" />
-    <EmbeddedResource Include="DL\Mappings\InvestmentCategory.hbm.xml" />
-    <EmbeddedResource Include="DL\Mappings\PaymentMethod.hbm.xml" />
-    <EmbeddedResource Include="DL\Mappings\UPI.hbm.xml" />
-    <EmbeddedResource Include="DL\Mappings\User.hbm.xml" />
-    <EmbeddedResource Include="DL\Mappings\UserPaymentMethod.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\Bank.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DL\Mappings\Card.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DL\Mappings\Cash.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DL\Mappings\ExpenseCategory.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DL\Mappings\ExpenseType.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DL\Mappings\frequency.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DL\Mappings\IncomeType.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DL\Mappings\InvestmentCategory.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DL\Mappings\PaymentMethod.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DL\Mappings\UPI.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DL\Mappings\User.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DL\Mappings\UserPaymentMethod.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.20" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
     <PackageReference Include="NHibernate" Version="5.5.2" />
+    <PackageReference Include="Npgsql" Version="10.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="DL\NHibernate.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
 
 </Project>

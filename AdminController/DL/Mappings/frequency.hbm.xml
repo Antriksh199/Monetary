@@ -3,12 +3,11 @@
                    assembly="AdminController"
                    namespace="AdminController.DL.Entities">
 
-	<class name="Frequency" table="Admin_Frequencies">
+	<class name="Frequency" table="admin_frequencies">
 
-		<!-- Inherited from BaseModel -->
-		<id name="Id" column="Id">
-			<generator class="sequence" >
-				<param name="sequence">AdminFrequencies_Id_Seq</param>
+		<id name="Id" column="id">
+			<generator class="sequence">
+				<param name="sequence">admin_frequencies_id_seq</param>
 			</generator>
 		</id>
 
@@ -18,8 +17,7 @@
 		<property name="CreatedBy" column="created_by" type="String" />
 		<property name="ModifiedBy" column="modified_by" type="String" />
 
-		<!-- Own property -->
-		<property name="Value" column="Value" />
+		<property name="Value" column="value" type="Int32" />
 
 	</class>
 </hibernate-mapping>

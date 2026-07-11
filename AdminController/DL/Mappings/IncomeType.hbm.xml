@@ -3,11 +3,11 @@
                    assembly="AdminController"
                    namespace="AdminController.DL.Entities">
 
-	<class name="IncomeType" table="Admin_Income_Types">
+	<class name="IncomeType" table="admin_income_types">
 
-		<id name="Id" column="Id">
-			<generator class="sequence" >
-				<param name="sequence">AdminIncomeTypes_Id_Seq</param>
+		<id name="Id" column="id">
+			<generator class="sequence">
+				<param name="sequence">admin_income_type_id_seq</param>
 			</generator>
 		</id>
 		<property name="Name" column="name" type="String"/>

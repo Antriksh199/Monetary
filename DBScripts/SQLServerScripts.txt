@@ -1,0 +1,305 @@
+BEGIN TRANSACTION
+GO
+
+-- =========================================================================
+-- STEP 1: CREATE ALL INDEPENDENT SEQUENCE OBJECTS
+-- =========================================================================
+
+CREATE SEQUENCE [dbo].[AdminPaymentMethods_Id_Seq] START WITH 1 INCREMENT BY 1 NO CACHE;
+CREATE SEQUENCE [dbo].[AdminUserss_Id_Seq] START WITH 1 INCREMENT BY 1 NO CACHE;
+CREATE SEQUENCE [dbo].[AdminUserPaymentMethods_Id_Seq] START WITH 1 INCREMENT BY 1 NO CACHE;
+CREATE SEQUENCE [dbo].[AdminUserBanks_Id_Seq] START WITH 1 INCREMENT BY 1 NO CACHE;
+CREATE SEQUENCE [dbo].[AdminUserCards_Id_Seq] START WITH 1 INCREMENT BY 1 NO CACHE;
+CREATE SEQUENCE [dbo].[AdminUserCash_Id_Seq] START WITH 1 INCREMENT BY 1 NO CACHE;
+CREATE SEQUENCE [dbo].[AdminUserUpis_Id_Seq] START WITH 1 INCREMENT BY 1 NO CACHE;
+CREATE SEQUENCE [dbo].[AdminExpenseCategory_Id_Seq] START WITH 1 INCREMENT BY 1 NO CACHE;
+CREATE SEQUENCE [dbo].[AdminExpenseTypes_Id_Seq] START WITH 1 INCREMENT BY 1 NO CACHE;
+CREATE SEQUENCE [dbo].[AdminFrequencies_Id_Seq] START WITH 1 INCREMENT BY 1 NO CACHE;
+CREATE SEQUENCE [dbo].[AdminIncomeTypes_Id_Seq] START WITH 1 INCREMENT BY 1 NO CACHE;
+CREATE SEQUENCE [dbo].[AdminInvestmentCategory_Id_Seq] START WITH 1 INCREMENT BY 1 NO CACHE;
+CREATE SEQUENCE [dbo].[AdminInvestmentType_Id_Seq] START WITH 1 INCREMENT BY 1 NO CACHE;
+CREATE SEQUENCE [dbo].[Income_Id_Seq] START WITH 1 INCREMENT BY 1 NO CACHE;
+CREATE SEQUENCE [dbo].[Expense_Id_Seq] START WITH 1 INCREMENT BY 1 NO CACHE;
+CREATE SEQUENCE [dbo].[Investment_Id_Seq] START WITH 1 INCREMENT BY 1 NO CACHE;
+GO
+
+-- =========================================================================
+-- STEP 2: CREATE PRIMARY CONFIGURATION & LOOKUP TABLES (No Dependencies)
+-- =========================================================================
+
+-- File: PaymentMethod.hbm.xml
+CREATE TABLE [dbo].[Admin_Payment_Methods] (
+    [Id]            INT            DEFAULT (NEXT VALUE FOR [dbo].[AdminPaymentMethods_Id_Seq]) NOT NULL,
+    [Name]          VARCHAR (255)  NULL,
+    [Description]   VARCHAR (255)  NULL,
+    [created_date]  DATETIME       NULL,
+    [modified_date] DATETIME       NULL,
+    [created_by]    VARCHAR (255)  NULL,
+    [modified_by]   VARCHAR (255)  NULL,
+    CONSTRAINT [PK_Admin_Payment_Methods] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+GO
+
+-- File: User.hbm.xml
+CREATE TABLE [dbo].[Admin_Users] (
+    [Id]            INT            DEFAULT (NEXT VALUE FOR [dbo].[AdminUserss_Id_Seq]) NOT NULL,
+    [username]      VARCHAR (255)  NULL,
+    [first_name]    VARCHAR (255)  NULL,
+    [last_name]     VARCHAR (255)  NULL,
+    [middle_name]   VARCHAR (255)  NULL,
+    [email]         VARCHAR (255)  NULL,
+    [active]        BIT            NULL,
+    [created_date]  DATETIME       NULL,
+    [modified_date] DATETIME       NULL,
+    [created_by]    VARCHAR (255)  NULL,
+    [modified_by]   VARCHAR (255)  NULL,
+    CONSTRAINT [PK_Admin_Users] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [UQ_Admin_Users_Username] UNIQUE ([username] ASC)
+);
+GO
+
+-- File: ExpenseCategory.hbm.xml
+CREATE TABLE [dbo].[Admin_Expense_Category] (
+    [Id]            INT            DEFAULT (NEXT VALUE FOR [dbo].[AdminExpenseCategory_Id_Seq]) NOT NULL,
+    [Name]          VARCHAR (255)  NULL,
+    [created_date]  DATETIME       NULL,
+    [modified_date] DATETIME       NULL,
+    [created_by]    VARCHAR (255)  NULL,
+    [modified_by]   VARCHAR (255)  NULL,
+    CONSTRAINT [PK_Admin_Expense_Category] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+GO
+
+-- File: frequency.hbm.xml
+CREATE TABLE [dbo].[Admin_Frequencies] (
+    [Id]            INT            DEFAULT (NEXT VALUE FOR [dbo].[AdminFrequencies_Id_Seq]) NOT NULL,
+    [name]          VARCHAR (255)  NULL,
+    [Value]         INT            NULL,
+    [created_date]  DATETIME       NULL,
+    [modified_date] DATETIME       NULL,
+    [created_by]    VARCHAR (255)  NULL,
+    [modified_by]   VARCHAR (255)  NULL,
+    CONSTRAINT [PK_Admin_Frequencies] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+GO
+
+-- File: IncomeType.hbm.xml
+CREATE TABLE [dbo].[Admin_Income_Types] (
+    [Id]            INT            DEFAULT (NEXT VALUE FOR [dbo].[AdminIncomeTypes_Id_Seq]) NOT NULL,
+    [name]          VARCHAR (255)  NULL,
+    [description]   VARCHAR (255)  NULL,
+    [created_date]  DATETIME       NULL,
+    [modified_date] DATETIME       NULL,
+    [created_by]    VARCHAR (255)  NULL,
+    [modified_by]   VARCHAR (255)  NULL,
+    CONSTRAINT [PK_Admin_Income_Types] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+GO
+
+-- File: InvestmentCategory.hbm.xml
+CREATE TABLE [dbo].[Admin_Investment_Category] (
+    [Id]            INT            DEFAULT (NEXT VALUE FOR [dbo].[AdminInvestmentCategory_Id_Seq]) NOT NULL,
+    [Name]          VARCHAR (255)  NULL,
+    [created_date]  DATETIME       NULL,
+    [modified_date] DATETIME       NULL,
+    [created_by]    VARCHAR (255)  NULL,
+    [modified_by]   VARCHAR (255)  NULL,
+    CONSTRAINT [PK_Admin_Investment_Category] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+GO
+
+-- =========================================================================
+-- STEP 3: CREATE LEVEL 1 DEPENDENT TABLES (References Step 2 Tables)
+-- =========================================================================
+
+-- File: UserPaymentMethod.hbm.xml
+CREATE TABLE [dbo].[Admin_User_Payment_Methods] (
+    [Id]                INT            DEFAULT (NEXT VALUE FOR [dbo].[AdminUserPaymentMethods_Id_Seq]) NOT NULL,
+    [USER_ID]           INT            NOT NULL,
+    [PAYMENT_METHOD_ID] INT            NOT NULL,
+    [created_date]      DATETIME       NULL,
+    [modified_date]     DATETIME       NULL,
+    [created_by]        VARCHAR (255)  NULL,
+    [modified_by]       VARCHAR (255)  NULL,
+    CONSTRAINT [PK_Admin_User_Payment_Methods] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_UserPaymentMethods_User] FOREIGN KEY ([USER_ID]) REFERENCES [dbo].[Admin_Users] ([Id]),
+    CONSTRAINT [FK_UserPaymentMethods_Method] FOREIGN KEY ([PAYMENT_METHOD_ID]) REFERENCES [dbo].[Admin_Payment_Methods] ([Id])
+);
+GO
+
+-- File: ExpenseType.hbm.xml
+CREATE TABLE [dbo].[Admin_Expense_Type] (
+    [Id]                  INT            DEFAULT (NEXT VALUE FOR [dbo].[AdminExpenseTypes_Id_Seq]) NOT NULL,
+    [Expense_Category_Id] INT            NULL,
+    [name]                VARCHAR (255)  NULL,
+    [created_date]        DATETIME       NULL,
+    [modified_date]       DATETIME       NULL,
+    [created_by]          VARCHAR (255)  NULL,
+    [modified_by]         VARCHAR (255)  NULL,
+    CONSTRAINT [PK_Admin_Expense_Type] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_ExpenseType_Category] FOREIGN KEY ([Expense_Category_Id]) REFERENCES [dbo].[Admin_Expense_Category] ([Id])
+);
+GO
+
+-- File: InvestmentType.hbm.xml
+CREATE TABLE [dbo].[Admin_Investment_Type] (
+    [Id]            INT            DEFAULT (NEXT VALUE FOR [dbo].[AdminInvestmentType_Id_Seq]) NOT NULL,
+    [Category_Id]   INT            NULL,
+    [Growth]        DECIMAL (18, 4) NULL,
+    [Risk]          VARCHAR (255)  NULL,
+    [name]          VARCHAR (255)  NULL,
+    [created_date]  DATETIME       NULL,
+    [modified_date] DATETIME       NULL,
+    [created_by]    VARCHAR (255)  NULL,
+    [modified_by]   VARCHAR (255)  NULL,
+    CONSTRAINT [PK_Admin_Investment_Type] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_InvestmentType_Category] FOREIGN KEY ([Category_Id]) REFERENCES [dbo].[Admin_Investment_Category] ([Id])
+);
+GO
+
+-- =========================================================================
+-- STEP 4: CREATE LEVEL 2 DEPENDENT TABLES (Concrete Payment Extensions)
+-- =========================================================================
+
+-- File: Bank.hbm.xml
+CREATE TABLE [dbo].[Admin_User_Banks] (
+    [Id]                  INT            DEFAULT (NEXT VALUE FOR [dbo].[AdminUserBanks_Id_Seq]) NOT NULL,
+    [U_PAYMENT_METHOD_ID] INT            NULL,
+    [Bank]                VARCHAR (255)  NOT NULL,
+    [Account_Type]        VARCHAR (255)  NOT NULL,
+    [Account_Number]      VARCHAR (255)  NOT NULL,
+    [IFSC]                VARCHAR (255)  NOT NULL,
+    [created_date]        DATETIME       NULL,
+    [modified_date]       DATETIME       NULL,
+    [created_by]          VARCHAR (255)  NULL,
+    [modified_by]         VARCHAR (255)  NULL,
+    CONSTRAINT [PK_Admin_User_Banks] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_UserBanks_PaymentMethod] FOREIGN KEY ([U_PAYMENT_METHOD_ID]) REFERENCES [dbo].[Admin_User_Payment_Methods] ([Id])
+);
+GO
+
+-- File: Card.hbm.xml
+CREATE TABLE [dbo].[Admin_User_Cards] (
+    [Id]                  INT            DEFAULT (NEXT VALUE FOR [dbo].[AdminUserCards_Id_Seq]) NOT NULL,
+    [U_PAYMENT_METHOD_ID] INT            NULL,
+    [Provider]            VARCHAR (255)  NOT NULL,
+    [name]                VARCHAR (255)  NOT NULL,
+    [Card_Number]         VARCHAR (255)  NOT NULL,
+    [CVV]                 INT            NOT NULL,
+    [card_type]           VARCHAR (255)  NOT NULL,
+    [Expiry_Date]         DATE           NULL,
+    [created_date]        DATETIME       NULL,
+    [modified_date]       DATETIME       NULL,
+    [created_by]          VARCHAR (255)  NULL,
+    [modified_by]         VARCHAR (255)  NULL,
+    CONSTRAINT [PK_Admin_User_Cards] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_UserCards_PaymentMethod] FOREIGN KEY ([U_PAYMENT_METHOD_ID]) REFERENCES [dbo].[Admin_User_Payment_Methods] ([Id])
+);
+GO
+
+-- File: Cash.hbm.xml
+CREATE TABLE [dbo].[Admin_User_Cash] (
+    [Id]                  INT            DEFAULT (NEXT VALUE FOR [dbo].[AdminUserCash_Id_Seq]) NOT NULL,
+    [U_PAYMENT_METHOD_ID] INT            NULL,
+    [created_date]        DATETIME       NULL,
+    [modified_date]       DATETIME       NULL,
+    [created_by]          VARCHAR (255)  NULL,
+    [modified_by]         VARCHAR (255)  NULL,
+    CONSTRAINT [PK_Admin_User_Cash] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_UserCash_PaymentMethod] FOREIGN KEY ([U_PAYMENT_METHOD_ID]) REFERENCES [dbo].[Admin_User_Payment_Methods] ([Id])
+);
+GO
+
+-- File: UPI.hbm.xml
+CREATE TABLE [dbo].[Admin_User_UPI] (
+    [Id]                  INT            DEFAULT (NEXT VALUE FOR [dbo].[AdminUserUpis_Id_Seq]) NOT NULL,
+    [U_PAYMENT_METHOD_ID] INT            NULL,
+    [Upi_Id]              VARCHAR (255)  NOT NULL,
+    [created_date]        DATETIME       NULL,
+    [modified_date]       DATETIME       NULL,
+    [created_by]          VARCHAR (255)  NULL,
+    [modified_by]         VARCHAR (255)  NULL,
+    CONSTRAINT [PK_Admin_User_UPI] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_UserUPI_PaymentMethod] FOREIGN KEY ([U_PAYMENT_METHOD_ID]) REFERENCES [dbo].[Admin_User_Payment_Methods] ([Id])
+);
+GO
+
+CREATE TABLE [dbo].[Expense] (
+    [Id]                  INT             DEFAULT (NEXT VALUE FOR [dbo].[Expense_Id_Seq]) NOT NULL,
+    [FREQUENCY_ID]        INT             NOT NULL,
+    [USER_ID]             INT             NOT NULL,
+    [U_PAYMENT_METHOD_ID] INT             NULL,
+    [Category_ID]         INT             NOT NULL,
+    [Type_ID]             INT             NOT NULL,
+    [AMOUNT]              DECIMAL (18, 2) NOT NULL,
+    [Paid_To]             NVARCHAR (255)  NULL,
+    [Paid_Date]           DATETIME        NULL,
+    [Paid]                BIT             DEFAULT ((0)) NOT NULL,
+    [Description]         NVARCHAR (MAX)  NULL,
+    [created_date]        DATETIME        DEFAULT (getdate()) NOT NULL,
+    [modified_date]       DATETIME        NULL,
+    [created_by]          NVARCHAR (100)  NULL,
+    [modified_by]         NVARCHAR (100)  NULL,
+    CONSTRAINT [PK_Expense] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_Expense_Frequency] FOREIGN KEY ([FREQUENCY_ID]) REFERENCES [dbo].[Admin_Frequencies] ([Id]),
+    CONSTRAINT [FK_Expense_User] FOREIGN KEY ([USER_ID]) REFERENCES [dbo].[Admin_Users] ([Id]),
+    CONSTRAINT [FK_Expense_UserPaymentMethod] FOREIGN KEY ([U_PAYMENT_METHOD_ID]) REFERENCES [dbo].[Admin_User_Payment_Methods] ([Id]),
+    CONSTRAINT [FK_Expense_Category] FOREIGN KEY ([Category_ID]) REFERENCES [dbo].[Admin_Expense_Category] ([Id]),
+    CONSTRAINT [FK_Expense_Type] FOREIGN KEY ([Type_ID]) REFERENCES [dbo].[Admin_Expense_Type] ([Id])
+);
+GO
+
+CREATE TABLE [dbo].[Income] (
+    [Id]                  INT             DEFAULT (NEXT VALUE FOR [dbo].[Income_Id_Seq]) NOT NULL,
+    [FREQUENCY_ID]        INT             NOT NULL,
+    [INCOME_TYPE_ID]      INT             NOT NULL,
+    [USER_ID]             INT             NOT NULL,
+    [U_PAYMENT_METHOD_ID] INT             NULL,
+    [AMOUNT]              DECIMAL (18, 2) NOT NULL,
+    [Received_From]       NVARCHAR (255)  NULL,
+    [Received]            BIT             DEFAULT ((0)) NOT NULL,
+    [Received_On]         DATETIME        NULL,
+    [Description]         NVARCHAR (MAX)  NULL,
+    [created_date]        DATETIME        DEFAULT (getdate()) NOT NULL,
+    [modified_date]       DATETIME        NULL,
+    [created_by]          NVARCHAR (100)  NULL,
+    [modified_by]         NVARCHAR (100)  NULL,
+    CONSTRAINT [PK_Income] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_Income_Frequency] FOREIGN KEY ([FREQUENCY_ID]) REFERENCES [dbo].[Admin_Frequencies] ([Id]),
+    CONSTRAINT [FK_Income_IncomeType] FOREIGN KEY ([INCOME_TYPE_ID]) REFERENCES [dbo].[Admin_Income_Types] ([Id]),
+    CONSTRAINT [FK_Income_User] FOREIGN KEY ([USER_ID]) REFERENCES [dbo].[Admin_Users] ([Id])
+);
+
+GO
+
+CREATE TABLE [dbo].[Investment] (
+    [Id]                  INT             DEFAULT (NEXT VALUE FOR [dbo].[Investment_Id_Seq]) NOT NULL,
+    [FREQUENCY_ID]        INT             NOT NULL,
+    [USER_ID]             INT             NOT NULL,
+    [U_PAYMENT_METHOD_ID] INT             NULL,
+    [Category_ID]         INT             NOT NULL,
+    [Type_ID]             INT             NOT NULL,
+    [AMOUNT]              DECIMAL (18, 2) NOT NULL,
+    [Rate]                DECIMAL (5, 2)  NULL,
+    [Tenure]              DECIMAL (5, 2)  NULL,
+    [Invested_In]         NVARCHAR (255)  NULL,
+    [Invested_Date]       DATETIME        NULL,
+    [Invested]            BIT             DEFAULT ((0)) NOT NULL,
+    [Description]         NVARCHAR (MAX)  NULL,
+    [created_date]        DATETIME        DEFAULT (getdate()) NOT NULL,
+    [modified_date]       DATETIME        NULL,
+    [created_by]          NVARCHAR (100)  NULL,
+    [modified_by]         NVARCHAR (100)  NULL,
+    CONSTRAINT [PK_Investment] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_Investment_UserPaymentMethod] FOREIGN KEY ([U_PAYMENT_METHOD_ID]) REFERENCES [dbo].[Admin_User_Payment_Methods] ([Id]),
+    CONSTRAINT [FK_Investment_Category] FOREIGN KEY ([Category_ID]) REFERENCES [dbo].[Admin_Investment_Category] ([Id]),
+    CONSTRAINT [FK_Investment_Type] FOREIGN KEY ([Type_ID]) REFERENCES [dbo].[Admin_Investment_Type] ([Id]),
+    CONSTRAINT [FK_Investment_Frequency] FOREIGN KEY ([FREQUENCY_ID]) REFERENCES [dbo].[Admin_Frequencies] ([Id]),
+    CONSTRAINT [FK_Investment_User] FOREIGN KEY ([USER_ID]) REFERENCES [dbo].[Admin_Users] ([Id])
+);
+
+
+
+
+COMMIT TRANSACTION;
+GO

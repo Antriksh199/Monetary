@@ -6,21 +6,21 @@
 	<class name="UPI" table="Admin_User_UPI">
 
 		<!-- Primary Key (assuming auto-generated) -->
-		<id name="Id" column="Id">
-			<generator class="sequence" >
-				<param name="sequence">AdminUserUpis_Id_Seq</param>
+		<id name="Id" column="id">
+			<generator class="sequence">
+				<param name="sequence">admin_user_upi_id_seq</param>
 			</generator>
 		</id>
 
 		<!-- Reference to UserPaymentMethod -->
 		<many-to-one name="UPaymentMethod"
-					 column="U_PAYMENT_METHOD_ID"
+					 column="u_payment_method_id"
 					 class="UserPaymentMethod"
 					 lazy ="proxy"
 					 fetch="join"
 					 cascade="all" />
 
-		<property name="UpiId" column="Upi_Id" type="String" not-null="true"/>
+		<property name="UpiId" column="upi_id" type="String" not-null="true"/>
 
 		<property name="CreatedDate" column="created_date" type="DateTime"/>
 		<property name="ModifiedDate" column="modified_date" type="DateTime" />

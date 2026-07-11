@@ -5,12 +5,12 @@
 
 	<class name="ExpenseType" table="Admin_Expense_Type" lazy="true">
 
-		<id name="Id" column="Id">
-			<generator class="sequence" >
-				<param name="sequence">AdminExpenseTypes_Id_Seq</param>
+		<id name="Id" column="id">
+			<generator class="sequence">
+				<param name="sequence">admin_user_banks_id_seq</param>
 			</generator>
 		</id>
-		<property name="ExpenseCategoryId" column="Expense_Category_Id" type="int"/>
+		<property name="ExpenseCategoryId" column="expense_category_id" type="int"/>
 
 		<property name="Name" column="name" type="String"/>
 		<property name="CreatedDate" column="created_date" type="DateTime"/>

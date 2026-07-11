@@ -3,16 +3,16 @@
                    assembly="AdminController"
                    namespace="AdminController.DL.Entities">
 
-	<class name="PaymentMethod" table="Admin_Payment_Methods" lazy ="true" >
+	<class name="PaymentMethod" table="admin_payment_methods" lazy ="true" >
 
-		<id name="Id" column="Id">
-			<generator class="sequence" >
-				<param name="sequence">AdminPaymentMethods_Id_Seq</param>
+		<id name="Id" column="id">
+			<generator class="sequence">
+				<param name="sequence">admin_user_payment_methods_id_seq</param>
 			</generator>
 		</id>
 
-		<property name="Name" column="Name" type="String"/>
-		<property name="Description" column="Description" type="String"/>
+		<property name="Name" column="name" type="String"/>
+		<property name="Description" column="description" type="String"/>
 		<property name="CreatedDate" column="created_date" type="DateTime"/>
 		<property name="ModifiedDate" column="modified_date" type="DateTime" />
 		<property name="CreatedBy" column="created_by" type="String" />

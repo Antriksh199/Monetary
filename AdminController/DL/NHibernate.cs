@@ -1,13 +1,14 @@
-﻿using System.Configuration;
-using static System.Environment;
+﻿using System;
+using System.IO;
 using System.Reflection;
 
-using AdminController.DL.Implementation;
+using Microsoft.Extensions.Configuration; // Assuming you are using Microsoft.Extensions.Configuration
 
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Dialect;
 using NHibernate.Driver;
+
 namespace AdminController.DL
 {
     public class NHibernateHelper
@@ -19,29 +20,34 @@ namespace AdminController.DL
         {
             _config = conf;
         }
+
         public static void Initialize(IConfiguration config)
         {
             if (sessionFactory != null) return;
+
             var dbHost = config["DB_HOST"];
             var db = config["DATABASE"];
             var dbUser = config["USER_ID"];
             var dbPassword = config["Password"];
-            var connectionString = String.Format("Server={0};Database={1};User Id={2};Password={3};TrustServerCertificate=True;", dbHost, db, dbUser, dbPassword);
+
+            // 1. Updated connection string standard for PostgreSQL / Npgsql
+            var connectionString = String.Format("Host={0};Database={1};Username={2};Password={3};", dbHost, db, dbUser, dbPassword);
+
             var configure = new NHibernate.Cfg.Configuration();
             configure.Configure(Path.Combine(Directory.GetCurrentDirectory(), "DL", "hibernate.cfg.xml"));
 
-            configure.DataBaseIntegration(db =>
+            configure.DataBaseIntegration(dbConfig =>
             {
-                db.ConnectionString = connectionString;
-                db.Dialect<MsSql2012Dialect>();
-                db.Driver<MicrosoftDataSqlClientDriver>();
-                db.ConnectionProvider<NHibernate.Connection.DriverConnectionProvider>();
-                db.Timeout = 10;
-                db.LogSqlInConsole = true;
-                db.LogFormattedSql = true;
+                dbConfig.ConnectionString = connectionString;
+                dbConfig.Dialect<PostgreSQLDialect>();
+                dbConfig.Driver<NpgsqlDriver>();
+
+                dbConfig.ConnectionProvider<NHibernate.Connection.DriverConnectionProvider>();
+                dbConfig.Timeout = 10;
+                dbConfig.LogSqlInConsole = true;
+                dbConfig.LogFormattedSql = true;
             });
 
-            configure.SetProperty("hbm2ddl.auto_keywords", "none");
             configure.AddAssembly(Assembly.GetExecutingAssembly());
             sessionFactory = configure.BuildSessionFactory();
         }

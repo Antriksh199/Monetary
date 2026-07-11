@@ -7,39 +7,39 @@
 
 		<id name="Id" column="Id">
 			<generator class="sequence" >
-				<param name="sequence">Investment_Id_Seq</param>
+				<param name="sequence">investment_Id_Seq</param>
 			</generator>
 		</id>
 
-		<many-to-one name="Frequency" class="Frequency" column="FREQUENCY_ID"
+		<many-to-one name="Frequency" class="Frequency" column="frequency_id"
 					 lazy ="proxy"
 					 fetch="join"/>
-		<many-to-one name="User" class="User" column="USER_ID"
+		<many-to-one name="User" class="User" column="user_id"
 					 lazy ="proxy"
 					 fetch="join"/>
 		<many-to-one name="InvestedVia"
-					 column="U_PAYMENT_METHOD_ID"
+					 column="u_payment_method_id"
 					 class="UserPaymentMethod"
 					 lazy ="proxy"
 					 fetch="join"/>
 		<many-to-one name="InvestmentCategory"
-					 column="Category_ID"
+					 column="category_id"
 					 class="InvestmentCategory"
 					 lazy ="proxy"
 					 fetch="join"/>
 		<many-to-one name="InvestmentType"
-					 column="Type_ID"
+					 column="type_id"
 					 class="InvestmentType"
 					 lazy ="proxy"
 					 fetch="join"/>
 
-		<property name="Value" column="AMOUNT" type="Decimal"/>
-		<property name="GrowthRate" column="Rate" type="Decimal"/>
-		<property name="Tenure" column="Tenure" type="Decimal" />
-		<property name="InvestedTo" column="Invested_In" type="String"/>
-		<property name="InvestedOn" column="Invested_Date" type="DateTime"/>
-		<property name="Invested" column="Invested" type="Boolean"/>
-		<property name="Description" column="Description" type="String"/>
+		<property name="Value" column="amount" type="Decimal"/>
+		<property name="GrowthRate" column="rate" type="Decimal"/>
+		<property name="Tenure" column="tenure" type="Decimal" />
+		<property name="InvestedTo" column="invested_in" type="String"/>
+		<property name="InvestedOn" column="invested_date" type="DateTime"/>
+		<property name="Invested" column="invested" type="Boolean"/>
+		<property name="Description" column="description" type="String"/>
 		<property name="CreatedDate" column="created_date" type="DateTime"/>
 		<property name="ModifiedDate" column="modified_date" type="DateTime" />
 		<property name="CreatedBy" column="created_by" type="String" />

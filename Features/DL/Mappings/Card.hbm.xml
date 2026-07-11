@@ -6,28 +6,28 @@
 	<class name="Card" table="Admin_User_Cards">
 
 		<!-- Primary Key (assuming auto-generated) -->
-		<id name="Id" column="Id">
-			<generator class="sequence" >
-				<param name="sequence">AdminUserCards_Id_Seq</param>
+		<id name="Id" column="id">
+			<generator class="sequence">
+				<param name="sequence">admin_user_cards_id_seq</param>
 			</generator>
 		</id>
 
 		<!-- Reference to UserPaymentMethod -->
 		<many-to-one name="UPaymentMethod"
-					 column="U_PAYMENT_METHOD_ID"
+					 column="u_payment_method_id"
 					 class="UserPaymentMethod"
 					 lazy ="proxy"
 					 fetch="join"
 					 cascade="all" />
 
-		<property name="Provider" column="Provider" type="String" not-null="true" />
+		<property name="Provider" column="provider" type="String" not-null="true" />
 		<property name="CustomerName" column="name" type="String" not-null="true" />
-		<property name="CardNumber" column="Card_Number" type="String" not-null="true" />
-		<property name="CVV" column="CVV" type="int" not-null="true" />
+		<property name="CardNumber" column="card_number" type="String" not-null="true" />
+		<property name="CVV" column="cvv" type="int" not-null="true" />
 		<property name="CardType" column="card_type" type="String" not-null="true" />
 		<!-- DateOnly (requires a custom type or stored as Date) -->
 		<property name="ExpiryDate"
-				  column="Expiry_Date"
+				  column="expiry_date"
 				  type="date" />
 		<!-- or use a custom IUserType for DateOnly -->
 

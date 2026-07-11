@@ -3,14 +3,14 @@
                    assembly="AdminController"
                    namespace="AdminController.DL.Entities">
 
-	<class name="UserPaymentMethod" table="Admin_User_Payment_Methods" lazy ="true" >
+	<class name="UserPaymentMethod" table="admin_user_payment_methods" lazy ="true" >
 
-		<id name="Id" column="Id">
-			<generator class="sequence" >
-				<param name="sequence">AdminUserPaymentMethods_Id_Seq</param>
+		<id name="Id" column="id">
+			<generator class="sequence">
+				<param name="sequence">admin_user_payment_methods_id_seq</param>
 			</generator>
 		</id>
-		<many-to-one name="User" class="User" column="USER_ID" not-null="true" lazy ="proxy" fetch="join" />
+		<many-to-one name="User" class="User" column="user_id" not-null="true" lazy ="proxy" fetch="join" />
 		<many-to-one name="PaymentMethod" class="PaymentMethod" column="PAYMENT_METHOD_ID" not-null="true" lazy ="proxy" fetch="join"/>
 		<property name="CreatedDate" column="created_date" type="DateTime"/>
 		<property name="ModifiedDate" column="modified_date" type="DateTime" />

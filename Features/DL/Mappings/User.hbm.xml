@@ -4,9 +4,9 @@
                    namespace="Features.DL.Entities">
 
 	<class name="User" table="Admin_Users" lazy ="true" >
-		<id name="Id" column="Id">
-			<generator class="sequence" >
-				<param name="sequence">AdminUserss_Id_Seq</param>
+		<id name="Id" column="id">
+			<generator class="sequence">
+				<param name="sequence">admin_user_id_seq</param>
 			</generator>
 		</id>
 
