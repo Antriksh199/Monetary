@@ -26,12 +26,12 @@ namespace AdminController.DL
             if (sessionFactory != null) return;
 
             var dbHost = config["DB_HOST"];
+            var port = config["PORT"];
             var db = config["DATABASE"];
             var dbUser = config["USER_ID"];
             var dbPassword = config["Password"];
 
-            // 1. Updated connection string standard for PostgreSQL / Npgsql
-            var connectionString = String.Format("Host={0};Database={1};Username={2};Password={3};", dbHost, db, dbUser, dbPassword);
+            var connectionString = String.Format("Host={0};Port={1};Database={2};Username={3};Password={4};Ssl Mode=Disable;", dbHost, port, db, dbUser, dbPassword);
 
             var configure = new NHibernate.Cfg.Configuration();
             configure.Configure(Path.Combine(Directory.GetCurrentDirectory(), "DL", "hibernate.cfg.xml"));
@@ -41,7 +41,6 @@ namespace AdminController.DL
                 dbConfig.ConnectionString = connectionString;
                 dbConfig.Dialect<PostgreSQLDialect>();
                 dbConfig.Driver<NpgsqlDriver>();
-
                 dbConfig.ConnectionProvider<NHibernate.Connection.DriverConnectionProvider>();
                 dbConfig.Timeout = 10;
                 dbConfig.LogSqlInConsole = true;

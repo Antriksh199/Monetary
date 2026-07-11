@@ -21,31 +21,33 @@ namespace Features.DL
         public static void Initialize(IConfiguration config)
         {
             if (sessionFactory != null) return;
+
             var dbHost = config["DB_HOST"];
+            var port = config["PORT"];
             var db = config["DATABASE"];
             var dbUser = config["USER_ID"];
             var dbPassword = config["Password"];
-            var connectionString = String.Format("Server={0};Database={1};User Id={2};Password={3};TrustServerCertificate=True;", dbHost, db, dbUser, dbPassword);
+
+            var connectionString = String.Format("Host={0};Port={1};Database={2};Username={3};Password={4};Ssl Mode=Disable;", dbHost, port, db, dbUser, dbPassword);
 
             var configure = new NHibernate.Cfg.Configuration();
             configure.Configure(Path.Combine(Directory.GetCurrentDirectory(), "DL", "hibernate.cfg.xml"));
 
-            configure.DataBaseIntegration(db =>
+            configure.DataBaseIntegration(dbConfig =>
             {
-                db.ConnectionString = connectionString;
-                db.Dialect<MsSql2012Dialect>();
-                db.Driver<MicrosoftDataSqlClientDriver>();
-                db.ConnectionProvider<NHibernate.Connection.DriverConnectionProvider>();
-                db.Timeout = 10;
-                db.LogSqlInConsole = true;
-                db.LogFormattedSql = true;
-
-                configure.SetProperty("hbm2ddl.auto_keywords", "none");
-                configure.AddAssembly(Assembly.GetExecutingAssembly());
-                sessionFactory = configure.BuildSessionFactory();
+                dbConfig.ConnectionString = connectionString;
+                dbConfig.Dialect<PostgreSQLDialect>();
+                dbConfig.Driver<NpgsqlDriver>();
+                dbConfig.ConnectionProvider<NHibernate.Connection.DriverConnectionProvider>();
+                dbConfig.Timeout = 10;
+                dbConfig.LogSqlInConsole = true;
+                dbConfig.LogFormattedSql = true;
             });
+
+            configure.AddAssembly(Assembly.GetExecutingAssembly());
+            sessionFactory = configure.BuildSessionFactory();
         }
-            public static NHibernate.ISession OpenSession()
+        public static NHibernate.ISession OpenSession()
             {
                 if (sessionFactory == null)
                     throw new InvalidOperationException("NHibernate not initialized. Call Initialize() first.");

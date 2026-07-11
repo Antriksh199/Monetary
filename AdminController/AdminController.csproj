@@ -4,70 +4,30 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>1332d03d-c2eb-48f1-ad02-7cf7eea5701c</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="DL\hibernate.cfg.xml" />
-    <None Remove="DL\Mappings\Bank.hbm.xml" />
-    <None Remove="DL\Mappings\Cash.hbm.xml" />
-    <None Remove="DL\Mappings\expensetype.hbm.xml" />
-    <None Remove="DL\Mappings\frequency.hbm.xml" />
-    <None Remove="DL\Mappings\incometype.hbm.xml" />
-    <None Remove="DL\Mappings\InvestmentCategory.hbm.xml" />
-    <None Remove="DL\Mappings\InvestmentType.hbm.xml" />
-    <None Remove="DL\Mappings\PaymentMethod.hbm.xml" />
-    <None Remove="DL\Mappings\UPI.hbm.xml" />
-    <None Remove="DL\Mappings\user.hbm.xml" />
-    <None Remove="DL\Mappings\UserPaymentMethod.hbm.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="DL\Mappings\InvestmentType.hbm.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
+    <None Remove="DL\Mappings\*.xml" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="DL\hibernate.cfg.xml" />
-    <EmbeddedResource Include="DL\Mappings\Bank.hbm.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DL\Mappings\Card.hbm.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DL\Mappings\Cash.hbm.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DL\Mappings\ExpenseCategory.hbm.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DL\Mappings\ExpenseType.hbm.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DL\Mappings\frequency.hbm.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DL\Mappings\IncomeType.hbm.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DL\Mappings\InvestmentCategory.hbm.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DL\Mappings\PaymentMethod.hbm.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DL\Mappings\UPI.hbm.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DL\Mappings\User.hbm.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DL\Mappings\UserPaymentMethod.hbm.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
+    <EmbeddedResource Include="DL\Mappings\InvestmentType.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\Bank.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\Card.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\Cash.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\ExpenseCategory.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\ExpenseType.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\frequency.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\IncomeType.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\InvestmentCategory.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\PaymentMethod.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\UPI.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\User.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\UserPaymentMethod.hbm.xml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -76,13 +36,6 @@
     <PackageReference Include="NHibernate" Version="5.5.2" />
     <PackageReference Include="Npgsql" Version="10.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="DL\NHibernate.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Compile>
   </ItemGroup>
 
 </Project>

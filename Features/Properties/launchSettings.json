@@ -5,7 +5,12 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DB_HOST": "",
+        "DB_PORT": "ignored",
+        "DATABASE": "monetary",
+        "USER_ID": "ignored;Integrated Security=True",
+        "PASSWORD": "ignored"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5048"
@@ -16,7 +21,8 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DB_HOST": "(localdb)\\mssqllocaldb",
+        "DB_HOST": "",
+        "DB_PORT": "ignored",
         "DATABASE": "monetary",
         "USER_ID": "ignored;Integrated Security=True",
         "PASSWORD": "ignored"
@@ -27,7 +33,13 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
-        "ASPNETCORE_HTTP_PORTS": "8080"
+        "ASPNETCORE_HTTP_PORTS": "8080",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DB_HOST": "",
+        "DB_PORT": "ignored",
+        "DATABASE": "monetary",
+        "USER_ID": "ignored;Integrated Security=True",
+        "PASSWORD": "ignored"
       },
       "publishAllPorts": true,
       "useSSL": false
