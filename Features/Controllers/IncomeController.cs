@@ -34,11 +34,10 @@ namespace Features.Controllers
             {
                 dBReturn.status = "FAILED";
                 dBReturn.ErrorMsg = "Income - Get() Failed with error "+ex.Message.ToString();
-                dBReturn.InnerException = ex.InnerException.ToString();
+                dBReturn.InnerException = ex.InnerException?.ToString() ?? "No Inner Exception";
                 return StatusCode(500, dBReturn);
             }
 
-            return dBReturn;
         }
 
         [HttpGet("latest/{id}")]
@@ -55,11 +54,10 @@ namespace Features.Controllers
             {
                 dBReturn.status = "FAILED";
                 dBReturn.ErrorMsg = "Income - GetLatest() Failed with error "+ex.Message.ToString();
-                dBReturn.InnerException = ex.InnerException.ToString();
+                dBReturn.InnerException = ex.InnerException?.ToString() ?? "No Inner Exception";
                 return StatusCode(500, dBReturn);
             }
 
-            return dBReturn;
         }
 
         [HttpGet("userincomes/{userId}")]
@@ -76,11 +74,10 @@ namespace Features.Controllers
             {
                 dBReturn.status = "FAILED";
                 dBReturn.ErrorMsg = "Income - GetIncomesforUser() Failed with error "+ex.Message.ToString();
-                dBReturn.InnerException = ex.InnerException.ToString();
+                dBReturn.InnerException = ex.InnerException?.ToString() ?? "No Inner Exception";
                 return StatusCode(500, dBReturn);
             }
 
-            return dBReturn;
         }
 
         [HttpGet("id")]
@@ -97,11 +94,10 @@ namespace Features.Controllers
             {
                 dBReturn.status = "FAILED";
                 dBReturn.ErrorMsg = "Income - Get(id) Failed with error "+ex.Message.ToString();
-                dBReturn.InnerException = ex.InnerException.ToString();
+                dBReturn.InnerException = ex.InnerException?.ToString() ?? "No Inner Exception";
                 return StatusCode(500, dBReturn);
             }
 
-            return dBReturn;
         }
 
         [HttpPost]
@@ -118,11 +114,10 @@ namespace Features.Controllers
             {
                 dBReturn.status = "FAILED";
                 dBReturn.ErrorMsg = "Income - Post(income) Failed with error "+ex.Message.ToString();
-                dBReturn.InnerException = ex.InnerException.ToString();
+                dBReturn.InnerException = ex.InnerException?.ToString() ?? "No Inner Exception";
                 return StatusCode(500, dBReturn);
             }
 
-            return dBReturn;
 
         }
 
@@ -140,7 +135,7 @@ namespace Features.Controllers
             {
                 dBReturn.status = "FAILED";
                 dBReturn.ErrorMsg = "Income - UpdateIncome(income) Failed with error "+ex.Message.ToString();
-                dBReturn.InnerException = ex.InnerException.ToString();
+                dBReturn.InnerException = ex.InnerException?.ToString() ?? "No Inner Exception";
                 return StatusCode(500, dBReturn);
             }
 
@@ -160,7 +155,7 @@ namespace Features.Controllers
             {
                 dBReturn.status = "FAILED";
                 dBReturn.ErrorMsg = "Income - DeleteIncome(id) Failed with error "+ex.Message.ToString();
-                dBReturn.InnerException = ex.InnerException.ToString();
+                dBReturn.InnerException = ex.InnerException?.ToString() ?? "No Inner Exception";
                 return StatusCode(500, dBReturn);
             }
         }

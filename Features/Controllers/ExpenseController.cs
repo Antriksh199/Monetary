@@ -33,7 +33,7 @@ namespace Features.Controllers
             {
                 dBReturn.status = "FAILED";
                 dBReturn.ErrorMsg = "Expense - Get() Failed with error "+ex.Message.ToString();
-                dBReturn.InnerException = ex.InnerException.ToString();
+                dBReturn.InnerException = ex.InnerException?.ToString() ?? "No Inner Exception";
                 return StatusCode(500, dBReturn);
             }
         }
@@ -52,7 +52,7 @@ namespace Features.Controllers
             {
                 dBReturn.status = "FAILED";
                 dBReturn.ErrorMsg = "Expense - GetLatest() Failed with error "+ex.Message.ToString();
-                dBReturn.InnerException = ex.InnerException.ToString();
+                dBReturn.InnerException = ex.InnerException?.ToString() ?? "No Inner Exception";
                 return StatusCode(500, dBReturn);
             }
         }
@@ -71,7 +71,7 @@ namespace Features.Controllers
             {
                 dBReturn.status = "FAILED";
                 dBReturn.ErrorMsg = "Expense - GetExpensesforUser() Failed with error "+ex.Message.ToString();
-                dBReturn.InnerException = ex.InnerException.ToString();
+                dBReturn.InnerException = ex.InnerException?.ToString() ?? "No Inner Exception";
                 return StatusCode(500, dBReturn);
             }
         }
@@ -90,7 +90,7 @@ namespace Features.Controllers
             {
                 dBReturn.status = "FAILED";
                 dBReturn.ErrorMsg = "Expense - Get(id) Failed with error "+ex.Message.ToString();
-                dBReturn.InnerException = ex.InnerException.ToString();
+                dBReturn.InnerException = ex.InnerException?.ToString() ?? "No Inner Exception";
                 return StatusCode(500, dBReturn);
             }
         }
@@ -109,7 +109,7 @@ namespace Features.Controllers
             {
                 dBReturn.status = "FAILED";
                 dBReturn.ErrorMsg = "Expense - Post(expense) Failed with error "+ex.Message.ToString();
-                dBReturn.InnerException = ex.InnerException.ToString();
+                dBReturn.InnerException = ex.InnerException?.ToString() ?? "No Inner Exception";
                 return StatusCode(500, dBReturn);
             }
         }
@@ -128,7 +128,7 @@ namespace Features.Controllers
             {
                 dBReturn.status = "FAILED";
                 dBReturn.ErrorMsg = "Expense - UpdateExpense(expense) Failed with error "+ex.Message.ToString();
-                dBReturn.InnerException = ex.InnerException.ToString();
+                dBReturn.InnerException = ex.InnerException?.ToString() ?? "No Inner Exception";
                 return StatusCode(500, dBReturn);
             }
 
@@ -148,7 +148,7 @@ namespace Features.Controllers
             {
                 dBReturn.status = "FAILED";
                 dBReturn.ErrorMsg = "Expense - DeleteExpense(id) Failed with error "+ex.Message.ToString();
-                dBReturn.InnerException = ex.InnerException.ToString();
+                dBReturn.InnerException = ex.InnerException?.ToString() ?? "No Inner Exception";
                 return StatusCode(500, dBReturn);
             }
 

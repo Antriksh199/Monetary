@@ -30,8 +30,6 @@ namespace AdminController.Controllers.Admin
                 dBReturn.Code = 200;
                 //_logger.Info("IncomeType - Get() completed !");
                 return Ok(dBReturn);
-                //_logger.Error(dBReturn.ErrorMsg);
-                return StatusCode(500, dBReturn);
             }
             catch (Exception ex)
             {

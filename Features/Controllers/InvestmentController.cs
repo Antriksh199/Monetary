@@ -33,7 +33,7 @@ namespace Features.Controllers
             {
                 dBReturn.status = "FAILED";
                 dBReturn.ErrorMsg = "Investment - Get() Failed with error "+ex.Message.ToString();
-                dBReturn.InnerException = ex.InnerException.ToString();
+                dBReturn.InnerException = ex.InnerException?.ToString() ?? "No Inner Exception";
                 return StatusCode(500, dBReturn);
             }
 
@@ -53,7 +53,7 @@ namespace Features.Controllers
             {
                 dBReturn.status = "FAILED";
                 dBReturn.ErrorMsg = "Investment - GetLatestInvestment() Failed with error "+ex.Message.ToString();
-                dBReturn.InnerException = ex.InnerException.ToString();
+                dBReturn.InnerException = ex.InnerException?.ToString() ?? "No Inner Exception";
                 return StatusCode(500, dBReturn);
             }
         }
@@ -72,7 +72,7 @@ namespace Features.Controllers
             {
                 dBReturn.status = "FAILED";
                 dBReturn.ErrorMsg = "Investment - GetInvestmentsforUser() Failed with error "+ex.Message.ToString();
-                dBReturn.InnerException = ex.InnerException.ToString();
+                dBReturn.InnerException = ex.InnerException?.ToString() ?? "No Inner Exception";
                 return StatusCode(500, dBReturn);
             }
         }
@@ -91,7 +91,7 @@ namespace Features.Controllers
             {
                 dBReturn.status = "FAILED";
                 dBReturn.ErrorMsg = "Investment - Get(id) Failed with error "+ex.Message.ToString();
-                dBReturn.InnerException = ex.InnerException.ToString();
+                dBReturn.InnerException = ex.InnerException?.ToString() ?? "No Inner Exception";
                 return StatusCode(500, dBReturn);
             }
         }
@@ -110,7 +110,7 @@ namespace Features.Controllers
             {
                 dBReturn.status = "FAILED";
                 dBReturn.ErrorMsg = "Investment - Post(investment) Failed with error "+ex.Message.ToString();
-                dBReturn.InnerException = ex.InnerException.ToString();
+                dBReturn.InnerException = ex.InnerException?.ToString() ?? "No Inner Exception";
                 return StatusCode(500, dBReturn);
             }
         }
@@ -129,7 +129,7 @@ namespace Features.Controllers
             {
                 dBReturn.status = "FAILED";
                 dBReturn.ErrorMsg = "Investment - UpdateInvestment(investment) Failed with error "+ex.Message.ToString();
-                dBReturn.InnerException = ex.InnerException.ToString();
+                dBReturn.InnerException = ex.InnerException?.ToString() ?? "No Inner Exception";
                 return StatusCode(500, dBReturn);
             }
 
@@ -149,7 +149,7 @@ namespace Features.Controllers
             {
                 dBReturn.status = "FAILED";
                 dBReturn.ErrorMsg = "Investment - DeleteInvestment(id) Failed with error "+ex.Message.ToString();
-                dBReturn.InnerException = ex.InnerException.ToString();
+                dBReturn.InnerException = ex.InnerException?.ToString() ?? "No Inner Exception";
                 return StatusCode(500, dBReturn);
             }
 

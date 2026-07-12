@@ -13,7 +13,6 @@ namespace AdminController.Controllers.Admin
     public class UserController : Controller
     {
         private readonly IUserBL UserBL;
-        //private static readonly ILog //_logger = LogManager.GetLogger(typeof(UserController));
         public UserController(IUserBL _UserBL)
         {
 
@@ -132,7 +131,6 @@ namespace AdminController.Controllers.Admin
                 return StatusCode(500, dBReturn);
             }
 
-            return dBReturn;
         }
 
         [HttpDelete("{id}")]
