@@ -8,10 +8,6 @@
     <DockerfileContext>.</DockerfileContext>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="DL\hibernate.cfg.xml" />
-    <None Remove="DL\Mappings\*.xml" />
-  </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="DL\hibernate.cfg.xml" />

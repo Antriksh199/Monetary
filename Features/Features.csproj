@@ -8,29 +8,26 @@
     <DockerfileContext>.</DockerfileContext>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="DL\hibernate.cfg.xml" />
-    <None Remove="DL\Mappings\*.xml" />
-  </ItemGroup>
 
   <ItemGroup>
-    <None Remove="DL\Mappings\Bank.hbm.xml" />
-    <None Remove="DL\Mappings\Card.hbm.xml" />
-    <None Remove="DL\Mappings\Cash.hbm.xml" />
-    <None Remove="DL\Mappings\Expense.hbm.xml" />
-    <None Remove="DL\Mappings\ExpenseCategory.hbm.xml" />
-    <None Remove="DL\Mappings\ExpenseType.hbm.xml" />
-    <None Remove="DL\Mappings\frequency.hbm.xml" />
-    <None Remove="DL\Mappings\Income.hbm.xml" />
-    <None Remove="DL\Mappings\IncomeType.hbm.xml" />
-    <None Remove="DL\Mappings\Investment.hbm.xml" />
-    <None Remove="DL\Mappings\InvestmentCategory.hbm.xml" />
-    <None Remove="DL\Mappings\InvestmentType.hbm.xml" />
-    <None Remove="DL\Mappings\PaymentMethod.hbm.xml" />
-    <None Remove="DL\Mappings\UPI.hbm.xml" />
-    <None Remove="DL\Mappings\User.hbm.xml" />
-    <None Remove="DL\Mappings\UserPaymentMethod.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\Bank.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\Card.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\Cash.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\Expense.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\ExpenseCategory.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\ExpenseType.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\frequency.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\Income.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\IncomeType.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\Investment.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\InvestmentCategory.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\InvestmentType.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\PaymentMethod.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\UPI.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\User.hbm.xml" />
+    <EmbeddedResource Include="DL\Mappings\UserPaymentMethod.hbm.xml" />
   </ItemGroup>
+
 
 
   <ItemGroup>
